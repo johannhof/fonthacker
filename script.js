@@ -10,6 +10,8 @@ divTag.style.margin = "0px auto";
 divTag.style.width = "100%";
 divTag.style.height = "150px";
 divTag.style.backgroundColor = "green";
+divTag.style.left = 0;
+divTag.style.bottom = 0;
 divTag.style.position = "fixed";
 divTag.style.zIndex = "200";
 
