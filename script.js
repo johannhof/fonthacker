@@ -10,7 +10,7 @@ divTag.setAttribute("align", "center");
 divTag.style.margin = "0px auto";
 divTag.style.width = "100%";
 divTag.style.height = "150px";
-divTag.style.backgroundColor = "green";
+divTag.style.backgroundColor = "red";
 divTag.style.left = 0;
 divTag.style.bottom = 0;
 divTag.style.position = "fixed";
@@ -37,7 +37,7 @@ wf.async = 'true';
 var s = document.getElementsByTagName('script')[0];
 s.parentNode.insertBefore(wf, s);
 
-$("button").click(function () {
-    $("body *").css("font-family", "Droid Sans");
+jQuery("button").click(function () {
+    jQuery("body *").css("font-family", "Droid Sans");
 });
 }());
