@@ -21,7 +21,6 @@
     }
 
     function start() {
-        (window.myBookmarklet = function () {
             var divTag, WebFontConfig, wf, s, button;
             divTag = document.createElement("div");
             divTag.id = "typreviewDiv";
@@ -58,8 +57,6 @@
             jQuery("button").click(function () {
                 jQuery("body *").css("font-family", "Droid Sans");
             });
-
-        }());
     }
 
 }());
