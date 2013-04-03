@@ -1,43 +1,66 @@
-(function(){
-var script = document.createElement('script');
-script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js';
-script.type = 'text/javascript';
-document.getElementsByTagName('head')[0].appendChild(script);
+(function () {
 
-var divTag = document.createElement("div");
-divTag.id = "typreviewDiv";
-divTag.setAttribute("align", "center");
-divTag.style.margin = "0px auto";
-divTag.style.width = "100%";
-divTag.style.height = "150px";
-divTag.style.backgroundColor = "red";
-divTag.style.left = 0;
-divTag.style.bottom = 0;
-divTag.style.position = "fixed";
-divTag.style.zIndex = "200";
+    // the minimum version of jQuery we want
+    var v = "1.3.2";
 
-divTag.innerHTML = "Test";
+    // check prior inclusion and version
+    if(window.jQuery === undefined || window.jQuery.fn.jquery < v) {
+        var done = false;
+        var script = document.createElement("script");
+        script.src = "http://ajax.googleapis.com/ajax/libs/jquery/" + v + "/jquery.min.js";
+        script.onload = script.onreadystatechange = function () {
+            if(!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
+                done = true;
+                start();
+            }
+        };
+        document.getElementsByTagName("head")[0].appendChild(script);
+    }
+    else {
+        start();
+    }
 
-document.body.insertBefore(divTag, document.body.firstChild);
+    function start() {
+        (window.myBookmarklet = function () {
+            var divTag, WebFontConfig, wf, s, button;
+            divTag = document.createElement("div");
+            divTag.id = "typreviewDiv";
+            divTag.setAttribute("align", "center");
+            divTag.style.margin = "0px auto";
+            divTag.style.width = "50px";
+            divTag.style.height = "150px";
+            divTag.style.backgroundColor = "lightgrey";
+            divTag.style.left = 0;
+            divTag.style.bottom = 0;
+            divTag.style.position = "fixed";
+            divTag.style.zIndex = "999";
 
-var button = document.createElement("button");
+            divTag.innerHTML = "Test";
 
-button.innerHTML = "Click Me!";
+            document.body.insertBefore(divTag, document.body.firstChild);
 
-document.getElementById("typreviewDiv").appendChild(button);
+            button = document.createElement("button");
 
-WebFontConfig = {
-    google: { families: [ 'Droid Sans', 'Droid Serif' ] }
-};
-var wf = document.createElement('script');
-wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-wf.type = 'text/javascript';
-wf.async = 'true';
-var s = document.getElementsByTagName('script')[0];
-s.parentNode.insertBefore(wf, s);
+            button.innerHTML = "Click Me!";
 
-jQuery("button").click(function () {
-    jQuery("body *").css("font-family", "Droid Sans");
-});
-}());
+            document.getElementById("typreviewDiv").appendChild(button);
+
+            WebFontConfig = {
+                google : { families : [ 'Droid Sans', 'Droid Serif' ] }
+            };
+            wf = document.createElement('script');
+            wf.src = ('https:' === document.location.protocol ? 'https' : 'http') +
+                '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+            wf.type = 'text/javascript';
+            wf.async = 'true';
+            s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(wf, s);
+
+            jQuery("button").click(function () {
+                jQuery("body *").css("font-family", "Droid Sans");
+            });
+
+        })();
+    }
+
+})();
