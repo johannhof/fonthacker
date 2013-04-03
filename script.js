@@ -1,8 +1,20 @@
 (function () {
-    var script = document.createElement('script');
-    script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js';
-    script.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(script);
+    // the minimum version of jQuery we want
+    var v = "1.8.3";
+
+    // check prior inclusion and version
+    if(window.jQuery !== undefined || window.jQuery.fn.jquery < v) {
+        var done = false;
+        var script = document.createElement("script");
+        script.src = "http://ajax.googleapis.com/ajax/libs/jquery/" + v + "/jquery.min.js";
+        script.onload = script.onreadystatechange = function () {
+            if(!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
+                done = true;
+                initMyBookmarklet();
+            }
+        };
+        document.getElementsByTagName("head")[0].appendChild(script);
+    }
 
     var divTag = document.createElement("div");
     divTag.id = "typreviewDiv";
