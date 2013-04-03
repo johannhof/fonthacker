@@ -1,7 +1,7 @@
 (function () {
 
     // the minimum version of jQuery we want
-    var v = "1.3.2";
+    var v = "1.8.2";
 
     // check prior inclusion and version
     if(window.jQuery === undefined || window.jQuery.fn.jquery < v) {
@@ -26,8 +26,7 @@
             divTag = document.createElement("div");
             divTag.id = "typreviewDiv";
             divTag.setAttribute("align", "center");
-            divTag.style.margin = "0px auto";
-            divTag.style.width = "50px";
+            divTag.style.width = "150px";
             divTag.style.height = "150px";
             divTag.style.backgroundColor = "lightgrey";
             divTag.style.left = 0;
@@ -49,7 +48,7 @@
                 google : { families : [ 'Droid Sans', 'Droid Serif' ] }
             };
             wf = document.createElement('script');
-            wf.src = ('https:' === document.location.protocol ? 'https' : 'http') +
+            wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
                 '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
             wf.type = 'text/javascript';
             wf.async = 'true';
@@ -60,7 +59,7 @@
                 jQuery("body *").css("font-family", "Droid Sans");
             });
 
-        })();
+        }());
     }
 
-})();
+}());
