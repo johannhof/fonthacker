@@ -1,3 +1,4 @@
+(function(){
 var script = document.createElement('script');
 script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js';
 script.type = 'text/javascript';
@@ -39,3 +40,4 @@ s.parentNode.insertBefore(wf, s);
 $("button").click(function () {
     $("body *").css("font-family", "Droid Sans");
 });
+}());
