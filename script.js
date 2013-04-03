@@ -1,5 +1,5 @@
 (function () {
-    var v, divTag, button, wf, WebFontConfig, s;
+    var v, divTag, button, wf, s;
 
     v = "1.8.3";
 
