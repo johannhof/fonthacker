@@ -37,5 +37,5 @@ var s = document.getElementsByTagName('script')[0];
 s.parentNode.insertBefore(wf, s);
 
 $("button").click(function () {
-    $("*").css("font-family", "Droid Sans");
+    $("body *").css("font-family", "Droid Sans");
 });
