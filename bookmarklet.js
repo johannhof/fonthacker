@@ -1,0 +1,1 @@
+javascript:var headID=document.getElementsByTagName("head")[0]; var newScript = document.createElement('script'); newScript.type = 'text/javascript'; newScript.src = 'http://www.johann-hofmann.com/typreview/test.js'; headID.appendChild(newScript);
