@@ -8,11 +8,6 @@
         done = false;
         script = document.createElement("script");
         script.src = "http://ajax.googleapis.com/ajax/libs/jquery/" + v + "/jquery.min.js";
-        script.onload = script.onreadystatechange = function () {
-                jQuery("button").click(function () {
-                    jQuery("body *").css("font-family", "Droid Sans");
-                });
-        };
         document.getElementsByTagName("head")[0].appendChild(script);
     }
 
@@ -47,4 +42,10 @@
     wf.async = 'true';
     s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wf, s);
+
+    setTimeout(function(){
+        jQuery("button").click(function () {
+            jQuery("body *").css("font-family", "Droid Sans");
+        });
+    },5000)
 }());
