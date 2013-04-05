@@ -15,7 +15,8 @@
             }
         };
         document.getElementsByTagName("head")[0].appendChild(script);
-    }else{
+    }
+    else {
         loadBookmarklet();
     }
 
@@ -31,19 +32,14 @@
         divTag.style.position = "fixed";
         divTag.style.zIndex = "999";
 
-        divTag.innerHTML = "Test";
-
         document.body.insertBefore(divTag, document.body.firstChild);
 
         button = document.createElement("button");
-
+        button.id = "applyFont";
         button.innerHTML = "Click Me!";
 
         document.getElementById("fontmarkletDiv").appendChild(button);
 
-        window.WebFontConfig = {
-            google : { families : [ 'Droid Sans', 'Droid Serif' ] }
-        };
         wf = document.createElement('script');
         wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
             '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
@@ -52,8 +48,27 @@
         s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(wf, s);
 
-        jQuery("button").click(function () {
-            jQuery("body *").css("font-family", "Droid Sans");
+        var select = document.createElement("select");
+        select.id = "fontSelect";
+        document.getElementById("fontmarkletDiv").appendChild(select);
+
+        jQuery.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o", function (data) {
+            for(var i = 0; i < data.items.length; i++) {
+                var option = document.createElement("option")
+                option.innerHTML = data.items[i].family;
+                select.appendChild(option);
+            }
+        })
+
+        jQuery("#applyFont").click(function () {
+            WebFont.load({
+                google : {
+                    families : [ $("#fontSelect").val() ]
+                },
+                active : function () {
+                    jQuery("body *").css("font-family", $("#fontSelect").val());
+                }
+            })
         });
     }
 }());
