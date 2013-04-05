@@ -11,47 +11,44 @@
         script.onload = script.onreadystatechange = function () {
             if(!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
                 done = true;
-                loadBookmarklet();
             }
         };
         document.getElementsByTagName("head")[0].appendChild(script);
     }
 
-    function loadBookmarklet() {
-        divTag = document.createElement("div");
-        divTag.id = "fontmarkletDiv";
-        divTag.setAttribute("align", "center");
-        divTag.style.width = "150px";
-        divTag.style.height = "150px";
-        divTag.style.backgroundColor = "#cccccc";
-        divTag.style.left = 0;
-        divTag.style.bottom = 0;
-        divTag.style.position = "fixed";
-        divTag.style.zIndex = "999";
+    divTag = document.createElement("div");
+    divTag.id = "fontmarkletDiv";
+    divTag.setAttribute("align", "center");
+    divTag.style.width = "150px";
+    divTag.style.height = "150px";
+    divTag.style.backgroundColor = "#cccccc";
+    divTag.style.left = 0;
+    divTag.style.bottom = 0;
+    divTag.style.position = "fixed";
+    divTag.style.zIndex = "999";
 
-        divTag.innerHTML = "Test";
+    divTag.innerHTML = "Test";
 
-        document.body.insertBefore(divTag, document.body.firstChild);
+    document.body.insertBefore(divTag, document.body.firstChild);
 
-        button = document.createElement("button");
+    button = document.createElement("button");
 
-        button.innerHTML = "Click Me!";
+    button.innerHTML = "Click Me!";
 
-        document.getElementById("fontmarkletDiv").appendChild(button);
+    document.getElementById("fontmarkletDiv").appendChild(button);
 
-        window.WebFontConfig = {
-            google : { families : [ 'Droid Sans', 'Droid Serif' ] }
-        };
-        wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
+    window.WebFontConfig = {
+        google : { families : [ 'Droid Sans', 'Droid Serif' ] }
+    };
+    wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
 
-        jQuery("button").click(function () {
-            jQuery("body *").css("font-family", "Droid Sans");
-        });
-    }
+    jQuery("button").click(function () {
+        jQuery("body *").css("font-family", "Droid Sans");
+    });
 }());
