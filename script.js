@@ -7,7 +7,7 @@
         var script;
         done = false;
         script = document.createElement("script");
-        script.src = "http://ajax.googleapis.com/ajax/libs/jquery/" + v + "/jquery.min.js";
+        script.src = "https://ajax.googleapis.com/ajax/libs/jquery/" + v + "/jquery.min.js";
         document.getElementsByTagName("head")[0].appendChild(script);
     }
 
