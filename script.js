@@ -52,7 +52,7 @@
         select.id = "fontSelect";
         document.getElementById("fontmarkletDiv").appendChild(select);
 
-        jQuery.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o", function (data) {
+        jQuery.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o&callback=?", function (data) {
             for(var i = 0; i < data.items.length; i++) {
                 var option = document.createElement("option")
                 option.innerHTML = data.items[i].family;
