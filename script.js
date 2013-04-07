@@ -46,8 +46,13 @@
         });
 
         function createFontChanger() {
-            var singleInputContainer = document.createElement("div");
-            singleInputContainer.appendChild(document.createElement("input"));
+            var singleInputContainer = document.createElement("div"),
+                fontInput = document.createElement("input"),
+                sizeInput = document.createElement("input");
+            fontInput.className = "fontName";
+            sizeInput.className = "fontSize";
+            singleInputContainer.appendChild(fontInput);
+            singleInputContainer.appendChild(sizeInput);
             singleInputContainer.appendChild(select.cloneNode(true));
             changeContainer.appendChild(singleInputContainer);
         }
@@ -57,7 +62,7 @@
 
         $(addButton).click(createFontChanger);
 
-        function loadFont(name, selector){
+        function loadFont(name, selector, size) {
             //noinspection JSUnresolvedVariable,JSHint,JSLint
             WebFont.load({
                 google : {
@@ -65,6 +70,9 @@
                 },
                 active : function () {
                     $(selector).css("font-family", name);
+                    if(size) {
+                        $(selector).css("font-size", size + "px");
+                    }
                 }
             });
         }
@@ -72,7 +80,7 @@
         $(applyButton).click(function () {
             var i, nodes = changeContainer.childNodes, max = nodes.length;
             for(i = 0; i < max; i++) {
-                loadFont($(nodes[i]).children("select").val(),$(nodes[i]).children("input").val());
+                loadFont($(nodes[i]).children("select").val(), $(nodes[i]).children(".fontName").val(), $(nodes[i]).children(".fontSize").val());
             }
         });
     }

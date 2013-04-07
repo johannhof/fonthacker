@@ -3,11 +3,25 @@
 <head>
     <title>Fontmarklet</title>
     <script src="jquery-1.9.1.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Risque' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Fontmarklet</h1>
-<h2>a handy font tool</h2>
-<a href="javascript:var headID=document.getElementsByTagName('head')[0]; var newScript = document.createElement('script'); newScript.type = 'text/javascript'; newScript.src = 'https://raw.github.com/johannhof/fontmarklet/master/script.js?development=' + Math.random(); headID.appendChild(newScript);">Drag me to your bookmarks</a>
-<script src="script.js"></script>
+<div class="container" id="headerContainer">
+    <br>
+    <h1>Fontmarklet</h1>
+</div>
+<div class="container" id="mainContainer">
+    <br>
+    <br>
+    <h2>a handy font tool</h2>
+    <a class="bookmarklet" href="javascript:var headID=document.getElementsByTagName('head')[0]; var newScript = document.createElement('script'); newScript.type = 'text/javascript'; newScript.src = 'https://raw.github.com/johannhof/fontmarklet/master/script.js?development=' + Math.random(); headID.appendChild(newScript);">Drag
+        me to your bookmarks</a>
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</div>
 </body>
 </html>
