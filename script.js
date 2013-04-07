@@ -6,25 +6,33 @@
         mainContainer = document.createElement("div");
         mainContainer.id = "fontmarkletDiv";
         mainContainer.setAttribute("align", "center");
-        mainContainer.style.width = "500px";
+        mainContainer.style.width = "600px";
         mainContainer.style.height = "200px";
-        mainContainer.style.backgroundColor = "#cccccc";
+        mainContainer.style.backgroundColor = "#dddddd";
         mainContainer.style.left = 0;
         mainContainer.style.bottom = 0;
         mainContainer.style.position = "fixed";
         mainContainer.style.zIndex = "999";
 
-        changeContainer = document.createElement("div");
-
-        applyButton = document.createElement("button");
-        applyButton.id = "applyFont";
-        applyButton.innerHTML = "Apply";
-        mainContainer.appendChild(applyButton);
-
         addButton = document.createElement("button");
         addButton.id = "applyFont";
         addButton.innerHTML = "Add";
         mainContainer.appendChild(addButton);
+        changeContainer = document.createElement("div");
+
+        mainContainer.appendChild(changeContainer);
+        applyButton = document.createElement("button");
+
+        applyButton.id = "applyFont";
+        applyButton.innerHTML = "Apply";
+        $(applyButton).css({
+            border : "none",
+            background : "#05aa05",
+            padding : "5px 30px",
+            color: "white",
+            "border-radius": "4px"
+        });
+        mainContainer.appendChild(applyButton);
 
         wf = document.createElement('script');
         wf.src = ('https:' === document.location.protocol ? 'https' : 'http') +
@@ -32,6 +40,7 @@
         wf.type = 'text/javascript';
         wf.async = 'true';
         s = document.getElementsByTagName('script')[0];
+
         s.parentNode.insertBefore(wf, s);
 
         select = document.createElement("select");
@@ -44,20 +53,18 @@
                 select.appendChild(option);
             }
         });
-
         function createFontChanger() {
             var singleInputContainer = document.createElement("div"),
-                fontInput = document.createElement("input"),
+                selectorInput = document.createElement("input"),
                 sizeInput = document.createElement("input");
-            fontInput.className = "fontName";
-            sizeInput.className = "fontSize";
-            singleInputContainer.appendChild(fontInput);
+            $(selectorInput).attr("class","fontName").attr("placeholder","jQuery Selector")
+            $(sizeInput).attr("class","fontSize").attr("placeholder","Font size in px")
+            singleInputContainer.appendChild(selectorInput);
             singleInputContainer.appendChild(sizeInput);
             singleInputContainer.appendChild(select.cloneNode(true));
             changeContainer.appendChild(singleInputContainer);
         }
 
-        mainContainer.appendChild(changeContainer);
         document.body.insertBefore(mainContainer, document.body.firstChild);
 
         $(addButton).click(createFontChanger);
