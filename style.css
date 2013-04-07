@@ -16,9 +16,15 @@ body{
 
 h1 {
     font-family: 'Risque', cursive;
-    font-size: 150px;
+    font-size: 160px;
     text-shadow: hsl(200, 100%, 64%) -1px 1px, hsl(200, 100%, 64%) -2px 2px, hsl(200, 100%, 64%) -3px 3px, hsl(200, 100%, 64%) -4px 4px, hsl(200, 100%, 64%) -5px 5px;
     color: white;
+}
+
+h2{
+    font-size: 50px;
+    color: #005580;
+    line-height: 50px;
 }
 
 #headerContainer{
@@ -27,20 +33,31 @@ h1 {
 }
 
 #mainContainer {
+    padding: 20px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    height: 100%;
+    height: 80%;
     background-color: white;
     text-align: center;
 }
 
 .bookmarklet {
-    font-size: 14px;
-    background-color: #3ec3bc;
-    padding: 12px;
+    font-size: 17px;
+    background-color: darkorange;
+    padding: 12px 25px;
     color: white;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s ease-in-out;
+}
+
+.bookmarklet:hover{
+    box-shadow: 0px 0px 5px black;
+    text-decoration: none;
+    color: white;
 }

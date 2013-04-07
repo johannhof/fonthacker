@@ -62,6 +62,13 @@
 
         $(addButton).click(createFontChanger);
 
+        /**
+         * Loads the specified font from Google Web Fonts
+         *
+         * @param {string} name the name of the font
+         * @param {string} selector the jquery selector pointing to the item that should receive the new fontface
+         * @param {number} [size]
+         */
         function loadFont(name, selector, size) {
             //noinspection JSUnresolvedVariable,JSHint,JSLint
             WebFont.load({
