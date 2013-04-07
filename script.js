@@ -54,6 +54,9 @@
 
         //TODO: Load in a loop for each fontchanger
         $(applyButton).click(function () {
+            for(var child in divTag.children){
+                alert(child);
+            }
             //noinspection JSUnresolvedVariable,JSHint,JSLint
             WebFont.load({
                 google : {
