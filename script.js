@@ -2,27 +2,29 @@
     var v = "1.8.3", script, done = false;
 
     function loadBookmarklet() {
-        var $ = window.jQuery, applyButton, addButton, divTag, wf, s, select,input;
-        divTag = document.createElement("div");
-        divTag.id = "fontmarkletDiv";
-        divTag.setAttribute("align", "center");
-        divTag.style.width = "200px";
-        divTag.style.height = "200px";
-        divTag.style.backgroundColor = "#cccccc";
-        divTag.style.left = 0;
-        divTag.style.bottom = 0;
-        divTag.style.position = "fixed";
-        divTag.style.zIndex = "999";
+        var $ = window.jQuery, applyButton, addButton, mainContainer, changeContainer, wf, s, select, input;
+        mainContainer = document.createElement("div");
+        mainContainer.id = "fontmarkletDiv";
+        mainContainer.setAttribute("align", "center");
+        mainContainer.style.width = "500px";
+        mainContainer.style.height = "200px";
+        mainContainer.style.backgroundColor = "#cccccc";
+        mainContainer.style.left = 0;
+        mainContainer.style.bottom = 0;
+        mainContainer.style.position = "fixed";
+        mainContainer.style.zIndex = "999";
+
+        changeContainer = document.createElement("div");
 
         applyButton = document.createElement("button");
         applyButton.id = "applyFont";
         applyButton.innerHTML = "Apply";
-        divTag.appendChild(applyButton);
+        mainContainer.appendChild(applyButton);
 
         addButton = document.createElement("button");
         addButton.id = "applyFont";
         addButton.innerHTML = "Add";
-        divTag.appendChild(addButton);
+        mainContainer.appendChild(addButton);
 
         wf = document.createElement('script');
         wf.src = ('https:' === document.location.protocol ? 'https' : 'http') +
@@ -43,29 +45,35 @@
             }
         });
 
-        function createFontChanger(){
-            divTag.appendChild(document.createElement("input"));
-            divTag.appendChild(select.cloneNode(true));
+        function createFontChanger() {
+            var singleInputContainer = document.createElement("div");
+            singleInputContainer.appendChild(document.createElement("input"));
+            singleInputContainer.appendChild(select.cloneNode(true));
+            changeContainer.appendChild(singleInputContainer);
         }
 
-        document.body.insertBefore(divTag, document.body.firstChild);
+        mainContainer.appendChild(changeContainer);
+        document.body.insertBefore(mainContainer, document.body.firstChild);
 
         $(addButton).click(createFontChanger);
 
-        //TODO: Load in a loop for each fontchanger
-        $(applyButton).click(function () {
-            for(var child in divTag.children){
-                alert(child);
-            }
+        function loadFont(name, selector){
             //noinspection JSUnresolvedVariable,JSHint,JSLint
             WebFont.load({
                 google : {
-                    families : [ $(select).val() ]
+                    families : [ name ]
                 },
                 active : function () {
-                    $("body *").css("font-family", $(select).val());
+                    $(selector).css("font-family", name);
                 }
             });
+        }
+
+        $(applyButton).click(function () {
+            var i, nodes = changeContainer.childNodes, max = nodes.length;
+            for(i = 0; i < max; i++) {
+                loadFont($(nodes[i]).children("select").val(),$(nodes[i]).children("input").val());
+            }
         });
     }
 
@@ -80,7 +88,8 @@
             }
         };
         document.getElementsByTagName("head")[0].appendChild(script);
-    } else {
+    }
+    else {
         loadBookmarklet();
     }
 }());
