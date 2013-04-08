@@ -3,15 +3,16 @@
 <head>
     <title>Fontmarklet</title>
     <script src="jquery-1.9.1.min.js"></script>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link href='http://fonts.googleapis.com/css?family=Risque' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a href="https://github.com/johannhof/fontmarklet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+<a href="https://github.com/johannhof/fontmarklet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Font me on GitHub"></a>
 <div class="container" id="headerContainer">
     <br>
     <h1>Fontmarklet</h1>
@@ -21,12 +22,13 @@
     <br>
     <p>To get started, just drag the orange bookmarklet to your bookmark bar.</p>
     <br>
+    <br>
     <a class="bookmarklet" href="javascript:(function(){var headID=document.getElementsByTagName('head')[0]; var newScript = document.createElement('script'); newScript.type = 'text/javascript'; newScript.src = 'https://raw.github.com/johannhof/fontmarklet/master/script.js?development=' + Math.random(); headID.appendChild(newScript);}())">
         Fontmarklet
     </a>
-    <script src="jquery-1.9.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
 </div>
+<script src="jquery-1.9.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

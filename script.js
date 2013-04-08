@@ -2,72 +2,7 @@
     var v = "1.8.3", script, done = false;
 
     function loadBookmarklet() {
-        var $ = window.jQuery, applyButton, addButton, mainContainer, changeContainer, wf, s, select, input;
-        mainContainer = document.createElement("div");
-        mainContainer.id = "fontmarkletDiv";
-        mainContainer.setAttribute("align", "center");
-        mainContainer.style.width = "600px";
-        mainContainer.style.height = "200px";
-        mainContainer.style.backgroundColor = "#dddddd";
-        mainContainer.style.left = 0;
-        mainContainer.style.bottom = 0;
-        mainContainer.style.position = "fixed";
-        mainContainer.style.zIndex = "999";
-
-        addButton = document.createElement("button");
-        addButton.id = "applyFont";
-        addButton.innerHTML = "Add";
-        mainContainer.appendChild(addButton);
-        changeContainer = document.createElement("div");
-
-        mainContainer.appendChild(changeContainer);
-        applyButton = document.createElement("button");
-
-        applyButton.id = "applyFont";
-        applyButton.innerHTML = "Apply";
-        $(applyButton).css({
-            border : "none",
-            background : "#05aa05",
-            padding : "5px 30px",
-            color: "white",
-            "border-radius": "4px"
-        });
-        mainContainer.appendChild(applyButton);
-
-        wf = document.createElement('script');
-        wf.src = ('https:' === document.location.protocol ? 'https' : 'http') +
-            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        s = document.getElementsByTagName('script')[0];
-
-        s.parentNode.insertBefore(wf, s);
-
-        select = document.createElement("select");
-
-        $.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o&callback=?", function (data) {
-            var i, items = data.items, max = items.length, option;
-            for(i = 0; i < max; i++) {
-                option = document.createElement("option");
-                option.innerHTML = items[i].family;
-                select.appendChild(option);
-            }
-        });
-        function createFontChanger() {
-            var singleInputContainer = document.createElement("div"),
-                selectorInput = document.createElement("input"),
-                sizeInput = document.createElement("input");
-            $(selectorInput).attr("class","fontName").attr("placeholder","jQuery Selector")
-            $(sizeInput).attr("class","fontSize").attr("placeholder","Font size in px")
-            singleInputContainer.appendChild(selectorInput);
-            singleInputContainer.appendChild(sizeInput);
-            singleInputContainer.appendChild(select.cloneNode(true));
-            changeContainer.appendChild(singleInputContainer);
-        }
-
-        document.body.insertBefore(mainContainer, document.body.firstChild);
-
-        $(addButton).click(createFontChanger);
+        var $ = window.jQuery, applyButton, addButton, mainContainer, changeContainer, wf, s, select, input, items, subsetSelect;
 
         /**
          * Loads the specified font from Google Web Fonts
@@ -91,10 +26,109 @@
             });
         }
 
+        function createSubsets(font) {
+            var i, numberOfSubsets = font.subsets.length, newSubsetSelect = document.createElement("select"), option;
+            newSubsetSelect.className = "subset";
+            for(i = 0; i < numberOfSubsets; i++) {
+                option = document.createElement("option");
+                option.innerHTML = font.subsets[i];
+                newSubsetSelect.appendChild(option);
+            }
+            return newSubsetSelect;
+        }
+
+        function createFontChanger() {
+            var singleInputContainer = document.createElement("div"),
+                selectorInput = document.createElement("input"),
+                sizeInput = document.createElement("input"),
+                selectClone = select.cloneNode(true);
+            $(selectorInput).attr("class", "selector").attr("placeholder", "jQuery Selector");
+            $(sizeInput).attr("class", "fontSize").attr("placeholder", "Font size in px");
+            singleInputContainer.appendChild(selectorInput);
+            singleInputContainer.appendChild(sizeInput);
+            singleInputContainer.appendChild(selectClone);
+            $(selectClone).change(function () {
+                $(this).parent().children(".subset").replaceWith(createSubsets(items[$(this).val()]));
+            });
+            singleInputContainer.appendChild(subsetSelect.cloneNode(true));
+            changeContainer.appendChild(singleInputContainer);
+        }
+
+        mainContainer = document.createElement("div");
+        mainContainer.id = "fontmarkletDiv";
+        mainContainer.setAttribute("align", "center");
+        $(mainContainer).css({
+            width : "600px",
+            height : "200px",
+            "background-color" : "rgba(200,200,200,0.7)",
+            left : 0,
+            bottom : 0,
+            position : "fixed",
+            zIndex : "999",
+            border : "1px solid gray"
+        });
+
+        addButton = document.createElement("button");
+        addButton.id = "applyFont";
+        addButton.innerHTML = "Add";
+        $(addButton).css({
+            margin : "5px",
+            border : "none",
+            background : "grey",
+            padding : "5px 30px",
+            color : "white",
+            "border-radius" : "4px"
+        });
+        mainContainer.appendChild(addButton);
+        changeContainer = document.createElement("div");
+
+        mainContainer.appendChild(changeContainer);
+        applyButton = document.createElement("button");
+
+        applyButton.id = "applyFont";
+        applyButton.innerHTML = "Apply";
+        $(applyButton).css({
+            border : "none",
+            background : "#05aa05",
+            padding : "5px 30px",
+            color : "white",
+            "border-radius" : "4px"
+        });
+        mainContainer.appendChild(applyButton);
+
+        wf = document.createElement('script');
+        wf.src = ('https:' === document.location.protocol ? 'https' : 'http') +
+            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        s = document.getElementsByTagName('script')[0];
+
+        s.parentNode.insertBefore(wf, s);
+
+        select = document.createElement("select");
+        select.className = "selectFont";
+        subsetSelect = document.createElement("select");
+        subsetSelect.className = "subset";
+
+        $.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o&callback=?", function (data) {
+            items = data.items;
+            var i, max = items.length, option;
+            for(i = 0; i < max; i++) {
+                option = document.createElement("option");
+                option.innerHTML = items[i].family;
+                option.value = i;
+                select.appendChild(option);
+            }
+        });
+
+        document.body.insertBefore(mainContainer, document.body.firstChild);
+
+        $(addButton).click(createFontChanger);
+
         $(applyButton).click(function () {
             var i, nodes = changeContainer.childNodes, max = nodes.length;
             for(i = 0; i < max; i++) {
-                loadFont($(nodes[i]).children("select").val(), $(nodes[i]).children(".fontName").val(), $(nodes[i]).children(".fontSize").val());
+                loadFont(items[$(nodes[i]).children(".selectFont").val()].family, $(nodes[i]).children(".selector").val(), $(nodes[i]).children(".fontSize").val());
             }
         });
     }
