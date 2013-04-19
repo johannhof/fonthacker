@@ -180,10 +180,6 @@
         document.body.insertBefore(mainContainer, document.body.firstChild);
 
         $(addButton).click(createFontChanger);
-
-        $(applyButton).click(function () {
-            applyFonts();
-        });
     }
 
     if(window.jQuery === undefined || window.jQuery.fn.jquery < v) {
