@@ -2,7 +2,7 @@
     var v = "1.8.3", script, done = false;
 
     function loadBookmarklet() {
-        var $ = window.jQuery, applyButton, addButton, mainContainer,
+        var $ = window.jQuery, addButton, mainContainer,
             changeContainer, wf, s, select, input, items, subsetSelect, variantSelect;
 
         function parseVariant(variant) {
@@ -12,7 +12,7 @@
                 case "italic":
                     return 400;
                 default:
-                    var test = parseInt(variant, 10)
+                    var test = parseInt(variant, 10);
                     return test;
             }
         }
@@ -25,13 +25,6 @@
                 return "italic";
             }
             return "normal";
-        }
-
-        function applyFonts() {
-            var i, nodes = changeContainer.childNodes, max = nodes.length;
-            for(i = 0; i < max; i++) {
-                loadFont(items[$(nodes[i]).children(".selectFont").val()].family, $(nodes[i]).children(".selector").val(), $(nodes[i]).children(".fontSize").val(), $(nodes[i]).children(".variant").val(), $(nodes[i]).children(".subset").val());
-            }
         }
 
         /**
@@ -61,6 +54,13 @@
                     }
                 }
             });
+        }
+
+        function applyFonts() {
+            var i, nodes = changeContainer.childNodes, max = nodes.length;
+            for(i = 0; i < max; i++) {
+                loadFont(items[$(nodes[i]).children(".selectFont").val()].family, $(nodes[i]).children(".selector").val(), $(nodes[i]).children(".fontSize").val(), $(nodes[i]).children(".variant").val(), $(nodes[i]).children(".subset").val());
+            }
         }
 
         function createSubsets(font) {
