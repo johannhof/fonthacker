@@ -2,7 +2,16 @@
     var v = "1.8.3", script, done = false;
 
     function loadBookmarklet() {
-        var $ = window.jQuery, addButton, mainContainer, changeContainer, select, input, items;
+        var $ = window.jQuery, addButton, mainContainer, changeContainer, select, input, items, fontConfigs;
+
+        function fontConfiguration() {
+            this.id = null;
+            this.selector = null;
+            this.name = null;
+            this.size = null;
+            this.variant = null;
+            this.subset = null;
+        }
 
         /**
          * Parses the font weight from a given variant string.
@@ -38,39 +47,37 @@
             return "normal";
         }
 
-        /**
-         * Loads the specified font from Google Web Fonts
-         *
-         * @param {string} name the name of the font
-         * @param {string} selector the jquery selector pointing to the item that should receive the new fontface
-         * @param {number,optional} [size] the size of the font
-         * @param {string,optional} [variant]
-         * @param {string,optional} [subset] the subset of the font
-         */
-        function loadFont(name, selector, size, variant, subset) {
-            var options = ":" + (variant || "") + ":" + (subset || "");
+        function loadWebFonts(configurations, callback) {
+            var i, config, googleWebFonts = [];
+            for(i = 0; i < configurations.length; i++) {
+                    config = configurations[i];
+                    googleWebFonts[i] = ":" + (config.variant || "") + ":" + (config.subset || "");
+            }
             //noinspection JSUnresolvedVariable,JSHint,JSLint
             WebFont.load({
                 google : {
-                    families : [ name + options ]
+                    families : googleWebFonts
                 },
-                active : function () {
-                    $(selector).css("font-family", name);
-                    if(size) {
-                        $(selector).css("font-size", size + "px");
-                    }
-                    if(variant) {
-                        $(selector).css("font-weight", parseVariant(variant));
-                        $(selector).css("font-style", parseStyle(variant));
-                    }
-                }
+                active : callback
             });
         }
+
+
+        /*////////////////////////////////////////////////////////////////////////////////////////////////////
+         $(configuration.selector).css("font-family", configuration.name);
+         if(configuration.size) {
+         $(configuration.selector).css("font-size", configuration.size + "px");
+         }
+         if(configuration.variant) {
+         $(configuration.selector).css("font-weight", parseVariant(configuration.variant));
+         $(configuration.selector).css("font-style", parseStyle(configuration.variant));
+         }
+         *//////////////////////////////////////////////////////////////////////////////////////////////////////
 
         function applyFonts() {
             var i, nodes = changeContainer.childNodes, max = nodes.length;
             for(i = 0; i < max; i++) {
-                loadFont(items[$(nodes[i]).children(".selectFont").val()].family, $(nodes[i]).children(".selector").val(), $(nodes[i]).children(".fontSize").val(), $(nodes[i]).children(".variant").val(), $(nodes[i]).children(".subset").val());
+                loadWebFonts(items[$(nodes[i]).children(".selectFont").val()].family, $(nodes[i]).children(".selector").val(), $(nodes[i]).children(".fontSize").val(), $(nodes[i]).children(".variant").val(), $(nodes[i]).children(".subset").val());
             }
         }
 
@@ -150,10 +157,10 @@
             s.parentNode.insertBefore(webFontScript, s);
 
             mainContainer = document.createElement("div");
-            $(mainContainer).attr("align", "center").attr("id", "fontmarkletDiv").css({
+            $(mainContainer).attr("id", "fontmarkletDiv").css({
                 width : "600px",
                 "min-height" : "200px",
-                "background-color" : "rgba(200,200,200,0.7)",
+                "background-color" : "rgba(200,200,200,0.3)",
                 left : 0,
                 bottom : 0,
                 position : "fixed",
@@ -161,16 +168,25 @@
                 border : "1px solid gray"
             });
 
+            selectorContainer = document.createElement("div");
+            $(selectorContainer).attr("id", "fontmarkletDiv").css({
+                width : "200px",
+                "min-height" : "200px",
+                float: "left",
+                "background-color" : "rgba(200,200,200,0.6)"
+            });
+            mainContainer.appendChild(selectorContainer);
+
             addButton = document.createElement("button");
             $(addButton).attr("id", "addFont").html("Add").css({
+                width: "40%",
                 margin : "5px",
                 border : "none",
-                background : "grey",
-                padding : "5px 30px",
+                background : "green",
                 color : "white",
                 "border-radius" : "4px"
             }).click(createFontChanger);
-            mainContainer.appendChild(addButton);
+            selectorContainer.appendChild(addButton);
 
             changeContainer = document.createElement("div");
             mainContainer.appendChild(changeContainer);
