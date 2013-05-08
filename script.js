@@ -2,15 +2,18 @@
     var v = "1.8.3", script, done = false;
 
     function loadBookmarklet() {
-        var $ = window.jQuery, addButton, mainContainer, changeContainer, select, input, items, fontConfigs;
+        var $ = window.jQuery,
+            idCounter = 0, addButton, mainContainer, selectorContainer, changeContainer, select, input, items,
+            fontConfigs = {}, activeConfig;
 
-        function fontConfiguration() {
+        function FontConfiguration() {
             this.id = null;
             this.selector = null;
             this.name = null;
             this.size = null;
             this.variant = null;
             this.subset = null;
+            this.active = false;
         }
 
         /**
@@ -47,12 +50,8 @@
             return "normal";
         }
 
-        function loadWebFonts(configurations, callback) {
-            var i, config, googleWebFonts = [];
-            for(i = 0; i < configurations.length; i++) {
-                    config = configurations[i];
-                    googleWebFonts[i] = ":" + (config.variant || "") + ":" + (config.subset || "");
-            }
+        function loadWebFont(config, callback) {
+            var googleWebFonts = ":" + (config.variant || "") + ":" + (config.subset || "");
             //noinspection JSUnresolvedVariable,JSHint,JSLint
             WebFont.load({
                 google : {
@@ -61,7 +60,6 @@
                 active : callback
             });
         }
-
 
         /*////////////////////////////////////////////////////////////////////////////////////////////////////
          $(configuration.selector).css("font-family", configuration.name);
@@ -74,11 +72,10 @@
          }
          *//////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        function applyFonts() {
-            var i, nodes = changeContainer.childNodes, max = nodes.length;
-            for(i = 0; i < max; i++) {
-                loadWebFonts(items[$(nodes[i]).children(".selectFont").val()].family, $(nodes[i]).children(".selector").val(), $(nodes[i]).children(".fontSize").val(), $(nodes[i]).children(".variant").val(), $(nodes[i]).children(".subset").val());
-            }
+        function applyFonts(id) {
+            loadWebFont(fontConfigs[id], function () {
+                alert("done");
+            });
         }
 
         function createSubsets(font) {
@@ -105,35 +102,38 @@
             return newVariantSelect;
         }
 
-        function createFontChanger() {
-            var singleInputContainer = document.createElement("div"),
+        function createSelectorRow(id) {
+            var div = document.createElement("div"),
+                checkbox = document.createElement("input"),
                 selectorInput = document.createElement("input"),
-                sizeInput = document.createElement("input"),
-                selectClone = select.cloneNode(true),
-                subsetSelect = document.createElement("select"),
-                variantSelect = document.createElement("select");
-
-            $(subsetSelect).attr("class", "subset").css("width", "100px");
-            $(variantSelect).attr("class", "variant").css("width", "100px");
-
-            $(selectorInput).attr("class", "selector").css("width", "100px").attr("placeholder", "jQuery Selector").change(applyFonts);
-            $(sizeInput).attr("class", "fontSize").css("width", "100px").attr("placeholder", "Font size in px").change(applyFonts);
-            singleInputContainer.appendChild(selectorInput);
-            singleInputContainer.appendChild(sizeInput);
-            singleInputContainer.appendChild(selectClone);
-            $(selectClone).change(function () {
-                $(this).parent().children(".subset").replaceWith(createSubsets(items[$(this).val()]));
-                $(this).parent().children(".variant").replaceWith(createVariants(items[$(this).val()]));
-                applyFonts();
-            });
-            singleInputContainer.appendChild(subsetSelect);
-            singleInputContainer.appendChild(variantSelect);
-            changeContainer.appendChild(singleInputContainer);
+                deleteButton = document.createElement("button");
+            $(checkbox).attr("type", "checkbox").attr("checked", "true");
+            $(div).attr("id", id + "_selectorDiv")
+                .css({
+                    background : "#DDDDDD",
+                    padding : "5px",
+                    cursor : "pointer"
+                }).click(function () {
+                    activeConfig = id;
+                    $(this).css("background-color", "green");
+                });
+            $(selectorInput).attr("id", id + "_selector")
+                .attr("class", "selector")
+                .css("width", "100px")
+                .attr("placeholder", "jQuery Selector")
+                .change(function () {
+                    fontConfigs[id].selector = this.value;
+                    applyFonts(id);
+                });
+            $(deleteButton).html("Delete");
+            div.appendChild(checkbox);
+            div.appendChild(selectorInput);
+            div.appendChild(deleteButton);
+            return div;
         }
 
         (function init() {
             var s, webFontScript;
-
             select = document.createElement("select");
             $(select).attr("class", "selectFont").css("width", "150px");
 
@@ -170,25 +170,59 @@
 
             selectorContainer = document.createElement("div");
             $(selectorContainer).attr("id", "fontmarkletDiv").css({
-                width : "200px",
+                width : "250px",
                 "min-height" : "200px",
-                float: "left",
-                "background-color" : "rgba(200,200,200,0.6)"
+                float : "left",
+                "background-color" : "rgba(200,200,200,0.6)",
+                overflow : "auto"
             });
             mainContainer.appendChild(selectorContainer);
 
             addButton = document.createElement("button");
-            $(addButton).attr("id", "addFont").html("Add").css({
-                width: "40%",
-                margin : "5px",
-                border : "none",
-                background : "green",
-                color : "white",
-                "border-radius" : "4px"
-            }).click(createFontChanger);
+            $(addButton).attr("id", "addFont")
+                .html("Add")
+                .css({
+                    width : "90%",
+                    margin : "8px",
+                    border : "none",
+                    background : "green",
+                    color : "white",
+                    "border-radius" : "4px"
+                }).click(function () {
+                    var id = idCounter++;
+                    fontConfigs[id] = new FontConfiguration();
+                    selectorContainer.appendChild(createSelectorRow(id));
+                });
             selectorContainer.appendChild(addButton);
+            selectorContainer.appendChild(document.createElement("br"));
 
             changeContainer = document.createElement("div");
+            var singleInputContainer = document.createElement("div"),
+                sizeInput = document.createElement("input"),
+                subsetSelect = document.createElement("select"),
+                variantSelect = document.createElement("select");
+
+            $(subsetSelect).attr("class", "subset").css("width", "100px");
+            $(variantSelect).attr("class", "variant").css("width", "100px");
+
+            $(sizeInput).attr("class", "fontSize")
+                .css("width", "100px")
+                .attr("placeholder", "Font size in px")
+                .change(function () {
+                    fontConfigs[activeConfig].size = this.value;
+                });
+            singleInputContainer.appendChild(sizeInput);
+            singleInputContainer.appendChild(select);
+            $(select).change(function () {
+                var value = $(this).val();
+                fontConfigs[activeConfig].name = items[value].family;
+                $(this).siblings(".subset").replaceWith(createSubsets(items[value]));
+                $(this).siblings(".variant").replaceWith(createVariants(items[value]));
+                applyFonts(activeConfig);
+            });
+            singleInputContainer.appendChild(subsetSelect);
+            singleInputContainer.appendChild(variantSelect);
+            changeContainer.appendChild(singleInputContainer);
             mainContainer.appendChild(changeContainer);
 
             document.body.insertBefore(mainContainer, document.body.firstChild);
