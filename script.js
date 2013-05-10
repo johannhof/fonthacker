@@ -4,16 +4,18 @@
     function loadBookmarklet() {
         var $ = window.jQuery,
             idCounter = 0, addButton, mainContainer, selectorContainer, changeContainer, select, input, items,
-            fontConfigs = {}, activeConfig;
+            fontConfigs = {}, activeConfig , singleInputContainer = document.createElement("div"),
+            sizeInput = document.createElement("input"),
+            subsetSelect = document.createElement("select"),
+            variantSelect = document.createElement("select");
+
 
         function FontConfiguration() {
-            this.id = null;
-            this.selector = null;
-            this.name = null;
-            this.size = null;
-            this.variant = null;
-            this.subset = null;
-            this.active = false;
+            this.selector = "";
+            this.name = select.value;
+            this.size = sizeInput.value;
+            this.variant = variantSelect.value;
+            this.subset = subsetSelect.value;
         }
 
         /**
@@ -51,30 +53,27 @@
         }
 
         function loadWebFont(config, callback) {
-            var googleWebFonts = ":" + (config.variant || "") + ":" + (config.subset || "");
-            //noinspection JSUnresolvedVariable,JSHint,JSLint
-            WebFont.load({
-                google : {
-                    families : googleWebFonts
-                },
-                active : callback
-            });
+            if(config.name) {
+                //noinspection JSUnresolvedVariable,JSHint,JSLint
+                WebFont.load({
+                    google : {
+                        families : [config.name + ":" + (config.variant || "") + ":" + (config.subset || "")]
+                    },
+                    active : callback
+                });
+            }
         }
-
-        /*////////////////////////////////////////////////////////////////////////////////////////////////////
-         $(configuration.selector).css("font-family", configuration.name);
-         if(configuration.size) {
-         $(configuration.selector).css("font-size", configuration.size + "px");
-         }
-         if(configuration.variant) {
-         $(configuration.selector).css("font-weight", parseVariant(configuration.variant));
-         $(configuration.selector).css("font-style", parseStyle(configuration.variant));
-         }
-         *//////////////////////////////////////////////////////////////////////////////////////////////////////
 
         function applyFonts(id) {
             loadWebFont(fontConfigs[id], function () {
-                alert("done");
+                $(fontConfigs[id].selector).css("font-family", fontConfigs[id].name);
+                if(fontConfigs[id].size) {
+                    $(fontConfigs[id].selector).css("font-size", fontConfigs[id].size + "px");
+                }
+                if(fontConfigs[id].variant) {
+                    $(fontConfigs[id].selector).css("font-weight", parseVariant(fontConfigs[id].variant));
+                    $(fontConfigs[id].selector).css("font-style", parseStyle(fontConfigs[id].variant));
+                }
             });
         }
 
@@ -110,12 +109,13 @@
             $(checkbox).attr("type", "checkbox").attr("checked", "true");
             $(div).attr("id", id + "_selectorDiv")
                 .css({
-                    background : "#DDDDDD",
+                    background : "green",
                     padding : "5px",
                     cursor : "pointer"
                 }).click(function () {
                     activeConfig = id;
                     $(this).css("background-color", "green");
+                    $(this).siblings("div").css("background-color", "#DDDDDD");
                 });
             $(selectorInput).attr("id", id + "_selector")
                 .attr("class", "selector")
@@ -186,21 +186,18 @@
                     margin : "8px",
                     border : "none",
                     background : "green",
-                    color : "white",
-                    "border-radius" : "4px"
+                    color : "white"
                 }).click(function () {
-                    var id = idCounter++;
+                    var id = idCounter++, row;
                     fontConfigs[id] = new FontConfiguration();
-                    selectorContainer.appendChild(createSelectorRow(id));
+                    row = createSelectorRow(id);
+                    selectorContainer.appendChild(row);
+                    $(row).click();
                 });
             selectorContainer.appendChild(addButton);
             selectorContainer.appendChild(document.createElement("br"));
 
             changeContainer = document.createElement("div");
-            var singleInputContainer = document.createElement("div"),
-                sizeInput = document.createElement("input"),
-                subsetSelect = document.createElement("select"),
-                variantSelect = document.createElement("select");
 
             $(subsetSelect).attr("class", "subset").css("width", "100px");
             $(variantSelect).attr("class", "variant").css("width", "100px");
@@ -215,9 +212,9 @@
             singleInputContainer.appendChild(select);
             $(select).change(function () {
                 var value = $(this).val();
-                fontConfigs[activeConfig].name = items[value].family;
                 $(this).siblings(".subset").replaceWith(createSubsets(items[value]));
                 $(this).siblings(".variant").replaceWith(createVariants(items[value]));
+                fontConfigs[activeConfig].name = items[value].family;
                 applyFonts(activeConfig);
             });
             singleInputContainer.appendChild(subsetSelect);
