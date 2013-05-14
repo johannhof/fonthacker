@@ -10,20 +10,19 @@
             styles = {
                 mainContainer : {
                     width : "600px",
-                    "min-height" : "200px",
+                    "min-height" : "220px",
                     "background-color" : "rgba(200,200,200,0.3)",
-                    left : 0,
-                    bottom : 0,
                     position : "fixed",
                     zIndex : "999",
-                    border : "1px solid gray"
+                    "box-shadow" : "1px 1px 5px black",
+                    overflow: "visible"
                 },
                 leftContainer : {
                     width : "400px",
                     "min-height" : "200px",
                     float : "left",
-                    "background-color" : "rgba(200,200,200,0.6)",
-                    overflow : "auto"
+                    overflow : "auto",
+                    "border-right" : "1px solid lightgray"
                 },
                 selectedElement : {
                     border : "3px dotted grey",
@@ -40,7 +39,14 @@
                     transition : ""
                 },
                 selectButton : {
-                    border : ""
+                    background : "rgb(140,180,200)",
+                    width : "30%",
+                    margin : "8px",
+                    "border-color" : "rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)",
+                    color : "white",
+                    "text-shadow" : "0 -1px 0 rgba(0, 0, 0, 0.25)",
+                    "box-shadow" : "inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)",
+                    "border-radius" : "4px"
                 },
                 selectButton_selected : {
                     border : "1px solid rgb(143,200,0)"
@@ -50,19 +56,26 @@
                     "text-align" : "center"
                 },
                 selectorDiv : {
-                    "background-color" : "#DDDDDD",
+                    "background-color" : "rgba(255,255,255,0.6)",
                     padding : "5px",
                     cursor : "pointer"
                 },
                 selectorDiv_selected : {
                     "background-color" : "rgb(37,141,200)"
                 },
-                selectorDiv_unselected : {
-                    "background-color" : ""
-                },
                 addButton : {
                     background : "rgb(143,200,0)",
                     width : "92%",
+                    margin : "8px",
+                    "border-color" : "rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)",
+                    color : "white",
+                    "text-shadow" : "0 -1px 0 rgba(0, 0, 0, 0.25)",
+                    "box-shadow" : "inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)",
+                    "border-radius" : "4px"
+                },
+                deleteButton : {
+                    background : "rgb(200,73,20)",
+                    width : "20%",
                     margin : "8px",
                     "border-color" : "rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)",
                     color : "white",
@@ -277,7 +290,7 @@
                 .click(function () {
                     activeConfig = id;
                     $(this).css(styles.selectorDiv_selected);
-                    $(this).siblings("div").css(styles.selectorDiv_unselected);
+                    $(this).siblings("div").css(styles.selectorDiv);
                     updateInputs(fontConfigs[id]);
                 });
             $(checkbox).attr("type", "checkbox")
@@ -303,6 +316,7 @@
             selectorDiv.appendChild(selectorInput);
 
             $(selectButton).html("Select Element")
+                .css(styles.selectButton)
                 .click(function () {
                     selectElement(function (element) {
                         reset(fontConfigs[id]);
@@ -313,11 +327,12 @@
                 });
             selectorDiv.appendChild(selectButton);
 
-            $(deleteButton).html("Delete")
+            $(deleteButton).html("Delete").css(styles.deleteButton)
                 .click(function () {
                     $(selectorDiv).remove();
                     reset(fontConfigs[id]);
                     fontConfigs[id] = undefined;
+                    saveToLocalStorage();
                 });
             selectorDiv.appendChild(deleteButton);
             return selectorDiv;
@@ -337,6 +352,49 @@
         }
 
         (function init() {
+
+            (function ($) {
+                $.fn.drags = function (opt) {
+                    var $el;
+                    opt = $.extend({handle : "", cursor : "move"}, opt);
+
+                    if(opt.handle === "") {
+                        $el = this;
+                    } else {
+                        $el = this.find(opt.handle);
+                    }
+
+                    return $el.css('cursor', opt.cursor).on("mousedown",function (e) {
+                        var $drag;
+                        if(opt.handle === "") {
+                            $drag = $(this).addClass('draggable');
+                        } else {
+                            $drag = $(this).addClass('active-handle').parent().addClass('draggable');
+                        }
+                        var z_idx = $drag.css('z-index'),
+                            drg_h = $drag.outerHeight(),
+                            drg_w = $drag.outerWidth(),
+                            pos_y = $drag.offset().top + drg_h - e.pageY,
+                            pos_x = $drag.offset().left + drg_w - e.pageX;
+                        $drag.css('z-index', 1000).parents().on("mousemove", function (e) {
+                            $('.draggable').offset({
+                                top : e.pageY + pos_y - drg_h,
+                                left : e.pageX + pos_x - drg_w
+                            }).on("mouseup", function () {
+                                    $(this).removeClass('draggable').css('z-index', z_idx);
+                                });
+                        });
+                        //e.preventDefault(); // disable selection
+                    }).on("mouseup", function () {
+                            if(opt.handle === "") {
+                                $(this).removeClass('draggable');
+                            } else {
+                                $(this).removeClass('active-handle').parent().removeClass('draggable');
+                            }
+                        });
+                };
+            }(jQuery));
+
             var firstScriptTag, webFontScript;
 
             fontNameSelect = document.createElement("select");
@@ -429,6 +487,7 @@
                 });
             rightContainer.appendChild(sizeInput);
 
+            $(mainContainer).drags();
             mainContainer.appendChild(leftContainer);
             mainContainer.appendChild(rightContainer);
             //append the main container to the body, this must be done last, because of performance
