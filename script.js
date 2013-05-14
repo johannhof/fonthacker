@@ -4,7 +4,7 @@
     function loadBookmarklet() {
         var $ = window.jQuery,
             mainContainer, leftContainer, rightContainer, addButton,
-            idCounter = 0, googleFonts, fontConfigs = {}, activeConfig ,
+            idCounter = 0, googleFonts, fontConfigs = {}, activeConfig,
         // user inputs
             fontNameSelect, sizeInput, subsetSelect, variantSelect,
             styles = {
@@ -92,12 +92,14 @@
          * @constructor
          */
         function FontConfiguration() {
-            this.selector = "";
-            this.name = googleFonts[fontNameSelect.value].family;
-            this.size = sizeInput.value;
-            this.variant = variantSelect.value;
-            this.subset = subsetSelect.value;
-            this.active = true;
+            var object = {};
+            object.selector = "";
+            object.name = googleFonts[fontNameSelect.value].family;
+            object.size = sizeInput.value;
+            object.variant = variantSelect.value;
+            object.subset = subsetSelect.value;
+            object.active = true;
+            return object;
         }
 
         /**
@@ -152,12 +154,23 @@
             }
         }
 
+        function saveToLocalStorage() {
+            var tempConfig = $.extend(true, {}, fontConfigs), conf;
+            for(conf in tempConfig) {
+                if(tempConfig.hasOwnProperty(conf)) {
+                    tempConfig[conf].selector = tempConfig[conf].selector.nodeName || tempConfig[conf].selector;
+                }
+            }
+            localStorage.fontmarkletFontConfigs = JSON.stringify(tempConfig);
+        }
+
         /**
          * Applies the FontConfiguration to all specified dom elements
          *
          * @param fontConfig
          */
         function applyFont(fontConfig) {
+            saveToLocalStorage();
             if(fontConfig.active) {
                 // select everything BUT the our own elements
                 var elements = $(fontConfig.selector).not("#fontmarkletDiv *");
@@ -194,6 +207,9 @@
                 option.value = font.subsets[i];
                 subsetSelect.appendChild(option);
             }
+            if(fontConfigs[activeConfig]) {
+                fontConfigs[activeConfig].subset = font.subsets[0];
+            }
         }
 
         function updateVariants(font) {
@@ -205,6 +221,9 @@
                 option.value = font.variants[i];
                 variantSelect.appendChild(option);
             }
+            if(fontConfigs[activeConfig]) {
+                fontConfigs[activeConfig].variant = font.variants[0];
+            }
         }
 
         function updateInputs(fontConfig) {
@@ -215,12 +234,14 @@
             $(variantSelect).children("option[value='" + fontConfig.variant + "']").prop('selected', true);
         }
 
+
         function selectElement(callback) {
             var all = $("body *").not("#fontmarkletDiv *");
             all.on("mouseover.fontmarklet", function (event) {
                 event.stopPropagation();
                 $(this).css(styles.selectedElement);
-                $(this).on('click.fontmarklet', function () {
+                $(this).on('click.fontmarklet', function (event) {
+                    event.preventDefault();
                     $(this).css(styles.unselectedElement);
                     all.off('click.fontmarklet');
                     all.off("mouseover.fontmarklet");
@@ -241,9 +262,11 @@
          * and a tickmark to check if this should be active or not
          *
          * @param id
+         * @param fontConfig
          * @returns {HTMLElement}
          */
-        function createSelectorRow(id) {
+        function createSelectorRow(id, fontConfig) {
+            fontConfig = fontConfig || {};
             var selectorDiv = document.createElement("div"),
                 checkbox = document.createElement("input"),
                 selectorInput = document.createElement("input"),
@@ -270,6 +293,7 @@
                 .attr("class", "selector")
                 .css(styles.selectorInput)
                 .attr("placeholder", "jQuery Selector")
+                .val(fontConfig.selector || "")
                 .change(function () {
                     reset(fontConfigs[id]);
                     $(selectButton).css(styles.selectButton);
@@ -299,17 +323,32 @@
             return selectorDiv;
         }
 
+        function loadFromLocalStorage() {
+            var conf;
+            if(localStorage.fontmarkletFontConfigs) {
+                fontConfigs = JSON.parse(localStorage.fontmarkletFontConfigs);
+                for(conf in fontConfigs) {
+                    if(fontConfigs.hasOwnProperty(conf)) {
+                        leftContainer.appendChild(createSelectorRow(idCounter++, fontConfigs[conf]));
+                        applyFont(fontConfigs[conf]);
+                    }
+                }
+            }
+        }
+
         (function init() {
             var firstScriptTag, webFontScript;
 
             fontNameSelect = document.createElement("select");
-            $(fontNameSelect).attr("class", "selectFont").css(styles.fontNameSelect).change(function () {
-                var value = $(this).val();
-                updateSubsets(googleFonts[value]);
-                updateVariants(googleFonts[value]);
-                fontConfigs[activeConfig].name = googleFonts[value].family;
-                applyFont(fontConfigs[activeConfig]);
-            });
+            $(fontNameSelect).attr("class", "selectFont")
+                .css(styles.fontNameSelect)
+                .change(function () {
+                    var value = $(this).val();
+                    updateSubsets(googleFonts[value]);
+                    updateVariants(googleFonts[value]);
+                    fontConfigs[activeConfig].name = googleFonts[value].family;
+                    applyFont(fontConfigs[activeConfig]);
+                });
 
             $.getJSON("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o&callback=?", function (data) {
                 googleFonts = data.items;
@@ -329,6 +368,7 @@
             webFontScript.src = ('https:' === document.location.protocol ? 'https' : 'http') + '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
             webFontScript.type = 'text/javascript';
             webFontScript.async = 'true';
+            webFontScript.onload = loadFromLocalStorage;
 
             firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(webFontScript, firstScriptTag);
@@ -391,7 +431,6 @@
 
             mainContainer.appendChild(leftContainer);
             mainContainer.appendChild(rightContainer);
-
             //append the main container to the body, this must be done last, because of performance
             document.body.insertBefore(mainContainer, document.body.firstChild);
         }());

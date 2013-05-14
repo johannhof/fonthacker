@@ -15,21 +15,31 @@ body{
 }
 
 h1 {
-    font-family: 'Risque', cursive;
+    font-family: 'Risque', Arial, sans-serif;
     font-size: 160px;
     text-shadow: hsl(200, 100%, 64%) -1px 1px, hsl(200, 100%, 64%) -2px 2px, hsl(200, 100%, 64%) -3px 3px, hsl(200, 100%, 64%) -4px 4px, hsl(200, 100%, 64%) -5px 5px;
     color: white;
+    font-weight: normal;
 }
 
 h2{
-    font-family: 'Poiret One', cursive;
+    font-family: 'Poiret One', Arial, sans-serif;
     font-size: 50px;
     color: #005580;
     line-height: 50px;
+    font-weight: normal;
+}
+
+h3{
+    font-family: 'Poiret One', Arial, sans-serif;
+    font-size: 50px;
+    color: #005580;
+    line-height: 50px;
+    font-weight: normal;
 }
 
 p{
-    font-family: 'Poiret One', cursive;
+    font-family: 'Poiret One', Arial, sans-serif;
     font-size: 24px;
 }
 
@@ -49,7 +59,7 @@ p{
 }
 
 .bookmarklet {
-    font-family: 'Holtwood One SC', serif;
+    font-family: 'Holtwood One SC',  Arial, sans-serif;
     text-shadow: 0px -1px 1px grey;
     font-size: 20px;
     background: rgb(255,168,76); /* Old browsers */
