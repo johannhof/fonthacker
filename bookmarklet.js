@@ -1,1 +1,0 @@
-javascript:(function(){var headID=document.getElementsByTagName('head')[0]; var newScript = document.createElement('script'); newScript.src = 'https://ssl.kundenserver.de/johann-hofmann.com/fontmarklet/script.js?development=' + Math.random(); headID.appendChild(newScript);}());
