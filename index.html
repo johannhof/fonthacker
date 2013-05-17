@@ -1,41 +1,300 @@
 <!DOCTYPE html>
-<html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
-    <title>Fontmarklet</title>
-    <script src="jquery-1.9.1.min.js"></script>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-    <link href='http://fonts.googleapis.com/css?family=Risque' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Fonthacker | Preview Fonts or Webfonts on your or every other Website</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<link href='http://fonts.googleapis.com/css?family=Risque' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<style>
+
+        /* GLOBAL STYLES
+        -------------------------------------------------- */
+        /* Padding below the footer and lighter body text */
+
+    body {
+        background: rgb(37, 141, 200); /* Old browsers */
+        background: -moz-linear-gradient(top, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(37, 141, 200, 1)), color-stop(100%, rgba(37, 141, 200, 1))); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* IE10+ */
+        background: linear-gradient(to bottom, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#258dc8', endColorstr='#258dc8', GradientType=0); /* IE6-9 */
+        padding-bottom: 40px;
+        color: #5a5a5a;
+    }
+
+    #mainContainer {
+        padding: 20px 50px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+        height: 70%;
+        background-color: white;
+        text-align: center;
+    }
+
+    header {
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        font-family: 'Risque', Arial, sans-serif;
+        font-size: 160px;
+        text-shadow: hsl(200, 100%, 64%) -1px 1px, hsl(200, 100%, 64%) -2px 2px, hsl(200, 100%, 64%) -3px 3px, hsl(200, 100%, 64%) -4px 4px, hsl(200, 100%, 64%) -5px 5px;
+        color: white;
+        font-weight: normal;
+        padding-top: 15px;
+    }
+
+    h2 {
+        font-family: 'Poiret One', Arial, sans-serif;
+        font-size: 50px;
+        color: #005580;
+        line-height: 50px;
+        font-weight: normal;
+    }
+
+    p {
+        font-family: Raleway, Arial, sans-serif;
+        font-weight: 300;
+    }
+
+    .lead {
+        font-family: Raleway, Arial, sans-serif;
+        font-weight: 300;
+    }
+
+    #exampleDiv {
+        margin-left: 50px;
+        width: 602px;
+        min-height: 222px;
+    }
+
+    .bookmarklet {
+        font-family: 'Holtwood One SC', Arial, sans-serif;
+        text-shadow: 0px -1px 1px grey;
+        font-size: 20px;
+        background: rgb(255, 168, 76); /* Old browsers */
+        background: -moz-linear-gradient(top, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 168, 76, 1)), color-stop(100%, rgba(255, 123, 13, 1))); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* IE10+ */
+        background: linear-gradient(to bottom, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa84c', endColorstr='#ff7b0d', GradientType=0); /* IE6-9 */
+        padding: 12px 55px;
+        color: white;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s ease-in-out;
+        text-decoration: none;
+    }
+
+    .bookmarklet:hover {
+        box-shadow: 0px 0px 5px black;
+        text-decoration: none;
+        color: white;
+    }
+
+        /* Featurettes
+        ------------------------- */
+
+    .featurette-divider {
+        margin: 40px 0; /* Space out the Bootstrap <hr> more */
+    }
+
+    .featurette {
+        text-align: left;
+        padding-top: 120px; /* Vertically center images part 1: add padding above and below text. */
+        overflow: hidden; /* Vertically center images part 2: clear their floats. */
+    }
+
+    .featurette-image {
+        margin-top: -120px; /* Vertically center images part 3: negative margin up the image the same amount of the padding to center it. */
+    }
+
+        /* Give some space on the sides of the floated elements so text doesn't run right into it. */
+    .featurette-image.pull-left {
+        margin-right: 40px;
+    }
+
+    .featurette-image.pull-right {
+        margin-left: 40px;
+    }
+
+    .featurette-heading {
+        font-size: 50px;
+        font-weight: 300;
+        line-height: 1;
+        letter-spacing: -1px;
+    }
+
+        /* RESPONSIVE CSS
+        -------------------------------------------------- */
+
+    @media (max-width: 979px) {
+
+        h1 {
+            font-size: 140px;
+            line-height: 80px;
+        }
+
+        header {
+            padding: 0;
+        }
+
+        #exampleDiv {
+            display: none;
+        }
+
+        .featurette {
+            height: auto;
+            padding: 0;
+        }
+
+        .featurette-image.pull-left,
+        .featurette-image.pull-right {
+            display: block;
+            float: none;
+            max-width: 40%;
+            margin: 0 auto 20px;
+        }
+
+        .spacer {
+            width: 100%;
+            height: 50px;
+        }
+    }
+
+    @media (max-width: 767px) {
+
+        #githubLink {
+            display: none;
+        }
+
+        h1 {
+            font-size: 100px;
+            line-height: 50px;
+        }
+
+        h2 {
+            font-size: 40px;
+            line-height: 40px;
+        }
+
+        header {
+            padding: 0;
+        }
+
+        .featurette-heading {
+            font-size: 30px;
+        }
+
+        .featurette .lead {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+    }
+</style>
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+<link rel="stylesheet" href="css/main.css">
+
+<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
 <body>
-<a href="https://github.com/johannhof/fontmarklet"><img style="position: absolute; top: 0; right: 0; border: 0;"
-                                                        src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
-                                                        alt="Font me on GitHub"></a>
+<a href="https://github.com/johannhof/fontmarklet" id="githubLink"><img
+        style="position: absolute; top: 0; right: 0; border: 0;"
+        src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
+        alt="Font me on GitHub"></a>
+<header><h1>Fonthacker</h1></header>
 
-<div class="container" id="headerContainer">
-    <br>
-
-    <h1>Fontmarklet</h1>
-</div>
 <div class="container" id="mainContainer">
-    <h2>A small tool to easily preview webfonts on every webpage</h2>
+
+    <h2>A lightweight tool to easily preview webfonts on every webpage.</h2>
     <br>
 
-    <p>To get started, just drag the orange bookmarklet to your bookmark bar.</p>
+    <p class="lead">To get started, just drag the orange bookmarklet to your bookmark bar.</p>
     <br>
     <br>
     <a class="bookmarklet"
        href="javascript:(function(){var headID=document.getElementsByTagName('head')[0]; var newScript = document.createElement('script'); newScript.src = 'https://ssl.kundenserver.de/johann-hofmann.com/fontmarklet/script.js?development=' + Math.random(); headID.appendChild(newScript);}())">
-        Fontmarklet
+        Fonthacker
     </a>
-</div>
-<script src="jquery-1.9.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 
-<script src="script.js"></script>
+    <div class="spacer"></div>
+
+    <div class="featurette">
+        <div class="pull-right" id="exampleDiv"></div>
+
+        <h2 class="featurette-heading">Easy. <span class="muted">Yet powerful.</span>
+        </h2>
+
+        <p class="lead">Fonthacker has an easy to use interface that allows you to quickly select an element and
+            change its typeface. You can try it out! Just click on something in the example on the right.</p>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="featurette">
+        <img class="featurette-image pull-left" src="img/fonts.png">
+
+        <h2 class="featurette-heading">Just Fonts. <span class="muted">Right where you need them.</span></h2>
+
+        <p class="lead">
+            Are you tired of having to preview Webfonts on some random preview text? So was I! Until I built myself a solution.
+        </p>
+
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="featurette">
+        <img class="featurette-image pull-right" src="img/browsers.png">
+
+
+        <h2 class="featurette-heading">Compatible. <span class="muted">It's your choice.</span></h2>
+
+        <p class="lead">Fonthacker is a Bookmarklet, which means it runs in the browser. Which browser? Each of
+            them! So just stick to your favorite.</p>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+
+        <p><i class="icon-heart"></i> by Johann Hofmann &middot; Like this? Wanna do me a favor? Help people at <a
+                href="https://watsi.org/">Watsi</a> or <a href="https://kiva.org/">Kiva</a></p>
+    </footer>
+
+</div>
+<!-- /.container -->
+<script src="js/vendor/jquery-1.9.1.min.js"></script>
+<script>
+</script>
+<script src="js/vendor/bootstrap.min.js"></script>
+
+<script src="js/main.js"></script>
+<script src="js/example.js"></script>
 </body>
 </html>
