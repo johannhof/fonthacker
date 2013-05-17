@@ -1,3 +1,7 @@
 Fonthacker
 ===========
-A lightweight tool to easily preview your font or webfonts from Google Fonts on every webpage.
+A bookmarklet that allows you to preview your fonts or Google Webfonts on every webpage, including your own.
+
+Visit the website and try it out!
+
+[Fonthacker.com](https://www.fonthacker.com)
