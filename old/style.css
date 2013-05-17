@@ -1,0 +1,94 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: rgb(37, 141, 200); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(37, 141, 200, 1)), color-stop(100%, rgba(37, 141, 200, 1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(37, 141, 200, 1) 0%, rgba(37, 141, 200, 1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#258dc8', endColorstr='#258dc8', GradientType=0); /* IE6-9 */
+}
+
+h1 {
+    font-family: 'Risque', Arial, sans-serif;
+    font-size: 160px;
+    line-height: 160px;
+    text-shadow: hsl(200, 100%, 64%) -1px 1px, hsl(200, 100%, 64%) -2px 2px, hsl(200, 100%, 64%) -3px 3px, hsl(200, 100%, 64%) -4px 4px, hsl(200, 100%, 64%) -5px 5px;
+    color: white;
+    font-weight: normal;
+}
+
+h2 {
+    font-family: 'Poiret One', Arial, sans-serif;
+    font-size: 50px;
+    color: #005580;
+    line-height: 50px;
+    font-weight: normal;
+}
+
+h3 {
+    font-family: 'Poiret One', Arial, sans-serif;
+    font-size: 50px;
+    color: #005580;
+    line-height: 50px;
+    font-weight: normal;
+}
+
+p {
+    font-family: 'Poiret One', Arial, sans-serif;
+    font-size: 24px;
+}
+
+#pfeil {
+    position: absolute;
+}
+
+#headerContainer {
+    padding: 20px;
+    text-align: center;
+}
+
+#mainContainer {
+    padding: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    height: 70%;
+    background-color: white;
+    text-align: center;
+}
+
+.bookmarklet {
+    font-family: 'Holtwood One SC', Arial, sans-serif;
+    text-shadow: 0px -1px 1px grey;
+    font-size: 20px;
+    background: rgb(255, 168, 76); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 168, 76, 1)), color-stop(100%, rgba(255, 123, 13, 1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(255, 168, 76, 1) 0%, rgba(255, 123, 13, 1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa84c', endColorstr='#ff7b0d', GradientType=0); /* IE6-9 */
+    padding: 12px 55px;
+    color: white;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+.bookmarklet:hover {
+    box-shadow: 0px 0px 5px black;
+    text-decoration: none;
+    color: white;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fontmarklet</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <link href='http://fonts.googleapis.com/css?family=Risque' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="https://github.com/johannhof/fontmarklet"><img style="position: absolute; top: 0; right: 0; border: 0;"
+                                                        src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
+                                                        alt="Font me on GitHub"></a>
+
+<div class="container" id="headerContainer">
+    <br>
+
+    <h1>Fontmarklet</h1>
+</div>
+<div class="container" id="mainContainer">
+    <h2>A small tool to easily preview webfonts on every webpage</h2>
+    <br>
+
+    <p>To get started, just drag the orange bookmarklet to your bookmark bar.</p>
+    <br>
+    <br>
+    <a class="bookmarklet"
+       href="javascript:(function(){var headID=document.getElementsByTagName('head')[0]; var newScript = document.createElement('script'); newScript.src = 'https://ssl.kundenserver.de/johann-hofmann.com/fontmarklet/script.js?development=' + Math.random(); headID.appendChild(newScript);}())">
+        Fontmarklet
+    </a>
+    <br>
+    <br>
+    <br>
+
+
+    <div class="featurette">
+        <img class="featurette-image pull-right" src="../img/fontmarklet.PNG">
+
+        <h2 class="featurette-heading">Easy. <span class="muted">But powerful.</span></h2>
+
+        <p class="lead">Donec ullamcorper nulla non </p>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="featurette">
+        <img class="featurette-image pull-left" src="../assets/img/examples/browser-icon-firefox.png">
+
+        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="muted">See for yourself.</span></h2>
+
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod
+            semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus
+            commodo.</p>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="featurette">
+        <img class="featurette-image pull-right" src="../assets/img/examples/browser-icon-safari.png">
+
+        <h2 class="featurette-heading">And lastly, this one. <span class="muted">Checkmate.</span></h2>
+
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod
+            semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus
+            commodo.</p>
+    </div>
+
+    <hr class="featurette-divider">
+</div>
+<img id="pfeil" src="../img/pfeil.png" style="display: none;">
+<script src="jquery-1.9.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    $(".bookmarklet").hover(function () {
+        $("#pfeil").fadeIn(200);
+    }, function () {
+        $("#pfeil").fadeOut(200);
+    });
+</script>
+<!---
+<script src="script.js"></script>
+-->
+</body>
+</html>
