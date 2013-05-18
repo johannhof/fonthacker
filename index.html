@@ -93,6 +93,9 @@
 <!-- /.container -->
 <script src="js/vendor/jquery-1.9.1.min.js"></script>
 <script>
+    function populateFontList(fontArr) {
+        alert("test");
+    }
 </script>
 <script src="js/vendor/bootstrap.min.js"></script>
 
@@ -110,10 +113,16 @@
         a.src = g;
         m.parentNode.insertBefore(a, m)
     })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
     ga('create', 'UA-36044552-3', 'fonthacker.com');
     ga('send', 'pageview');
-
 </script>
+
+<object id="fontListSWF" name="fontListSWF"
+        type="application/x-shockwave-flash"
+        data="FontList.swf" width="1" height="1"
+        >
+    <param name="movie" value="FontList.swf">
+    <embed src="FontList.swf" width="1" height="1"></embed>
+</object>
 </body>
 </html>

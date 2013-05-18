@@ -13,7 +13,7 @@
                     "min-height" : "220px",
                     "background-color" : "rgba(200,200,200,0.3)",
                     "box-shadow" : "1px 1px 5px black",
-                    overflow: "visible"
+                    overflow : "visible"
                 },
                 leftContainer : {
                     width : "400px",
@@ -490,6 +490,11 @@
             mainContainer.appendChild(rightContainer);
             //append the main container to the body, this must be done last, because of performance
             document.getElementById("exampleDiv").appendChild(mainContainer);
+            var embed = document.createElement('embed');
+            //embed.setAttribute('width', '1');
+            //embed.setAttribute('height', '1');
+            //embed.setAttribute('src', 'FontList.swf');
+            //document.body.appendChild(embed);
         }());
     }
 
