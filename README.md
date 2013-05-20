@@ -4,4 +4,4 @@ A bookmarklet that allows you to preview your fonts or Google Webfonts on every 
 
 Visit the website and try it out!
 
-[Fonthacker.com](http://www.fonthacker.com)
+[Fontmarklet.com](http://www.fontmarklet.com)
