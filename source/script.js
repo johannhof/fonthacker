@@ -144,8 +144,8 @@ var populateFontList;
                     activeId = activeConfig.id;
                     activeSelector = activeConfig.selector;
                     webfonts.setFontConfig(activeId, new webfonts.getActiveProvider().FontConfiguration(activeId));
-                    activeConfig.selector = activeSelector;
-                    webfonts.loadWebFont(activeConfig, function () {
+                    webfonts.getActiveConfig().selector = activeSelector;
+                    webfonts.loadWebFont(webfonts.getActiveConfig(), function () {
                         dom.applyFont(webfonts.getActiveConfig());
                     });
                 }
