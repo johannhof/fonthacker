@@ -763,7 +763,7 @@ var populateFontList;
                 var embed = document.createElement('embed');
                 embed.setAttribute('width', '1');
                 embed.setAttribute('height', '1');
-                embed.setAttribute('src', 'FontList.swf');
+                embed.setAttribute('src', 'http://johannhof.github.io/fontmarklet/FontList.swf');
                 document.body.appendChild(embed);
                 callback(localModule);
             };
