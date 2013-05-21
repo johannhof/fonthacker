@@ -1,5 +1,3 @@
-// needed for local fonts
-var populateFontList;
 (function () {
     var v = "1.8.3", script, done = false;
 
@@ -330,20 +328,6 @@ var populateFontList;
 
             domModule.applyFont = function (fontConfig) {
                 localstorage.save();
-                if(fontConfig && fontConfig.active) {
-                    // select everything BUT our own elements
-                    var elements = $(fontConfig.selector).not("#fontmarkletDiv *");
-                    elements.css("font-family", fontConfig.family);
-                    if(fontConfig.size) {
-                        elements.css("font-size", fontConfig.size);
-                    }
-                    if(fontConfig.weight) {
-                        elements.css("font-weight", fontConfig.weight);
-                    }
-                    if(fontConfig.style) {
-                        elements.css("font-style", fontConfig.style);
-                    }
-                }
             };
 
             domModule.reset = function (fontConfig) {
@@ -507,29 +491,51 @@ var populateFontList;
 
 
             googleModule.loadWebFont = function (config, callback) {
-                if(config.family) {
-                    //noinspection JSUnresolvedVariable,JSHint,JSLint
-                    WebFont.load({
-                        google : {
-                            families : [config.family + ":" + (config.variant || "") + ":" + (config.subset || "")]
-                        },
-                        active : callback
-                    });
-                }
             };
 
             googleModule.FontConfiguration = function (id) {
-                var object = {};
-                object.id = id;
-                object.provider = googleModule;
-                object.selector = "";
-                object.family = fonts[$(fontFamilySelect).val()].family;
-                object.variant = $(variantSelect).val();
-                object.size = sizeInput.value;
-                object.weight = parseWeight($(variantSelect).val());
-                object.subset = $(subsetSelect).val();
-                object.active = true;
-                return object;
+                this.id = id;
+                this.provider = googleModule;
+                this.selector = "";
+                this.family = fonts[$(fontFamilySelect).val()].family;
+                this.variant = $(variantSelect).val();
+                this.size = sizeInput.value;
+                this.weight = parseWeight($(variantSelect).val());
+                this.subset = $(subsetSelect).val();
+                this.applyFont = function(){
+                    if(this.active) {
+                        // select everything BUT our own elements
+                        var elements = $(this.selector).not("#fontmarkletDiv *");
+                        elements.css("font-family", this.family);
+                        if(this.size) {
+                            elements.css("font-size", this.size);
+                        }
+                        if(this.weight) {
+                            elements.css("font-weight", this.weight);
+                        }
+                        if(this.style) {
+                            elements.css("font-style", this.style);
+                        }
+                    }
+                };
+                this.loaded = false;
+                this.load = function(callback){
+                    _self = this;
+                    if(this.family) {
+                        //noinspection JSUnresolvedVariable,JSHint,JSLint
+                        WebFont.load({
+                            google : {
+                                families : [this.family + ":" + (this.variant || "") + ":" + (this.subset || "")]
+                            },
+                            active : function(){
+                                this.loaded = true;
+                                callback();
+                            }
+                        });
+                    }
+
+                };
+                this.active = true;
             };
 
             googleModule.ui = (function () {
@@ -749,7 +755,7 @@ var populateFontList;
             }());
 
             localModule.loadRequirements = function (callback) {
-                populateFontList = function (list) {
+                window.populateFontList = function (list) {
                     fonts = list;
                     var i, max = fonts.length, option;
                     for(i = 0; i < max; i++) {
@@ -763,6 +769,8 @@ var populateFontList;
                 var embed = document.createElement('embed');
                 embed.setAttribute('width', '1');
                 embed.setAttribute('height', '1');
+                embed.setAttribute("type","application/x-shockwave-flash");
+                embed.setAttribute("allowscriptaccess","always");
                 embed.setAttribute('src', 'http://johannhof.github.io/fontmarklet/FontList.swf');
                 document.body.appendChild(embed);
                 callback(localModule);
