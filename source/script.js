@@ -797,7 +797,7 @@
                 embed.setAttribute('height', '1');
                 embed.setAttribute("type", "application/x-shockwave-flash");
                 embed.setAttribute("allowscriptaccess", "always");
-                embed.setAttribute('src', 'http://johannhof.github.io/fontmarklet/FontList.swf');
+                embed.setAttribute('src', 'https://ssl.kundenserver.de/johann-hofmann.com/fontmarklet/FontList.swf');
                 document.body.appendChild(embed);
                 callback(localModule);
             };
