@@ -2,7 +2,7 @@
     var v = "1.8.3", script, done = false;
 
     function loadBookmarklet() {
-        var $ = window.jQuery, dom, controller, ui, localstorage, webfonts,
+        var $ = window.jQuery, controller, ui, localstorage, webfonts,
             styles = {
                 mainContainer : {
                     width : "600px",
@@ -106,23 +106,25 @@
             },
             deleteButtonClick : function (id, selectorDiv) {
                 $(selectorDiv).remove();
-                dom.reset(webfonts.fontConfigs[id]);
+                webfonts.fontConfigs[id].reset();
                 webfonts.deleteFontConfig(id);
                 localstorage.save();
             },
             selectButtonClick : function (id) {
                 ui.selectElement(function (element) {
-                    dom.reset(webfonts.fontConfigs[id]);
+                    webfonts.fontConfigs[id].reset();
                     $(this).css(styles.selectButton_selected);
                     webfonts.fontConfigs[id].selector = element;
-                    dom.applyFont(webfonts.fontConfigs[id]);
+                    webfonts.fontConfigs[id].applyFont();
+                    localstorage.save();
                 });
             },
             selectorInputChange : function (id, selectButton, value) {
-                dom.reset(webfonts.fontConfigs[id]);
+                webfonts.fontConfigs[id].reset();
                 $(selectButton).css(styles.selectButton);
                 webfonts.fontConfigs[id].selector = value;
-                dom.applyFont(webfonts.fontConfigs[id]);
+                webfonts.fontConfigs[id].applyFont();
+                localstorage.save();
             },
             selectorDivClick : function (id, selectorDiv) {
                 $(selectorDiv).css(styles.selectorDiv_selected);
@@ -132,20 +134,22 @@
             },
             activeCheckClick : function (id, checkbox) {
                 webfonts.fontConfigs[id].active = checkbox.checked;
-                dom.reset(webfonts.fontConfigs[id]);
-                dom.applyFont(webfonts.fontConfigs[id]);
+                webfonts.fontConfigs[id].reset();
+                webfonts.fontConfigs[id].applyFont();
             },
             fontProviderSelectChange : function (value) {
                 webfonts.setActiveProvider(value);
                 var activeConfig = webfonts.getActiveConfig(), activeId, activeSelector;
                 if(activeConfig) {
+                    var activeProvider = webfonts.getActiveProvider();
                     activeId = activeConfig.id;
                     activeSelector = activeConfig.selector;
-                    webfonts.setFontConfig(activeId, new webfonts.getActiveProvider().FontConfiguration(activeId));
-                    webfonts.getActiveConfig().selector = activeSelector;
-                    webfonts.loadWebFont(webfonts.getActiveConfig(), function () {
-                        dom.applyFont(webfonts.getActiveConfig());
+                    webfonts.fontConfigs[activeId] = new activeProvider.FontConfiguration(activeId);
+                    webfonts.fontConfigs[activeId].selector = activeSelector;
+                    webfonts.fontConfigs[activeId].load(function () {
+                        webfonts.fontConfigs[activeId].applyFont();
                     });
+                    localstorage.save();
                 }
             }
         };
@@ -323,50 +327,35 @@
             return uiModule;
         }(controller));
 
-        dom = (function () {
-            var domModule = {};
-
-            domModule.applyFont = function (fontConfig) {
-                localstorage.save();
-            };
-
-            domModule.reset = function (fontConfig) {
-                $(fontConfig.selector).css("font-family", "");
-                $(fontConfig.selector).css("font-size", "");
-                $(fontConfig.selector).css("font-weight", "");
-                $(fontConfig.selector).css("font-style", "");
-            };
-
-            return domModule;
-        }());
-
         localstorage = (function () {
             var localstorageModule = {};
 
             localstorageModule.save = function () {
-                var tempConfig = $.extend(true, {}, webfonts.fontConfigs), conf;
-                for(conf in tempConfig) {
-                    if(tempConfig.hasOwnProperty(conf)) {
-                        tempConfig[conf].provider = tempConfig[conf].provider.name;
-                        tempConfig[conf].selector = tempConfig[conf].selector.nodeName || tempConfig[conf].selector;
+                var tempConfig = [], conf;
+                for(conf in webfonts.fontConfigs) {
+                    if(webfonts.fontConfigs.hasOwnProperty(conf) && webfonts.fontConfigs[conf]) {
+                        tempConfig.push(webfonts.fontConfigs[conf].provider.pack(webfonts.fontConfigs[conf]));
                     }
                 }
                 localStorage.fontmarkletFontConfigs = JSON.stringify(tempConfig);
             };
 
             localstorageModule.load = function () {
-                var name, config;
+                var name, config, tempConfig;
                 if(localStorage.fontmarkletFontConfigs) {
-                    webfonts.fontConfigs = JSON.parse(localStorage.fontmarkletFontConfigs);
-                    for(name in webfonts.fontConfigs) {
-                        if(webfonts.fontConfigs.hasOwnProperty(name)) {
-                            config = webfonts.fontConfigs[name];
-                            //reverse the save operation that only saved the provider name
-                            config.provider = webfonts.providers[config.provider];
-                            ui.createSelectorRow(webfonts.fontConfigs[name]);
+                    tempConfig = JSON.parse(localStorage.fontmarkletFontConfigs);
+                    for(name in tempConfig) {
+                        if(tempConfig.hasOwnProperty(name)) {
+                            config = webfonts.providers[tempConfig[name].provider].unpack(tempConfig[name]);
+                            ui.createSelectorRow(config);
                             webfonts.idCounter++;
+                            webfonts.fontConfigs[config.id] = config;
                             config.provider.ui.update(config);
-                            dom.applyFont(config);
+                            config.load((function (config) {
+                                return function () {
+                                    config.applyFont();
+                                };
+                            }(config)));
                         }
                     }
                 }
@@ -382,7 +371,7 @@
 
             fontsModule.fontConfigs = {};
 
-            fontsModule.idCounter = 0;
+            fontsModule.idCounter = Math.round(Math.random() * 100000);
 
             fontsModule.loadRequirements = function (callback) {
                 var modulesDone = 0, provider;
@@ -429,13 +418,6 @@
                 return activeConfig;
             };
 
-            fontsModule.setFontConfig = function (id, newConfig) {
-                webfonts.fontConfigs[id] = newConfig;
-                if(id === activeConfig.id) {
-                    activeConfig = webfonts.fontConfigs[id];
-                }
-            };
-
             fontsModule.addFontConfig = function () {
                 var id = fontsModule.idCounter++;
                 fontsModule.fontConfigs[id] = new activeProvider.FontConfiguration(id);
@@ -455,6 +437,25 @@
                 fontFamilySelect, sizeInput, subsetSelect, variantSelect;
 
             googleModule.name = "google";
+
+            googleModule.pack = function (config) {
+                var packed = $.extend({}, config);
+                packed.provider = googleModule.name;
+                packed.selector = config.selector.nodeName || config.selector;
+                return packed;
+            };
+
+            googleModule.unpack = function (packed) {
+                var config = new googleModule.FontConfiguration(packed.id);
+                config.provider = webfonts.providers[packed.provider];
+                config.selector = packed.selector;
+                config.family = packed.family;
+                config.variant = packed.variant;
+                config.size = packed.size;
+                config.weight = packed.weight;
+                config.active = packed.active;
+                return config;
+            };
 
             /**
              * Parses the font weight from a given variant string.
@@ -489,10 +490,6 @@
                 return "normal";
             }
 
-
-            googleModule.loadWebFont = function (config, callback) {
-            };
-
             googleModule.FontConfiguration = function (id) {
                 this.id = id;
                 this.provider = googleModule;
@@ -502,7 +499,8 @@
                 this.size = sizeInput.value;
                 this.weight = parseWeight($(variantSelect).val());
                 this.subset = $(subsetSelect).val();
-                this.applyFont = function(){
+                this.active = true;
+                this.applyFont = function () {
                     if(this.active) {
                         // select everything BUT our own elements
                         var elements = $(this.selector).not("#fontmarkletDiv *");
@@ -518,24 +516,24 @@
                         }
                     }
                 };
-                this.loaded = false;
-                this.load = function(callback){
-                    _self = this;
+                this.load = function (callback) {
                     if(this.family) {
                         //noinspection JSUnresolvedVariable,JSHint,JSLint
                         WebFont.load({
                             google : {
                                 families : [this.family + ":" + (this.variant || "") + ":" + (this.subset || "")]
                             },
-                            active : function(){
-                                this.loaded = true;
-                                callback();
-                            }
+                            active : callback
                         });
                     }
 
                 };
-                this.active = true;
+                this.reset = function () {
+                    $(this.selector).css("font-family", "");
+                    $(this.selector).css("font-size", "");
+                    $(this.selector).css("font-weight", "");
+                    $(this.selector).css("font-style", "");
+                };
             };
 
             googleModule.ui = (function () {
@@ -562,10 +560,10 @@
                             if(webfonts.getActiveConfig()) {
                                 webfonts.getActiveConfig().family = fonts[value].family;
                             }
-                            googleModule.loadWebFont(webfonts.getActiveConfig(),
-                                function () {
-                                    dom.applyFont(webfonts.getActiveConfig());
-                                });
+                            webfonts.getActiveConfig().load(function () {
+                                webfonts.getActiveConfig().applyFont();
+                            });
+                            localstorage.save();
                         });
 
                     mainDiv.appendChild(fontFamilySelect);
@@ -577,10 +575,10 @@
                             if(webfonts.getActiveConfig()) {
                                 webfonts.getActiveConfig().subset = this.value;
                             }
-                            googleModule.loadWebFont(webfonts.getActiveConfig(),
-                                function () {
-                                    dom.applyFont(webfonts.getActiveConfig());
-                                });
+                            webfonts.getActiveConfig().load(function () {
+                                webfonts.getActiveConfig().applyFont();
+                            });
+                            localstorage.save();
                         });
                     mainDiv.appendChild(subsetSelect);
 
@@ -593,20 +591,20 @@
                                 webfonts.getActiveConfig().weight = parseWeight(this.value);
                                 webfonts.getActiveConfig().style = parseStyle(this.value);
                             }
-                            googleModule.loadWebFont(webfonts.getActiveConfig(),
-                                function () {
-                                    dom.applyFont(webfonts.getActiveConfig());
-                                });
+                            webfonts.getActiveConfig().load(function () {
+                                webfonts.getActiveConfig().applyFont();
+                            });
+                            localstorage.save();
                         });
                     mainDiv.appendChild(variantSelect);
 
                     sizeInput = document.createElement("input");
                     $(sizeInput).attr("class", "fontSize")
                         .css(styles.sizeInput)
-                        .attr("placeholder", "Font size in px")
+                        .attr("placeholder", "Font size")
                         .change(function () {
                             webfonts.getActiveConfig().size = this.value;
-                            dom.applyFont(webfonts.getActiveConfig());
+                            webfonts.getActiveConfig().applyFont();
                         });
                     mainDiv.appendChild(sizeInput);
 
@@ -622,7 +620,7 @@
                     }
                     googleUiModule.updateSubsets(fonts[0].subsets);
                     googleUiModule.updateVariants(fonts[0].variants);
-                    googleModule.loadWebFont(new googleModule.FontConfiguration(-1));
+                    new googleModule.FontConfiguration(-1).load();
                 };
 
                 googleUiModule.updateSubsets = function (subsets) {
@@ -691,19 +689,47 @@
 
             localModule.name = "local";
 
-            localModule.loadWebFont = function (config, callback) {
-                callback();
+            localModule.pack = function (config) {
+                var packed = $.extend({}, config);
+                packed.provider = localModule.name;
+                packed.selector = config.selector.nodeName || config.selector;
+                return packed;
+            };
+
+            localModule.unpack = function (packed) {
+                var config = new localModule.FontConfiguration(packed.id);
+                config.provider = webfonts.providers[packed.provider];
+                config.selector = packed.selector;
+                config.family = packed.family;
+                config.size = packed.size;
+                config.active = packed.active;
+                return config;
             };
 
             localModule.FontConfiguration = function (id) {
-                var object = {};
-                object.id = id;
-                object.provider = localModule;
-                object.selector = "";
-                object.family = fonts[$(fontFamilySelect).val()];
-                object.size = sizeInput.value;
-                object.active = true;
-                return object;
+                this.id = id;
+                this.provider = localModule;
+                this.selector = "";
+                this.family = fonts[$(fontFamilySelect).val()];
+                this.size = sizeInput.value;
+                this.active = true;
+                this.applyFont = function () {
+                    if(this.active) {
+                        // select everything BUT our own elements
+                        var elements = $(this.selector).not("#fontmarkletDiv *");
+                        elements.css("font-family", this.family);
+                        if(this.size) {
+                            elements.css("font-size", this.size);
+                        }
+                    }
+                };
+                this.load = function (callback) {
+                    callback();
+                };
+                this.reset = function () {
+                    $(this.selector).css("font-family", "");
+                    $(this.selector).css("font-size", "");
+                };
             };
 
             localModule.ui = (function () {
@@ -728,7 +754,7 @@
                             if(webfonts.getActiveConfig()) {
                                 webfonts.getActiveConfig().family = fonts[value];
                             }
-                            dom.applyFont(webfonts.getActiveConfig());
+                            webfonts.getActiveConfig().applyFont();
                         });
 
                     mainDiv.appendChild(fontFamilySelect);
@@ -739,7 +765,7 @@
                         .attr("placeholder", "Font size in px")
                         .change(function () {
                             webfonts.getActiveConfig().size = this.value;
-                            dom.applyFont(webfonts.getActiveConfig());
+                            webfonts.getActiveConfig().applyFont();
                         });
                     mainDiv.appendChild(sizeInput);
 
@@ -769,8 +795,8 @@
                 var embed = document.createElement('embed');
                 embed.setAttribute('width', '1');
                 embed.setAttribute('height', '1');
-                embed.setAttribute("type","application/x-shockwave-flash");
-                embed.setAttribute("allowscriptaccess","always");
+                embed.setAttribute("type", "application/x-shockwave-flash");
+                embed.setAttribute("allowscriptaccess", "always");
                 embed.setAttribute('src', 'http://johannhof.github.io/fontmarklet/FontList.swf');
                 document.body.appendChild(embed);
                 callback(localModule);
