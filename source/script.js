@@ -1,12 +1,12 @@
-(function () {
+(function (window) {
     var v = "1.8.3", script, done = false;
 
     function loadBookmarklet() {
         var $ = window.jQuery, controller, ui, localstorage, webfonts,
             styles = {
                 mainContainer : {
-                    width : "600px",
-                    "min-height" : "220px",
+                    width : "500px",
+                    "min-height" : "150px",
                     "background-color" : "rgba(200,200,200,0.3)",
                     position : "fixed",
                     zIndex : "999",
@@ -14,9 +14,9 @@
                     overflow : "visible"
                 },
                 leftContainer : {
-                    width : "400px",
-                    "min-height" : "200px",
-                    float : "left",
+                    width : "300px",
+                    "min-height" : "150px",
+                    "float" : "left",
                     overflow : "auto",
                     "border-right" : "1px solid lightgray"
                 },
@@ -36,7 +36,7 @@
                 },
                 selectButton : {
                     background : "rgb(140,180,200)",
-                    width : "30%",
+                    width : "25%",
                     margin : "8px",
                     "border-color" : "rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25)",
                     color : "white",
@@ -196,7 +196,7 @@
                     });
                 selectorDiv.appendChild(selectorInput);
 
-                $(selectButton).html("Select Element")
+                $(selectButton).html("Select")
                     .css(styles.selectButton)
                     .click(function () {
                         controller.selectButtonClick(id);
@@ -825,4 +825,4 @@
     } else {
         loadBookmarklet();
     }
-}());
+}(window));
