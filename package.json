@@ -1,0 +1,22 @@
+{
+  "name": "fontmarklet",
+  "version": "0.3.0",
+  "description": "A bookmarklet that allows you to preview your fonts or Google Webfonts on every webpage",
+  "main": "bookmarklet.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/johannhof/fontmarklet.git"
+  },
+  "author": "Johann Hofmann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johannhof/fontmarklet/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0"
+  }
+}

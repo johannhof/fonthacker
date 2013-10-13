@@ -1,0 +1,1 @@
+javascript:(function(){var headID=document.getElementsByTagName('head')[0]; var newScript = document.createElement('script'); newScript.src = 'https://joo.crater.uberspace.de/fontmarklet/dist/release/latest/fontmarklet.min.js?development=' + Math.random(); headID.appendChild(newScript);}());
