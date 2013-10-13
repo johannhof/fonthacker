@@ -1,16 +1,19 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    concat: {
-      options: {
-        separator: ';'
-      },
+    watch: {
+      files: ['./src/**/*.js'],
+      tasks: ['browserify'],
+    },
+    browserify: {
       dist: {
-        src: ['src/**/*.js'],
-        dest: '<%= pkg.name %>.js'
+        files: {
+          'fontmarklet.js': ['./src/**/*.js'],
+        }
       }
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-browserify');
 };
