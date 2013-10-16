@@ -12,7 +12,7 @@
           local : require('./providers/local')
         };
 
-        ui.init();
+        ui.init(webfonts.providers);
         webfonts.loadRequirements(function () {
             webfonts.setActiveProvider("google");
             localstorage.load();
@@ -32,4 +32,5 @@
     } else {
         loadBookmarklet();
     }
+
 }(window));

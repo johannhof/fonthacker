@@ -21,7 +21,7 @@ localstorage.load = function () {
         for(name in tempConfig) {
             if(tempConfig.hasOwnProperty(name)) {
                 config = webfonts.providers[tempConfig[name].provider].unpack(tempConfig[name]);
-                ui.createSelectorRow(config);
+                ui.addSelectorRow(config);
                 webfonts.idCounter++;
                 webfonts.fontConfigs[config.id] = config;
                 config.provider.ui.update(config);

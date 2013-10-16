@@ -5,7 +5,7 @@ var controller = {},
 
 controller.addButtonClick = function () {
   var ui = require('./ui');
-  var row = ui.createSelectorRow(webfonts.addFontConfig());
+  var row = ui.addSelectorRow(webfonts.addFontConfig());
   $(row).click();
 };
 

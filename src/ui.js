@@ -1,66 +1,12 @@
 var ui = {},
     controller = require('./controller'),
+    selectorRow = require('./views/selectorRow'),
     styles = require('./styles'),
-    webfonts = require('./webfonts'),
     mainContainer, leftContainer, rightContainer,
     addButton,
     fontProviderSelect;
 
 ui.providerContainer = document.createElement("div");
-
-/**
- * Creates a new row with an input to set a jquery-selector, a delete-button
- * and a tickmark to check if this should be active or not
- *
- * @param fontConfig
- */
-ui.createSelectorRow = function (fontConfig) {
-    var selectorDiv = document.createElement("div"),
-        checkbox = document.createElement("input"),
-        selectorInput = document.createElement("input"),
-        deleteButton = document.createElement("button"),
-        selectButton = document.createElement("button"),
-        id = fontConfig.id;
-    $(selectorDiv).attr("id", id + "_selectorDiv")
-        .css(styles.selectorDiv)
-        .click(function () {
-            controller.selectorDivClick(id, selectorDiv);
-        });
-    $(checkbox).attr("type", "checkbox")
-        .attr("checked", "true")
-        .click(function () {
-            controller.activeCheckClick(id, checkbox);
-        });
-    selectorDiv.appendChild(checkbox);
-
-    $(selectButton).html("Select")
-        .css(styles.selectButton)
-        .click(function () {
-            var controller = require('./controller');
-            controller.selectButtonClick(id);
-        });
-    selectorDiv.appendChild(selectButton);
-
-    $(selectorInput).attr("id", id + "_selector")
-        .attr("class", "selector")
-        .css(styles.selectorInput)
-        .attr("placeholder", "jQuery Selector")
-        .val(fontConfig.selector || "")
-        .change(function () {
-            var controller = require('./controller');
-            controller.selectorInputChange(id, selectButton, this.value);
-        });
-    selectorDiv.appendChild(selectorInput);
-
-    $(deleteButton)
-        .html("Delete")
-        .css(styles.deleteButton)
-        .click(function () {
-            controller.deleteButtonClick(id, selectorDiv);
-        });
-    selectorDiv.appendChild(deleteButton);
-    leftContainer.appendChild(selectorDiv);
-};
 
 ui.selectElement = function (callback) {
     var all = $("body *").not("#fontmarkletDiv *");
@@ -84,7 +30,11 @@ ui.selectElement = function (callback) {
         });
 };
 
-ui.init = function () {
+ui.addSelectorRow = function (fontConfig) {
+ leftContainer.appendChild(selectorRow(fontConfig));
+};
+
+ui.init = function (providers) {
     var provider, option;
 
     // Make draggable
@@ -154,8 +104,8 @@ ui.init = function () {
             controller.fontProviderSelectChange(value);
         });
 
-    for(provider in webfonts.providers) {
-        if(webfonts.providers.hasOwnProperty(provider)) {
+    for(provider in providers) {
+        if(providers.hasOwnProperty(provider)) {
             option = document.createElement("option");
             option.value = provider;
             option.innerHTML = provider;
