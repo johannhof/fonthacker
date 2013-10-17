@@ -17,12 +17,14 @@ module.exports = function (fontConfig) {
     $(selectorDiv).attr("id", id + "_selectorDiv")
         .css(styles.selectorDiv)
         .click(function () {
+            var controller = require('../controller');
             controller.selectorDivClick(id, selectorDiv);
         });
 
     $(checkbox).attr("type", "checkbox")
         .attr("checked", "true")
         .click(function () {
+            var controller = require('../controller');
             controller.activeCheckClick(id, checkbox);
         });
     selectorDiv.appendChild(checkbox);
@@ -50,6 +52,7 @@ module.exports = function (fontConfig) {
         .html("Delete")
         .css(styles.deleteButton)
         .click(function () {
+            var controller = require('../controller');
             controller.deleteButtonClick(id, selectorDiv);
         });
     selectorDiv.appendChild(deleteButton);

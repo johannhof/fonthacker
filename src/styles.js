@@ -2,10 +2,11 @@ module.exports = {
   mainContainer : {
       width : "500px",
       "min-height" : "150px",
-      "background-color" : "rgba(200,200,200,0.3)",
+      "background-color" : "rgba(250,250,250,0.7)",
       position : "fixed",
       zIndex : "999",
-      "box-shadow" : "1px 1px 5px grey",
+      //padding : "10px",
+      border : "3px solid rgba(200,200,200,0.2)",
       overflow : "visible"
   },
   leftContainer : {
@@ -13,7 +14,7 @@ module.exports = {
       "min-height" : "150px",
       "float" : "left",
       overflow : "auto",
-      "border-right" : "1px solid lightgray"
+      "border-right" : "3px solid rgba(200,200,200,0.2)"
   },
   selectedElement : {
       border : "3px dotted grey",
@@ -29,24 +30,12 @@ module.exports = {
       "-o-transition" : "",
       transition : ""
   },
-  selectButton : {
-      background : "rgb(140,180,200)",
-      width : "25%",
-      marginRight : "10px",
-      height : "100%",
-      border : "none",
-      color : "white",
-      "text-shadow" : "0 -1px 0 rgba(0, 0, 0, 0.25)",
-  },
-  selectButton_selected : {
-      border : "1px solid rgb(143,200,0)"
-  },
   rightContainer : {
       padding : "10px",
       "text-align" : "center"
   },
   selectorDiv : {
-      borderTop: "1px solid grey",
+      borderTop: "3px solid rgba(200,200,200,0.2)",
       height: "30px",
       "background-color" : "rgba(255,255,255,0.6)",
       cursor : "pointer"
@@ -61,6 +50,25 @@ module.exports = {
       border : "none",
       color : "white",
       "text-shadow" : "0 -1px 0 rgba(0, 0, 0, 0.25)",
+  },
+  selectButton : {
+      background : "rgb(140,180,200)",
+      width : "28%",
+      marginRight : "2%",
+      height : "100%",
+      border : "none",
+      color : "white",
+      "text-shadow" : "0 -1px 0 rgba(0, 0, 0, 0.25)",
+  },
+  selectButton_selected : {
+      border : "1px solid rgb(143,200,0)"
+  },
+  selectorInput : {
+      border : "none",
+      marginRight : "4%",
+      padding : "0",
+      height : "100%",
+      width : "40%"
   },
   deleteButton : {
       background : "rgb(200,73,20)",
@@ -77,13 +85,6 @@ module.exports = {
       width : "100px"
   },
   sizeInput : {
-      width : "100px"
-  },
-  selectorInput : {
-      border : "none",
-      marginRight : "30px",
-      padding : "0",
-      height : "100%",
       width : "100px"
   },
   fontNameSelect : {
