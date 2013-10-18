@@ -1,4 +1,144 @@
+body{
+  font-family: Lato;
+}
+
+
 h1{
   font-size: 5em;
+  font-family: Lato;
   text-align:center;
+  margin: 0;
+  font-weight: 100;
+}
+
+h2{
+  font-family: Lato;
+  font-weight: 300;
+  margin: 5% 15%;
+  text-align: center;
+}
+
+h3{
+  font-family: "Leckerli One";
+  font-size: 2em;
+  text-align: center;
+  color: white;
+}
+
+p{
+  font-size: 1.2em;
+  font-family: Lato;
+  font-weight: 300;
+}
+
+li{
+  list-style: none;
+  font-size: 1.2em;
+  font-family: Lato;
+  font-weight: 300;
+}
+
+.container{
+  max-width: 1000px;
+  padding-top: 70px;
+  margin: 0 auto;
+}
+
+.use-it{
+  margin-top: 60px;
+  text-align: center;
+  background-color: lightblue;
+  height: 320px;
+}
+
+.use-it p{
+  margin: 0 1em 2em;
+}
+
+.align-right{
+  text-align: center;
+}
+
+.try-it{
+  margin-top: 60px;
+  text-align: center;
+  background-color: lightcoral;
+  height: 320px;
+}
+
+.details{
+  margin-top: 20px;
+  text-align: center;
+  background-color: lightgray;
+  padding: 0 5% 2em;
+}
+
+.details p{
+  margin-top: 0;
+}
+
+.github-link{
+  padding-top: 1em;
+  font-size: 1.2em;
+  font-family: Lato;
+  font-weight: 300;
+  color: black;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+.github-link i{
+  vertical-align: middle;
+}
+
+
+.features{
+  margin-top: 20px;
+  text-align: left;
+  background-color: lightseagreen;
+  padding: 0 5% 2em;
+}
+
+
+.bookmarklet-button{
+  font-size: 1.3em;
+  padding: 15px 80px;
+  border-radius: 30px;
+  box-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+  background-color: crimson;
+  text-decoration: none;
+  font-weight: bold;
+  text-shadow: 0px -1px 1px #1e2d4d;
+  color: white;
+}
+
+.bookmarklet-button:hover{
+  box-shadow: inset 0px 0px 10px white, 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+}
+
+footer{
+  text-align: center;
+}
+
+@media all and (max-width: 767px){
+  .try-it{
+    margin-top: 20px;
+  }
+}
+
+@media all and (max-width: 450px){
+  h1{
+    font-size: 3.5em;
+  }
+
+  h2{
+    font-size: 1.2em;
+  }
+  p, li{
+    font-size: 1em;
+  }
+
+  .use-it{
+    margin-top: 20px;
+  }
 }
