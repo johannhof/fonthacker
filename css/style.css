@@ -26,6 +26,7 @@ h3{
 }
 
 p{
+  color: rgb(82, 82, 82);
   font-size: 1.2em;
   font-family: Lato;
   font-weight: 300;
@@ -36,6 +37,26 @@ li{
   font-size: 1.2em;
   font-family: Lato;
   font-weight: 300;
+}
+
+.features-icon{
+  width: 30%;
+  text-align: center;
+  float: left;
+  color: white;
+}
+
+.features-text{
+  font-family: Lato;
+  font-weight: 300;
+  width: 70%;
+  float: right;
+  margin-bottom: 2em;
+  color: rgb(82, 82, 82);
+}
+
+.features-text strong{
+  color: white;
 }
 
 .container{
@@ -55,10 +76,6 @@ li{
   margin: 0 1em 2em;
 }
 
-.align-right{
-  text-align: center;
-}
-
 .try-it{
   margin-top: 60px;
   text-align: center;
@@ -74,17 +91,25 @@ li{
 }
 
 .details p{
-  margin-top: 0;
+  margin-top: 10px;
 }
 
 .github-link{
+  display: block;
   padding-top: 1em;
   font-size: 1.2em;
   font-family: Lato;
   font-weight: 300;
-  color: black;
+  color: rgb(82, 82, 82);
   text-decoration: none;
   vertical-align: middle;
+  transition: all 1.5s;
+  margin-left: 25%;
+  text-align: left;
+}
+
+.github-link:hover{
+  color: black;
 }
 
 .github-link i{
@@ -95,7 +120,7 @@ li{
 .features{
   margin-top: 20px;
   text-align: left;
-  background-color: lightseagreen;
+  background-color: mediumaquamarine;
   padding: 0 5% 2em;
 }
 
