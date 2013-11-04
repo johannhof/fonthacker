@@ -49,7 +49,6 @@ module.exports = {
       height : "30px",
       border : "none",
       color : "white",
-      "text-shadow" : "0 -1px 0 rgba(0, 0, 0, 0.25)",
   },
   selectButton : {
       background : "rgb(140,180,200)",
@@ -58,7 +57,6 @@ module.exports = {
       height : "100%",
       border : "none",
       color : "white",
-      "text-shadow" : "0 -1px 0 rgba(0, 0, 0, 0.25)",
   },
   selectButton_selected : {
       border : "1px solid rgb(143,200,0)"
@@ -76,7 +74,6 @@ module.exports = {
       width : "20%",
       border : "none",
       color : "white",
-      "text-shadow" : "0 -1px 0 rgba(0, 0, 0, 0.25)",
   },
   subsetSelect : {
       width : "100px"
