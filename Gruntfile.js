@@ -3,19 +3,19 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       files: ['./src/**/*.js'],
-      tasks: ['browserify'],
+      tasks: ['build']
     },
     browserify: {
       dist: {
         files: {
-          'fontmarklet.js': ['./src/**/*.js'],
+          'fontmarklet.js': ['./src/**/*.js']
         }
       }
     },
     uglify: {
       build: {
         src : ['./fontmarklet.js'],
-        dest : 'release/<%= pkg.version %>/fontmarklet.min.js',
+        dest : 'release/<%= pkg.version %>/fontmarklet.min.js'
       },
       options: {
         report : 'gzip',
@@ -34,12 +34,29 @@ module.exports = function(grunt) {
         }
         ]
       }
+    },
+    karma: {
+      options: {
+        frameworks: ['jasmine'],
+        files: [
+          'fontmarklet.js',
+          'test/app.spec.js'
+        ]
+      },
+      server:{
+        singleRun: true,
+        browsers: ['PhantomJS']
+      }
     }
   });
 
-  grunt.registerTask('dev', ['browserify']);
+  grunt.registerTask('build', ['browserify']);
 
-  grunt.registerTask('release', ['browserify', 'uglify', 'copy']);
+  grunt.registerTask('run-karma', ['karma:server']);
+
+  grunt.registerTask('test', ['build', 'run-karma']);
+
+  grunt.registerTask('release', ['build', 'run-karma', 'uglify', 'copy']);
 
   grunt.registerTask('default', ['watch']);
 
@@ -47,4 +64,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-karma');
 };

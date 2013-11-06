@@ -33,6 +33,7 @@ module.exports = Obsv;
    * Loads the bookmarklet after requirements are set up
    */
   function loadBookmarklet() {
+    console.log('Starting up the bookmarklet!');
     var ui = require('./ui'),
     controller = require('./controller'),
     localstorage = require('./localstorage'),
