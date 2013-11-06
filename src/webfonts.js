@@ -44,6 +44,25 @@ webfonts.setActiveProvider = function (name) {
   activeProvider.ui.show();
 };
 
+/**
+ * Applies a webfont to its selector elements
+ * This should be handled here and not in the provider object
+ */
+webfonts.applyFont = function(id, reset){
+  try {
+    var config = webfonts.fontConfigs[id];
+    // select everything BUT our own elements
+    var elements = $(config.selector).not("#fontmarkletDiv *");
+    if(config.active && !reset){
+      $(elements).css(config.css());
+    }else{
+      $(elements).css(config.reset());
+    }
+  } catch (e) {
+    console.log("Fontmarklet: Invalid jQuery Selector");
+  }
+};
+
 webfonts.getActiveProvider = function () {
   return activeProvider;
 };
@@ -64,6 +83,9 @@ webfonts.addFontConfig = function () {
 };
 
 webfonts.deleteFontConfig = function (id) {
+  if(activeConfig && activeConfig.id === id){
+    activeConfig = null;
+  }
   webfonts.fontConfigs[id] = undefined;
 };
 

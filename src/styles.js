@@ -5,11 +5,10 @@ module.exports = {
       "background-color" : "rgba(250,250,250,0.7)",
       position : "fixed",
       zIndex : "999",
-      //padding : "10px",
       border : "3px solid rgba(200,200,200,0.2)",
       overflow : "visible"
   },
-  leftContainer : {
+  selectorContainer : {
       width : "300px",
       "min-height" : "150px",
       "float" : "left",
@@ -35,9 +34,10 @@ module.exports = {
       "text-align" : "center"
   },
   selectorDiv : {
-      borderTop: "3px solid rgba(200,200,200,0.2)",
+      borderTop: "2px solid rgba(200,200,200,0.0)",
+      borderBottom: "2px solid rgba(200,200,200,0.0)",
       height: "30px",
-      "background-color" : "rgba(255,255,255,0.6)",
+      "background-color" : "rgba(200,200,200,0.2)",
       cursor : "pointer"
   },
   selectorDiv_selected : {
@@ -48,32 +48,38 @@ module.exports = {
       width : "100%",
       height : "30px",
       border : "none",
-      color : "white",
+      cursor : "pointer",
+      color : "white"
   },
   selectButton : {
       background : "rgb(140,180,200)",
-      width : "28%",
-      marginRight : "2%",
+      width : "24%",
+      marginLeft : "10%",
+      marginRight : "0%",
       height : "100%",
+      cursor : "pointer",
       border : "none",
-      color : "white",
+      color : "white"
   },
   selectButton_selected : {
       border : "1px solid rgb(143,200,0)"
   },
   selectorInput : {
       border : "none",
-      marginRight : "4%",
+      marginRight : "0%",
       padding : "0",
+      paddingLeft : "2%",
+      "outline-width": 0,
       height : "100%",
       width : "40%"
   },
   deleteButton : {
       background : "rgb(200,73,20)",
       height : "100%",
-      width : "20%",
+      cursor : "pointer",
+      width : "18%",
       border : "none",
-      color : "white",
+      color : "white"
   },
   subsetSelect : {
       width : "100px"

@@ -5,8 +5,7 @@
    * Loads the bookmarklet after requirements are set up
    */
   function loadBookmarklet() {
-    var $ = window.jQuery,
-    ui = require('./ui'),
+    var ui = require('./ui'),
     controller = require('./controller'),
     localstorage = require('./localstorage'),
     webfonts = require('./webfonts');

@@ -1,5 +1,6 @@
 var local = {},
     styles = require('../styles'),
+    webfonts = require('../webfonts'),
     fonts,
     mainDiv,
     fontFamilySelect, sizeInput;
@@ -30,24 +31,29 @@ local.FontConfiguration = function (id) {
   this.family = fonts[$(fontFamilySelect).val()];
   this.size = sizeInput.value;
   this.active = true;
+
   this.applyFont = function () {
-    if(this.active) {
-      // select everything BUT our own elements
-      var elements = $(this.selector).not("#fontmarkletDiv *");
-      elements.css("font-family", this.family);
-      if(this.size) {
-        elements.css("font-size", this.size);
-      }
-    }
+    // just here in case somebody wants to call apply directly
+    return webfonts.applyFont(this.id);
   };
 
   this.load = function (callback) {
+    // nothing to load, just call back
     callback();
   };
 
+  this.css = function () {
+    return {
+      "font-family" : this.family || "",
+      "font-size" : this.size || ""
+    };
+  };
+
   this.reset = function () {
-    $(this.selector).css("font-family", "");
-    $(this.selector).css("font-size", "");
+    return {
+      "font-family" : "",
+      "font-size" : ""
+    };
   };
 };
 

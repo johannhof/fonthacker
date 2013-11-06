@@ -1,36 +1,43 @@
-var controller = {},
+var Obsv = require('./Obsv'),
     ui = require('./ui'),
     localstorage = require('./localstorage'),
     styles = require('./styles'),
     webfonts = require('./webfonts');
 
+var controller =  new Obsv();
+
 controller.addButtonClick = function () {
+  // create a new row
   var row = ui.addSelectorRow(webfonts.addFontConfig());
+
+  // select the row (simulate a user click)
   $(row).click();
 };
 
 controller.deleteButtonClick = function (id, selectorDiv) {
   $(selectorDiv).remove();
-  webfonts.fontConfigs[id].reset();
+  webfonts.applyFont(id, true);
   webfonts.deleteFontConfig(id);
   localstorage.save();
 };
 
 controller.selectButtonClick = function (id) {
   ui.selectElement(function (element) {
-    webfonts.fontConfigs[id].reset();
+    webfonts.applyFont(id, true);
     $(this).css(styles.selectButton_selected);
+
     webfonts.fontConfigs[id].selector = element;
-    webfonts.fontConfigs[id].applyFont();
+    webfonts.applyFont(id);
+
     localstorage.save();
   });
 };
 
 controller.selectorInputChange = function (id, selectButton, value) {
-  webfonts.fontConfigs[id].reset();
+  webfonts.applyFont(id, true);
   $(selectButton).css(styles.selectButton);
   webfonts.fontConfigs[id].selector = value;
-  webfonts.fontConfigs[id].applyFont();
+  webfonts.applyFont(id);
   localstorage.save();
 };
 
@@ -43,24 +50,27 @@ controller.selectorDivClick = function (id, selectorDiv) {
 
 controller.activeCheckClick = function (id, checkbox) {
   webfonts.fontConfigs[id].active = checkbox.checked;
-  webfonts.fontConfigs[id].reset();
-  webfonts.fontConfigs[id].applyFont();
+  webfonts.applyFont(id);
 };
 
 controller.fontProviderSelectChange = function (value) {
   webfonts.setActiveProvider(value);
+
   var activeConfig = webfonts.getActiveConfig(), activeId, activeSelector;
   if(activeConfig) {
     var activeProvider = webfonts.getActiveProvider();
     activeId = activeConfig.id;
     activeSelector = activeConfig.selector;
+
     webfonts.fontConfigs[activeId] = new activeProvider.FontConfiguration(activeId);
     webfonts.fontConfigs[activeId].selector = activeSelector;
     webfonts.fontConfigs[activeId].load(function () {
-      webfonts.fontConfigs[activeId].applyFont();
+      webfonts.applyFont(activeId);
     });
+
     localstorage.save();
   }
+
 };
 
 module.exports = controller;

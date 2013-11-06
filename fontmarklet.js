@@ -1,4 +1,31 @@
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * Super simple observer system.
+ */
+var events = {};
+
+var Obsv = function(){
+  // nothing yet
+};
+
+Obsv.prototype.on = function(event, callback){
+    if(events[event]){
+        events[event].push(callback);
+    }else{
+        events[event] = [callback];
+    }
+};
+
+Obsv.prototype.emit = function(event){
+    var eventArray = events[event], i;
+    for(i = 0; i < eventArray.length; i++){
+        eventArray[i]();
+    }
+};
+
+module.exports = Obsv;
+
+},{}],2:[function(require,module,exports){
 (function (window) {
   var v = "1.8.3", script, done = false;
 
@@ -6,8 +33,7 @@
    * Loads the bookmarklet after requirements are set up
    */
   function loadBookmarklet() {
-    var $ = window.jQuery,
-    ui = require('./ui'),
+    var ui = require('./ui'),
     controller = require('./controller'),
     localstorage = require('./localstorage'),
     webfonts = require('./webfonts');
@@ -48,40 +74,47 @@
 
 }(window));
 
-},{"./controller":2,"./localstorage":3,"./providers/google":4,"./providers/local":5,"./ui":7,"./webfonts":10}],2:[function(require,module,exports){
-var controller = {},
+},{"./controller":3,"./localstorage":4,"./providers/google":5,"./providers/local":6,"./ui":8,"./webfonts":11}],3:[function(require,module,exports){
+var Obsv = require('./Obsv'),
     ui = require('./ui'),
     localstorage = require('./localstorage'),
     styles = require('./styles'),
     webfonts = require('./webfonts');
 
+var controller =  new Obsv();
+
 controller.addButtonClick = function () {
+  // create a new row
   var row = ui.addSelectorRow(webfonts.addFontConfig());
+
+  // select the row (simulate a user click)
   $(row).click();
 };
 
 controller.deleteButtonClick = function (id, selectorDiv) {
   $(selectorDiv).remove();
-  webfonts.fontConfigs[id].reset();
+  webfonts.applyFont(id, true);
   webfonts.deleteFontConfig(id);
   localstorage.save();
 };
 
 controller.selectButtonClick = function (id) {
   ui.selectElement(function (element) {
-    webfonts.fontConfigs[id].reset();
+    webfonts.applyFont(id, true);
     $(this).css(styles.selectButton_selected);
+
     webfonts.fontConfigs[id].selector = element;
-    webfonts.fontConfigs[id].applyFont();
+    webfonts.applyFont(id);
+
     localstorage.save();
   });
 };
 
 controller.selectorInputChange = function (id, selectButton, value) {
-  webfonts.fontConfigs[id].reset();
+  webfonts.applyFont(id, true);
   $(selectButton).css(styles.selectButton);
   webfonts.fontConfigs[id].selector = value;
-  webfonts.fontConfigs[id].applyFont();
+  webfonts.applyFont(id);
   localstorage.save();
 };
 
@@ -94,29 +127,32 @@ controller.selectorDivClick = function (id, selectorDiv) {
 
 controller.activeCheckClick = function (id, checkbox) {
   webfonts.fontConfigs[id].active = checkbox.checked;
-  webfonts.fontConfigs[id].reset();
-  webfonts.fontConfigs[id].applyFont();
+  webfonts.applyFont(id);
 };
 
 controller.fontProviderSelectChange = function (value) {
   webfonts.setActiveProvider(value);
+
   var activeConfig = webfonts.getActiveConfig(), activeId, activeSelector;
   if(activeConfig) {
     var activeProvider = webfonts.getActiveProvider();
     activeId = activeConfig.id;
     activeSelector = activeConfig.selector;
+
     webfonts.fontConfigs[activeId] = new activeProvider.FontConfiguration(activeId);
     webfonts.fontConfigs[activeId].selector = activeSelector;
     webfonts.fontConfigs[activeId].load(function () {
-      webfonts.fontConfigs[activeId].applyFont();
+      webfonts.applyFont(activeId);
     });
+
     localstorage.save();
   }
+
 };
 
 module.exports = controller;
 
-},{"./localstorage":3,"./styles":6,"./ui":7,"./webfonts":10}],3:[function(require,module,exports){
+},{"./Obsv":1,"./localstorage":4,"./styles":7,"./ui":8,"./webfonts":11}],4:[function(require,module,exports){
 var localstorage = {},
     webfonts = require('./webfonts');
 
@@ -159,7 +195,7 @@ localstorage.load = function () {
 
 module.exports = localstorage;
 
-},{"./ui":7,"./webfonts":10}],4:[function(require,module,exports){
+},{"./ui":8,"./webfonts":11}],5:[function(require,module,exports){
 var google = {},
     styles = require('../styles'),
     webfonts = require('../webfonts'),
@@ -233,26 +269,13 @@ google.FontConfiguration = function (id) {
   this.active = true;
 
   this.applyFont = function () {
-    if(this.active) {
-      // select everything BUT our own elements
-      var elements = $(this.selector).not("#fontmarkletDiv *");
-      elements.css("font-family", this.family);
-      if(this.size) {
-        elements.css("font-size", this.size);
-      }
-      if(this.weight) {
-        elements.css("font-weight", this.weight);
-      }
-      if(this.style) {
-        elements.css("font-style", this.style);
-      }
-    }
+    // just here in case somebody wants to call apply directly
+    return webfonts.applyFont(this.id);
   };
 
   this.load = function (callback) {
     if(this.family) {
-      //noinspection JSUnresolvedVariable,JSHint,JSLint
-      WebFont.load({
+      window.WebFont.load({
         google : {
           families : [this.family + ":" + (this.variant || "") + ":" + (this.subset || "")]
         },
@@ -261,11 +284,22 @@ google.FontConfiguration = function (id) {
     }
   };
 
+  this.css = function () {
+    return {
+      "font-family" : this.family || "",
+      "font-size" : this.size || "",
+      "font-weight" : this.weight || "",
+      "font-style" : this.style || ""
+    };
+  };
+
   this.reset = function () {
-    $(this.selector).css("font-family", "");
-    $(this.selector).css("font-size", "");
-    $(this.selector).css("font-weight", "");
-    $(this.selector).css("font-style", "");
+    return {
+      "font-family" : "",
+      "font-size" : "",
+      "font-weight" : "",
+      "font-style" : ""
+    };
   };
 };
 
@@ -294,12 +328,17 @@ google.ui = (function () {
 
         if(webfonts.getActiveConfig()) {
           webfonts.getActiveConfig().family = fonts[value].family;
+
+          // reset to avoid bad request (wrong combination)
+          webfonts.getActiveConfig().variant = "";
+          webfonts.getActiveConfig().weight = "";
+
+          webfonts.getActiveConfig().load(function () {
+            webfonts.getActiveConfig().applyFont();
+          });
+          localstorage.save();
         }
 
-        webfonts.getActiveConfig().load(function () {
-          webfonts.getActiveConfig().applyFont();
-        });
-        localstorage.save();
       });
 
     mainDiv.appendChild(fontFamilySelect);
@@ -431,9 +470,10 @@ google.loadRequirements = function (callback) {
 
 module.exports = google;
 
-},{"../localstorage":3,"../styles":6,"../webfonts":10}],5:[function(require,module,exports){
+},{"../localstorage":4,"../styles":7,"../webfonts":11}],6:[function(require,module,exports){
 var local = {},
     styles = require('../styles'),
+    webfonts = require('../webfonts'),
     fonts,
     mainDiv,
     fontFamilySelect, sizeInput;
@@ -464,24 +504,29 @@ local.FontConfiguration = function (id) {
   this.family = fonts[$(fontFamilySelect).val()];
   this.size = sizeInput.value;
   this.active = true;
+
   this.applyFont = function () {
-    if(this.active) {
-      // select everything BUT our own elements
-      var elements = $(this.selector).not("#fontmarkletDiv *");
-      elements.css("font-family", this.family);
-      if(this.size) {
-        elements.css("font-size", this.size);
-      }
-    }
+    // just here in case somebody wants to call apply directly
+    return webfonts.applyFont(this.id);
   };
 
   this.load = function (callback) {
+    // nothing to load, just call back
     callback();
   };
 
+  this.css = function () {
+    return {
+      "font-family" : this.family || "",
+      "font-size" : this.size || ""
+    };
+  };
+
   this.reset = function () {
-    $(this.selector).css("font-family", "");
-    $(this.selector).css("font-size", "");
+    return {
+      "font-family" : "",
+      "font-size" : ""
+    };
   };
 };
 
@@ -563,7 +608,7 @@ local.loadRequirements = function (callback) {
 
 module.exports = local;
 
-},{"../styles":6}],6:[function(require,module,exports){
+},{"../styles":7,"../webfonts":11}],7:[function(require,module,exports){
 module.exports = {
   mainContainer : {
       width : "500px",
@@ -571,11 +616,10 @@ module.exports = {
       "background-color" : "rgba(250,250,250,0.7)",
       position : "fixed",
       zIndex : "999",
-      //padding : "10px",
       border : "3px solid rgba(200,200,200,0.2)",
       overflow : "visible"
   },
-  leftContainer : {
+  selectorContainer : {
       width : "300px",
       "min-height" : "150px",
       "float" : "left",
@@ -601,9 +645,10 @@ module.exports = {
       "text-align" : "center"
   },
   selectorDiv : {
-      borderTop: "3px solid rgba(200,200,200,0.2)",
+      borderTop: "2px solid rgba(200,200,200,0.0)",
+      borderBottom: "2px solid rgba(200,200,200,0.0)",
       height: "30px",
-      "background-color" : "rgba(255,255,255,0.6)",
+      "background-color" : "rgba(200,200,200,0.2)",
       cursor : "pointer"
   },
   selectorDiv_selected : {
@@ -614,32 +659,38 @@ module.exports = {
       width : "100%",
       height : "30px",
       border : "none",
-      color : "white",
+      cursor : "pointer",
+      color : "white"
   },
   selectButton : {
       background : "rgb(140,180,200)",
-      width : "28%",
-      marginRight : "2%",
+      width : "24%",
+      marginLeft : "10%",
+      marginRight : "0%",
       height : "100%",
+      cursor : "pointer",
       border : "none",
-      color : "white",
+      color : "white"
   },
   selectButton_selected : {
       border : "1px solid rgb(143,200,0)"
   },
   selectorInput : {
       border : "none",
-      marginRight : "4%",
+      marginRight : "0%",
       padding : "0",
+      paddingLeft : "2%",
+      "outline-width": 0,
       height : "100%",
       width : "40%"
   },
   deleteButton : {
       background : "rgb(200,73,20)",
       height : "100%",
-      width : "20%",
+      cursor : "pointer",
+      width : "18%",
       border : "none",
-      color : "white",
+      color : "white"
   },
   subsetSelect : {
       width : "100px"
@@ -659,19 +710,21 @@ module.exports = {
 };
 
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var ui = {},
     selectorRow = require('./views/selectorRow'),
     styles = require('./styles'),
     draggable = require('./vendor/draggable'),
-    mainContainer, leftContainer, rightContainer,
-    addButton,
-    fontProviderSelect;
+    $mainContainer,
+    $selectorContainer,
+    $rightContainer,
+    $addButton,
+    $fontProviderSelect;
 
 ui.providerContainer = document.createElement("div");
 
 ui.selectElement = function (callback) {
-  var all = $("body *").not("#fontmarkletDiv *");
+  var all = $("body *").not("#fontmarkletDiv *").not("#fontmarkletDiv");
 
   all.on("mouseover.fontmarklet", function (event) {
     event.stopPropagation();
@@ -697,62 +750,66 @@ ui.selectElement = function (callback) {
 };
 
 ui.addSelectorRow = function (fontConfig) {
-  leftContainer.appendChild(selectorRow(fontConfig));
+  $selectorContainer.append(selectorRow(fontConfig));
 };
 
 ui.init = function (controller, providers) {
   var provider, option;
 
-  mainContainer = document.createElement("div");
-  $(mainContainer).attr("id", "fontmarkletDiv").css(styles.mainContainer);
+  $mainContainer = $(document.createElement("div"));
+  $mainContainer.attr("id", "fontmarkletDiv").css(styles.mainContainer);
 
-  leftContainer = document.createElement("div");
-  $(leftContainer).css(styles.leftContainer);
+  $selectorContainer = $(document.createElement("div"));
+  $selectorContainer.css(styles.selectorContainer);
 
-  addButton = document.createElement("button");
-  $(addButton)
+  $addButton = $(document.createElement("button"));
+  $addButton
     .attr("id", "addFont")
     .html("Add Selector")
     .css(styles.addButton).click(controller.addButtonClick);
 
-  leftContainer.appendChild(addButton);
-  leftContainer.appendChild(document.createElement("br"));
+  $selectorContainer.append($addButton);
+  $selectorContainer.append(document.createElement("br"));
 
-  rightContainer = document.createElement("div");
-  $(rightContainer).css(styles.rightContainer);
+  $rightContainer = $(document.createElement("div"));
+  $rightContainer.css(styles.rightContainer);
 
-  fontProviderSelect = document.createElement("select");
-  $(fontProviderSelect)
+  // creates the select element which allows the user to choose
+  // a font provider (eg Google)
+  $fontProviderSelect = $(document.createElement("select"));
+  $fontProviderSelect
     .attr("class", "selectProvider")
     .css(styles.fontProviderSelect)
     .change(function () {
-      var value = $(this).val();
-      controller.fontProviderSelectChange(value);
+      controller.fontProviderSelectChange($(this).val());
     });
 
+  // fill it with all the providers
   for(provider in providers) {
     if(providers.hasOwnProperty(provider)) {
       option = document.createElement("option");
       option.value = provider;
       option.innerHTML = provider;
-      fontProviderSelect.appendChild(option);
+      $fontProviderSelect.append(option);
     }
   }
 
-  rightContainer.appendChild(fontProviderSelect);
-  rightContainer.appendChild(ui.providerContainer);
+  $rightContainer.append($fontProviderSelect);
+  $rightContainer.append(ui.providerContainer);
 
-  draggable($(mainContainer));
-  mainContainer.appendChild(leftContainer);
-  mainContainer.appendChild(rightContainer);
+  // make the whole thing draggable
+  draggable($mainContainer);
+
+  $mainContainer.append($selectorContainer);
+  $mainContainer.append($rightContainer);
 
   //append the main container to the body, this should be done last, because of performance
-  document.body.insertBefore(mainContainer, document.body.firstChild);
+  document.body.insertBefore($mainContainer.get(0), document.body.firstChild);
 };
 
 module.exports = ui;
 
-},{"./styles":6,"./vendor/draggable":8,"./views/selectorRow":9}],8:[function(require,module,exports){
+},{"./styles":7,"./vendor/draggable":9,"./views/selectorRow":10}],9:[function(require,module,exports){
 module.exports = function(el){
   (function ($) {
     $.fn.drags = function (opt) {
@@ -798,7 +855,7 @@ module.exports = function(el){
   el.drags();
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var styles= require('../styles');
 
 /**
@@ -808,60 +865,64 @@ var styles= require('../styles');
  * @param fontConfig
  */
 module.exports = function (fontConfig) {
-    var selectorDiv = document.createElement("div"),
-        checkbox = document.createElement("input"),
-        selectorInput = document.createElement("input"),
-        deleteButton = document.createElement("button"),
-        selectButton = document.createElement("button"),
-        id = fontConfig.id;
+  var selectorDiv = document.createElement("div"),
+      checkbox = document.createElement("input"),
+      selectorInput = document.createElement("input"),
+      deleteButton = document.createElement("button"),
+      selectButton = document.createElement("button"),
+      id = fontConfig.id;
 
-    $(selectorDiv).attr("id", id + "_selectorDiv")
-        .css(styles.selectorDiv)
-        .click(function () {
-            var controller = require('../controller');
-            controller.selectorDivClick(id, selectorDiv);
-        });
+  $(selectorDiv)
+    .attr("id", id + "_selectorDiv")
+    .css(styles.selectorDiv)
+    .click(function () {
+      var controller = require('../controller');
+      controller.selectorDivClick(id, selectorDiv);
+    });
 
-    $(checkbox).attr("type", "checkbox")
-        .attr("checked", "true")
-        .click(function () {
-            var controller = require('../controller');
-            controller.activeCheckClick(id, checkbox);
-        });
-    selectorDiv.appendChild(checkbox);
+  $(checkbox)
+    .attr("type", "checkbox")
+    .attr("checked", "true")
+    .click(function () {
+      var controller = require('../controller');
+      controller.activeCheckClick(id, checkbox);
+    });
+  selectorDiv.appendChild(checkbox);
 
-    $(selectButton).html("Select")
-        .css(styles.selectButton)
-        .click(function () {
-            var controller = require('../controller');
-            controller.selectButtonClick(id);
-        });
-    selectorDiv.appendChild(selectButton);
+  $(selectButton)
+    .html("Select")
+    .css(styles.selectButton)
+    .click(function () {
+      var controller = require('../controller');
+      controller.selectButtonClick(id);
+    });
+  selectorDiv.appendChild(selectButton);
 
-    $(selectorInput).attr("id", id + "_selector")
-        .attr("class", "selector")
-        .css(styles.selectorInput)
-        .attr("placeholder", "jQuery Selector")
-        .val(fontConfig.selector || "")
-        .change(function () {
-            var controller = require('../controller');
-            controller.selectorInputChange(id, selectButton, this.value);
-        });
-    selectorDiv.appendChild(selectorInput);
+  $(selectorInput)
+    .attr("id", id + "_selector")
+    .attr("class", "selector")
+    .css(styles.selectorInput)
+    .attr("placeholder", "jQuery Selector")
+    .val(fontConfig.selector || "")
+    .on("keyup change", function () {
+      var controller = require('../controller');
+      controller.selectorInputChange(id, selectButton, this.value);
+    });
+  selectorDiv.appendChild(selectorInput);
 
-    $(deleteButton)
-        .html("Delete")
-        .css(styles.deleteButton)
-        .click(function () {
-            var controller = require('../controller');
-            controller.deleteButtonClick(id, selectorDiv);
-        });
-    selectorDiv.appendChild(deleteButton);
-    return selectorDiv;
+  $(deleteButton)
+    .html("Delete")
+    .css(styles.deleteButton)
+    .click(function () {
+      var controller = require('../controller');
+      controller.deleteButtonClick(id, selectorDiv);
+    });
+  selectorDiv.appendChild(deleteButton);
+  return selectorDiv;
 };
 
 
-},{"../controller":2,"../styles":6}],10:[function(require,module,exports){
+},{"../controller":3,"../styles":7}],11:[function(require,module,exports){
 var webfonts = {};
 
 var activeConfig, activeProvider;
@@ -908,6 +969,25 @@ webfonts.setActiveProvider = function (name) {
   activeProvider.ui.show();
 };
 
+/**
+ * Applies a webfont to its selector elements
+ * This should be handled here and not in the provider object
+ */
+webfonts.applyFont = function(id, reset){
+  try {
+    var config = webfonts.fontConfigs[id];
+    // select everything BUT our own elements
+    var elements = $(config.selector).not("#fontmarkletDiv *");
+    if(config.active && !reset){
+      $(elements).css(config.css());
+    }else{
+      $(elements).css(config.reset());
+    }
+  } catch (e) {
+    console.log("Fontmarklet: Invalid jQuery Selector");
+  }
+};
+
 webfonts.getActiveProvider = function () {
   return activeProvider;
 };
@@ -928,10 +1008,13 @@ webfonts.addFontConfig = function () {
 };
 
 webfonts.deleteFontConfig = function (id) {
+  if(activeConfig && activeConfig.id === id){
+    activeConfig = null;
+  }
   webfonts.fontConfigs[id] = undefined;
 };
 
 module.exports = webfonts;
 
-},{"./ui":7}]},{},[1,2,3,4,5,6,7,8,9,10])
+},{"./ui":8}]},{},[1,2,3,4,5,6,7,8,9,10,11])
 ;

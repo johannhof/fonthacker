@@ -71,26 +71,13 @@ google.FontConfiguration = function (id) {
   this.active = true;
 
   this.applyFont = function () {
-    if(this.active) {
-      // select everything BUT our own elements
-      var elements = $(this.selector).not("#fontmarkletDiv *");
-      elements.css("font-family", this.family);
-      if(this.size) {
-        elements.css("font-size", this.size);
-      }
-      if(this.weight) {
-        elements.css("font-weight", this.weight);
-      }
-      if(this.style) {
-        elements.css("font-style", this.style);
-      }
-    }
+    // just here in case somebody wants to call apply directly
+    return webfonts.applyFont(this.id);
   };
 
   this.load = function (callback) {
     if(this.family) {
-      //noinspection JSUnresolvedVariable,JSHint,JSLint
-      WebFont.load({
+      window.WebFont.load({
         google : {
           families : [this.family + ":" + (this.variant || "") + ":" + (this.subset || "")]
         },
@@ -99,11 +86,22 @@ google.FontConfiguration = function (id) {
     }
   };
 
+  this.css = function () {
+    return {
+      "font-family" : this.family || "",
+      "font-size" : this.size || "",
+      "font-weight" : this.weight || "",
+      "font-style" : this.style || ""
+    };
+  };
+
   this.reset = function () {
-    $(this.selector).css("font-family", "");
-    $(this.selector).css("font-size", "");
-    $(this.selector).css("font-weight", "");
-    $(this.selector).css("font-style", "");
+    return {
+      "font-family" : "",
+      "font-size" : "",
+      "font-weight" : "",
+      "font-style" : ""
+    };
   };
 };
 
@@ -132,12 +130,17 @@ google.ui = (function () {
 
         if(webfonts.getActiveConfig()) {
           webfonts.getActiveConfig().family = fonts[value].family;
+
+          // reset to avoid bad request (wrong combination)
+          webfonts.getActiveConfig().variant = "";
+          webfonts.getActiveConfig().weight = "";
+
+          webfonts.getActiveConfig().load(function () {
+            webfonts.getActiveConfig().applyFont();
+          });
+          localstorage.save();
         }
 
-        webfonts.getActiveConfig().load(function () {
-          webfonts.getActiveConfig().applyFont();
-        });
-        localstorage.save();
       });
 
     mainDiv.appendChild(fontFamilySelect);
