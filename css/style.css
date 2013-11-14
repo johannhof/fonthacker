@@ -166,4 +166,8 @@ footer{
   .use-it{
     margin-top: 20px;
   }
+
+  .try-it{
+    display: none;
+  }
 }
