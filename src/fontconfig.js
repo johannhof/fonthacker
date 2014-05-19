@@ -22,35 +22,33 @@ function changeFont(selector, family, weight) {
 module.exports = React.createClass({
 
   getInitialState : function () {
-    return this.props.config;
+    return {};
   },
 
   applyFont : function () {
-    changeFont(this.state.selectorNode || this.state.selector,
-               this.state.family,
-               this.state.weight);
+    changeFont(this.state.selectorNode || this.props.selector,
+               this.props.family,
+               this.props.weight);
   },
 
   reset : function () {
-    changeFont(this.state.selectorNode || this.state.selector, "");
+    changeFont(this.state.selectorNode || this.props.selector, "");
   },
 
   onChange : function () {
     this.reset();
-    this.setState({
-      selectorNode : undefined,
+    if(this.state.suggest){
+      this.updateSuggest();
+    }
+    this.props.update({
+      family : this.refs.family.getDOMNode().value,
       selector : this.refs.selector.getDOMNode().value,
       weight : this.refs.weight.getDOMNode().value
-    }, function () {
-      this.applyFont();
-    }.bind(this));
+    }, this.applyFont);
   },
 
   setInputSuggestion : function (val) {
-    if(this.refs.family.getDOMNode().value === val){
-      this.setState({family : val});
-    }
-    this.setState({suggestion : val}, this.applyFont);
+    this.setState({suggestion : val});
   },
 
   showSuggestions : function () {
@@ -88,10 +86,12 @@ module.exports = React.createClass({
         name += "." + target.className;
       }
       this.reset();
-      this.setState({
-        selector: name,
-        selectorNode: target
-      }, this.applyFont);
+      this.props.update({
+        family : this.props.family,
+        selector : name,
+        weight : this.props.weight
+      });
+      this.setState({ selectorNode: target }, this.applyFont);
       elements.forEach(function (el) {
         el.removeEventListener('mouseover', over);
         el.removeEventListener('mouseout', out);
@@ -111,12 +111,16 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div  className="fm-font-config">
+        <div className="fm-font-config-options">
+        <button onClick={this.props.remove}>Remove</button>
+        <button></button>
+        </div>
         <div className="fm-font-config-header">
           <input onChange={this.onChange}
                  ref="selector"
                  placeholder="selector"
                  className="fm-selector-input"
-                 value={this.state.selector} />
+                 value={this.props.selector} />
           <button onClick={this.selectElement}
                   className={"fm-selector-button" + (this.state.selectorNode ? " node" : "")}>
           </button>
@@ -125,34 +129,34 @@ module.exports = React.createClass({
           <div className="fm-family-input-container">
             <div className="fm-family-input-suggestion"
                  style={{
-                   fontFamily : this.state.family,
-                   fontWeight : this.state.weight
+                   fontFamily : this.props.family,
+                   fontWeight : this.props.weight
                  }} >
                 {this.state.suggestion}
             </div>
-            <input onChange={this.updateSuggest}
+            <input onChange={this.onChange}
                    onFocus={this.showSuggestions}
                    onBlur={this.hideSuggestions}
                    style={{
-                     fontFamily : this.state.family,
-                     fontWeight : this.state.weight
+                     fontFamily : this.props.family,
+                     fontWeight : this.props.weight
                    }}
                    ref="family"
                    className="fm-family-input"
-                   defaultValue={this.state.family} />
+                   value={this.props.family} />
              {this.state.suggest ?
               <Suggestions
                setInputSuggestion = {this.setInputSuggestion}
                fonts={this.props.fonts}
                ref="suggest"
-               family={this.state.family} />
+               family={this.props.family} />
             :''}
           </div>
           <input onChange={this.onChange}
                  ref="weight"
                  placeholder="font-weight"
                  className="fm-weight-input"
-                 value={this.state.weight} />
+                 value={this.props.weight} />
         </div>
       </div>
     );

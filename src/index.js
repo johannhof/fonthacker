@@ -42,12 +42,30 @@ var Fontmarklet = React.createClass({
     this.setState();
   },
 
+  removeFont : function (index) {
+    this.state.fontConfigs.splice(index, 1);
+    this.setState();
+  },
+
+  updateFont : function (i, conf, cb) {
+    this.state.fontConfigs[i] = conf;
+    this.setState({
+      fontConfigs : this.state.fontConfigs
+    }, cb);
+  },
+
   render: function() {
     return (
       <div id="fontmarklet">
         <Header/>
-        {this.state.fontConfigs.map(function (conf) {
-          return <FontConfig fonts={this.props.fonts} config={conf} />;
+        {this.state.fontConfigs.map(function (conf, i) {
+          return <FontConfig update={this.updateFont.bind(this, i)}
+                             remove={this.removeFont.bind(this, i)}
+                             fonts={this.props.fonts}
+                             family={conf.family}
+                             weight={conf.weight}
+                             selector={conf.selector}
+                             />;
         }.bind(this))}
         <AddButton onclick={this.addFont}/>
       </div>
