@@ -30,6 +30,7 @@ function loadGoogle(cb) {
     var items = JSON.parse(data).items.map(function(item) {
       return {
         provider: "google",
+        variants: item.variants,
         family: item.family
       };
     });

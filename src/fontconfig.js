@@ -32,7 +32,12 @@ module.exports = React.createClass({
   },
 
   reset : function () {
-    changeFont(this.state.selectorNode || this.props.selector, "");
+    changeFont(this.state.selectorNode || this.props.selector, "", "");
+  },
+
+  remove : function () {
+    this.reset();
+    this.props.remove();
   },
 
   onChange : function () {
@@ -60,9 +65,9 @@ module.exports = React.createClass({
   },
 
   updateSuggest : function () {
-    var val = this.refs.family.getDOMNode().value;
+    var val = util.capitalise(this.refs.family.getDOMNode().value);
     this.refs.suggest.update(val);
-    this.refs.family.getDOMNode().value = util.capitalise(val);
+    this.refs.family.getDOMNode().value = val;
   },
 
   selectElement : function () {
@@ -112,7 +117,7 @@ module.exports = React.createClass({
     return (
       <div  className="fm-font-config">
         <div className="fm-font-config-options">
-        <button onClick={this.props.remove}>Remove</button>
+        <button className="fm-remove-button" onClick={this.remove}>Remove</button>
         <button></button>
         </div>
         <div className="fm-font-config-header">
@@ -123,13 +128,14 @@ module.exports = React.createClass({
                  value={this.props.selector} />
           <button onClick={this.selectElement}
                   className={"fm-selector-button" + (this.state.selectorNode ? " node" : "")}>
+            <i className="fa fa-bullseye"></i>
           </button>
         </div>
         <div className="fm-font-config-body">
           <div className="fm-family-input-container">
             <div className="fm-family-input-suggestion"
                  style={{
-                   fontFamily : this.props.family,
+                   fontFamily : this.props.family + ", sans-serif",
                    fontWeight : this.props.weight
                  }} >
                 {this.state.suggestion}
@@ -138,7 +144,7 @@ module.exports = React.createClass({
                    onFocus={this.showSuggestions}
                    onBlur={this.hideSuggestions}
                    style={{
-                     fontFamily : this.props.family,
+                     fontFamily : this.props.family + ", sans-serif",
                      fontWeight : this.props.weight
                    }}
                    ref="family"

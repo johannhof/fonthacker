@@ -12,6 +12,7 @@ var Header = React.createClass({
   render: function() {
     return (
       <div className="fm-header">
+        Fontmarklet
       </div>
     );
   }
@@ -81,6 +82,13 @@ window.loadFontmarklet = function () {
   style.setAttribute("rel", "stylesheet");
   style.setAttribute("type", "text/css");
   document.getElementsByTagName("head")[0].appendChild(style);
+
+  // create css file
+  var fontawesome = document.createElement("link");
+  fontawesome.href = "//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css";
+  fontawesome.setAttribute("rel", "stylesheet");
+  fontawesome.setAttribute("type", "text/css");
+  document.getElementsByTagName("head")[0].appendChild(fontawesome);
 
   // load font list
   loader.loadAll(function (fonts) {
