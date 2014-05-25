@@ -40,14 +40,30 @@ module.exports = React.createClass({
     this.props.remove();
   },
 
+  disable : function () {
+    this.reset();
+    this.props.disable();
+  },
+
+  enable : function () {
+    this.applyFont();
+    this.props.enable();
+  },
+
   onChange : function () {
     this.reset();
     if(this.state.suggest){
       this.updateSuggest();
     }
+    var selector = this.refs.selector.getDOMNode().value;
+    if(selector !== this.state.selector){
+      this.setState({
+        selectorNode : undefined
+      });
+    }
     this.props.update({
       family : this.refs.family.getDOMNode().value,
-      selector : this.refs.selector.getDOMNode().value,
+      selector : selector,
       weight : this.refs.weight.getDOMNode().value
     }, this.applyFont);
   },
@@ -115,10 +131,43 @@ module.exports = React.createClass({
 
   render: function() {
     return (
-      <div  className="fm-font-config">
+      <div className="fm-font-config">
+        {this.props.disabled ?
+          <div className="fm-disabled">
+            Disabled
+            <br/>
+            <button onClick={this.enable}>Enable</button>
+          </div>
+        : ''}
         <div className="fm-font-config-options">
-        <button className="fm-remove-button" onClick={this.remove}>Remove</button>
-        <button></button>
+        <button className="fm-remove-button" onClick={this.remove}>
+          <span className="left">
+            <i className="fa fa-times"></i>
+          </span>
+          <span className="right">
+            Remove
+          </span>
+        </button>
+        {!this.props.disabled ?
+          <button onClick={this.disable}>
+            <span className="left">
+              <i className="fa fa-ban"></i>
+            </span>
+            <span className="right">
+              Disable
+            </span>
+          </button>
+        : ''}
+        {!this.props.disabled ?
+          <button onClick={this.applyFont}>
+            <span className="left">
+              <i className="fa fa-refresh"></i>
+            </span>
+            <span className="right">
+              Reapply
+            </span>
+          </button>
+        : ''}
         </div>
         <div className="fm-font-config-header">
           <input onChange={this.onChange}
@@ -128,7 +177,12 @@ module.exports = React.createClass({
                  value={this.props.selector} />
           <button onClick={this.selectElement}
                   className={"fm-selector-button" + (this.state.selectorNode ? " node" : "")}>
-            <i className="fa fa-bullseye"></i>
+          <span className="left">
+            Select
+          </span>
+          <span className="right">
+            <i className="fa fa-crosshairs"></i>
+          </span>
           </button>
         </div>
         <div className="fm-font-config-body">

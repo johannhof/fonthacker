@@ -1,3 +1,5 @@
+@import "mixins.scss";
+
 $font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
 
@@ -52,6 +54,19 @@ $primary-color: #333;
     margin: 3px;
     box-shadow: 0px 0px 1px black;
 
+    .fm-disabled{
+      padding: 20px;
+      box-sizing: border-box;
+      position: absolute;
+      height: 110px;
+      width: 98%;
+      z-index: 5;
+      background: rgba(170,170,170,0.8);
+      text-align: center;
+      font-size: 24px;
+      color: white;
+    }
+
     .fm-font-config-options{
       opacity: 0;
       position: absolute;
@@ -60,15 +75,21 @@ $primary-color: #333;
       transition: 0.2s opacity;
 
       button{
+        @include open-right(30px, 75px);
+        font-family: $font-stack;
+        margin:3px;
         width: 30px;
-        height: 30px;
+        font-weight: 100;
+        padding: 5px 0;
+        font-size: 16px;
+        border-radius: 30px;
         border: none;
-        box-shadow: 0px 0px 1px black;
-        margin-bottom: 3px;
+        box-shadow: 0px 0px 1px grey;
         cursor: pointer;
       }
 
       .fm-remove-button{
+        color: white;
         background-color: red;
       }
     }
@@ -92,22 +113,28 @@ $primary-color: #333;
       }
 
       .fm-selector-button{
-        height: 98%;
-        width: 15%;
+        @include open-left-overlay(65px, 30px, whitesmoke);
+        height: 84%;
+        width: 30px;
+        font-size: 16px;
         border: none;
         background-color: whitesmoke;
-        background-image: url("img/screenshot.png");
-        background-size: 75%;
-        background-position: center;
-        background-repeat: no-repeat;
-        border-radius: 3px;
-        box-shadow: 0px 0px 1px black;
+        /*border-radius: 3px;*/
+        /*box-shadow: 0px 0px 1px black;*/
         cursor: pointer;
+
+        .left{
+          padding-top: 3px;
+          box-sizing: border-box;
+          font-size: 12px;
+        }
       }
       .fm-selector-button.node{
+        color: white;
         background-color: royalblue;
       }
     }
+
     .fm-font-config-body{
       background-color: white;
       height: 80px;

@@ -12,7 +12,6 @@ var Header = React.createClass({
   render: function() {
     return (
       <div className="fm-header">
-        Fontmarklet
       </div>
     );
   }
@@ -55,6 +54,20 @@ var Fontmarklet = React.createClass({
     }, cb);
   },
 
+  disableFont : function (i, conf, cb) {
+    this.state.fontConfigs[i].disabled = true;
+    this.setState({
+      fontConfigs : this.state.fontConfigs
+    }, cb);
+  },
+
+  enableFont : function (i, conf, cb) {
+    this.state.fontConfigs[i].disabled = false;
+    this.setState({
+      fontConfigs : this.state.fontConfigs
+    }, cb);
+  },
+
   render: function() {
     return (
       <div id="fontmarklet">
@@ -63,6 +76,9 @@ var Fontmarklet = React.createClass({
           return <FontConfig update={this.updateFont.bind(this, i)}
                              remove={this.removeFont.bind(this, i)}
                              fonts={this.props.fonts}
+                             disable={this.disableFont.bind(this, i)}
+                             enable={this.enableFont.bind(this, i)}
+                             disabled={conf.disabled}
                              family={conf.family}
                              weight={conf.weight}
                              selector={conf.selector}

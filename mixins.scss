@@ -1,0 +1,94 @@
+@mixin open-horizontal($leftWidth, $rightWidth){
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: 0.5s width;
+  white-space: nowrap;
+  
+  span {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  
+  &:hover{
+    width: $rightWidth + $leftWidth;
+  }
+  
+  .left{
+    width: $leftWidth;
+  }
+  
+  .right{
+    width: $rightWidth;
+  }
+}
+
+@mixin open-left($leftWidth, $rightWidth){
+  @include open-horizontal($leftWidth, $rightWidth);
+  width: $rightWidth;
+  padding-right: 0;
+  
+  .left{
+    position: absolute;
+    right: $rightWidth;
+  }
+  
+  .right{
+    float: right;
+  }
+}
+
+@mixin open-right($leftWidth, $rightWidth){
+  @include open-horizontal($leftWidth, $rightWidth);
+  width: $leftWidth;
+  padding-left: 0;
+}
+
+@mixin open-right-overlay($leftWidth, $rightWidth, $bg){
+  position: relative;
+  width: $leftWidth;
+  
+  .left{
+    width: $leftWidth;
+  }
+  
+  .right{
+    top: 0;
+    height: 100%;
+    background-color: $bg;
+    position: absolute;
+    left: $leftWidth;
+    z-index: 2;
+    width: 0;
+    overflow:hidden;
+    transition: 0.5s width;
+  }
+  
+  &:hover{
+    .right{
+      width: $rightWidth;
+    }
+  }
+}
+
+@mixin open-left-overlay($leftWidth, $rightWidth, $bg){
+  position: relative;
+  width: $rightWidth;
+  
+  .left{
+    top: 0;
+    height: 100%;
+    background-color: $bg;
+    position: absolute;
+    right: $rightWidth;
+    z-index: 2;
+    width: 0;
+    overflow:hidden;
+    transition: 0.5s width;
+  }
+  
+  &:hover{
+    .left{
+      width: $leftWidth;
+    }
+  }
+}
