@@ -1,34 +1,31 @@
 {
-  "name": "fontmarklet",
-  "version": "0.4.0",
-  "description": "A bookmarklet that allows you to preview your fonts or Google Webfonts on every webpage",
-  "main": "bookmarklet.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/johannhof/fontmarklet.git"
-  },
-  "author": "Johann Hofmann",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/johannhof/fontmarklet/issues"
+  "name": "react-browserify-template",
+  "version": "0.0.1",
+  "description": "Quick boilerplate for browserify and React modules.",
+  "main": "index.js",
+  "dependencies": {
+    "react": "~0.8"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "browserify": "~2.33.1",
-    "grunt-browserify": "~1.2.8",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-uglify": "~0.2.4",
-    "grunt-contrib-copy": "~0.4.1",
-    "karma-script-launcher": "~0.1.0",
-    "karma-firefox-launcher": "~0.1.0",
-    "karma-chrome-launcher": "~0.1.0",
-    "karma-html2js-preprocessor": "~0.1.0",
-    "karma-jasmine": "~0.1.3",
-    "karma-phantomjs-launcher": "~0.1.0",
-    "karma": "~0.10.4",
-    "grunt-karma": "~0.6.2"
+    "browserify": "~2.36.0",
+    "envify": "~0.2.0",
+    "reactify": "~0.4.0",
+    "statics": "~0.1.0",
+    "uglifyjs": "~2.3.6",
+    "watchify": "~0.4.1"
+  },
+  "scripts": {
+    "start": "STATIC_ROOT=./static watchify -o build/browser-bundle.js -v -d ./src",
+    "build": "STATIC_ROOT=./static NODE_ENV=production browserify ./src | uglifyjs -cm > browser-bundle.min.js",
+    "collect-static": "collect-static . ./static",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pete Hunt",
+  "license": "Apache 2",
+  "browserify": {
+    "transform": [
+      "reactify",
+      "envify"
+    ]
   }
 }
