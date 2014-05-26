@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
 var loader = require('./loader');
+var util = require('./util');
 var FontConfig = require('./fontconfig');
 
 // just for loading into the window object
@@ -30,8 +31,30 @@ var AddButton = React.createClass({
 var Fontmarklet = React.createClass({
   getInitialState : function () {
     return {
-      fontConfigs : []
+      fontConfigs : localStorage["fm_fontConfigs"] ? JSON.parse(localStorage["fm_fontConfigs"]) : []
     }
+  },
+
+init: function() {
+  window.WebFont.load({
+    google: {
+      families: this.state.fontConfigs.map(function (config) {
+        return config.family + ":" + config.weight;
+      })
+    }
+  });
+  this.state.fontConfigs.forEach(function(config) {
+    if(!config.disabled){
+      util.changeFont(
+        config.selector,
+        config.family,
+        config.weight);
+    }
+  });
+},
+  save : function (obj, cb) {
+    this.setState(obj, cb);
+    localStorage["fm_fontConfigs"] = JSON.stringify(this.state.fontConfigs);
   },
 
   addFont : function () {
@@ -39,31 +62,31 @@ var Fontmarklet = React.createClass({
       selector : "#abc",
       family : "Lato"
     });
-    this.setState();
+    this.save();
   },
 
   removeFont : function (index) {
     this.state.fontConfigs.splice(index, 1);
-    this.setState();
+    this.save();
   },
 
   updateFont : function (i, conf, cb) {
     this.state.fontConfigs[i] = conf;
-    this.setState({
+    this.save({
       fontConfigs : this.state.fontConfigs
     }, cb);
   },
 
   disableFont : function (i, conf, cb) {
     this.state.fontConfigs[i].disabled = true;
-    this.setState({
+    this.save({
       fontConfigs : this.state.fontConfigs
     }, cb);
   },
 
   enableFont : function (i, conf, cb) {
     this.state.fontConfigs[i].disabled = false;
-    this.setState({
+    this.save({
       fontConfigs : this.state.fontConfigs
     }, cb);
   },
@@ -110,7 +133,10 @@ window.loadFontmarklet = function () {
   loader.loadAll(function (fonts) {
     var container = document.createElement('div');
 
-    React.renderComponent(<Fontmarklet fonts={fonts} />, container);
+    var fm = <Fontmarklet fonts={fonts} />;
+    React.renderComponent(fm, container, function () {
+      fm.init();
+    });
 
     document.body.appendChild(container);
   });

@@ -3,22 +3,6 @@ var React = require('react');
 var util = require('./util');
 var Suggestions = require('./suggestions');
 
-function changeFont(selector, family, weight) {
-  try {
-    var nodes;
-    if(selector.nodeName){
-      nodes = [selector];
-    }else{
-      nodes = document.querySelectorAll(selector);
-      nodes = Array.prototype.slice.call(nodes);
-    }
-    nodes.forEach(function (node) {
-      node.style.fontFamily = family;
-      node.style.fontWeight = weight;
-    });
-  } catch (ignore) { }
-}
-
 module.exports = React.createClass({
 
   getInitialState : function () {
@@ -26,13 +10,13 @@ module.exports = React.createClass({
   },
 
   applyFont : function () {
-    changeFont(this.state.selectorNode || this.props.selector,
+    util.changeFont(this.state.selectorNode || this.props.selector,
                this.props.family,
                this.props.weight);
   },
 
   reset : function () {
-    changeFont(this.state.selectorNode || this.props.selector, "", "");
+    util.changeFont(this.state.selectorNode || this.props.selector, "", "");
   },
 
   remove : function () {
