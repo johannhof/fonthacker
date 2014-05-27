@@ -10,9 +10,24 @@ var _WebFont = require('../vendor/webfont');
 var fonts = [];
 
 var Header = React.createClass({
+
+   listener :  function (event) {
+      event.preventDefault();
+      this.props.dragParent(event.clientX, event.clientY);
+   },
+
+  startDrag : function (event) {
+    this.props.parentStartDrag(event.clientX, event.clientY);
+    document.body.addEventListener('mousemove', this.listener);
+    document.body.addEventListener('mouseup', function () {
+      document.body.removeEventListener('mousemove', this.listener);
+    }.bind(this));
+  },
+
   render: function() {
     return (
-      <div className="fm-header">
+      <div onMouseDown={this.startDrag} className="fm-header">
+        Fontmarklet
       </div>
     );
   }
@@ -65,6 +80,15 @@ init: function() {
     this.save();
   },
 
+  startDrag : function (x, y) {
+    // TODO start drag
+  },
+
+  drag : function (x, y) {
+    this.getDOMNode().style.left = x + 'px';
+    this.getDOMNode().style.top = y + 'px';
+  },
+
   removeFont : function (index) {
     this.state.fontConfigs.splice(index, 1);
     this.save();
@@ -94,7 +118,7 @@ init: function() {
   render: function() {
     return (
       <div id="fontmarklet">
-        <Header/>
+        <Header dragParent={this.drag} parentStartDrag={this.startDrag}/>
         {this.state.fontConfigs.map(function (conf, i) {
           return <FontConfig update={this.updateFont.bind(this, i)}
                              remove={this.removeFont.bind(this, i)}
