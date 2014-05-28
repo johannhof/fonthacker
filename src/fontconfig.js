@@ -161,12 +161,7 @@ module.exports = React.createClass({
                  value={this.props.selector} />
           <button onClick={this.selectElement}
                   className={"fm-selector-button" + (this.state.selectorNode ? " node" : "")}>
-          <span className="left">
-            Select
-          </span>
-          <span className="right">
             <i className="fa fa-crosshairs"></i>
-          </span>
           </button>
         </div>
         <div className="fm-font-config-body">
