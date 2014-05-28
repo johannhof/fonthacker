@@ -45,12 +45,13 @@ var AddButton = React.createClass({
 
 var Fontmarklet = React.createClass({
   getInitialState : function () {
-    return {
-      fontConfigs : localStorage["fm_fontConfigs"] ? JSON.parse(localStorage["fm_fontConfigs"]) : []
-    }
+    return localStorage["fm_config"] ?
+      JSON.parse(localStorage["fm_config"]) :
+      {fontConfigs : []};
   },
 
 init: function() {
+  if(this.state.fontConfigs.length < 1) return;
   window.WebFont.load({
     google: {
       families: this.state.fontConfigs.map(function (config) {
@@ -69,7 +70,7 @@ init: function() {
 },
   save : function (obj, cb) {
     this.setState(obj, cb);
-    localStorage["fm_fontConfigs"] = JSON.stringify(this.state.fontConfigs);
+    localStorage["fm_config"] = JSON.stringify(this.state);
   },
 
   addFont : function () {
@@ -81,12 +82,16 @@ init: function() {
   },
 
   startDrag : function (x, y) {
-    // TODO start drag
+    var node = this.getDOMNode();
+    this.dragOffsetX = x - node.offsetLeft;
+    this.dragOffsetY = y - node.offsetTop;
   },
 
   drag : function (x, y) {
-    this.getDOMNode().style.left = x + 'px';
-    this.getDOMNode().style.top = y + 'px';
+    this.save({
+      left: x - this.dragOffsetX,
+      top: y - this.dragOffsetY
+    });
   },
 
   removeFont : function (index) {
@@ -117,7 +122,7 @@ init: function() {
 
   render: function() {
     return (
-      <div id="fontmarklet">
+      <div id="fontmarklet" style={{left: + this.state.left, top: this.state.top}}>
         <Header dragParent={this.drag} parentStartDrag={this.startDrag}/>
         {this.state.fontConfigs.map(function (conf, i) {
           return <FontConfig update={this.updateFont.bind(this, i)}
