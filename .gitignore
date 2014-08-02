@@ -2,3 +2,6 @@
 
 node_modules/
 build/
+
+playground/fm-style.css
+playground/fontmarklet.js
