@@ -15,9 +15,9 @@ window.loadFontmarklet = function () {
   // create css file
   var style = document.createElement("link");
   if(process.env.NODE_ENV === "development"){
-    style.href = "build/style.css";
+    style.href = "fm-style.css";
   }else{
-    style.href = "release/style.css";
+    style.href = "fm-style.css";
   }
   style.setAttribute("rel", "stylesheet");
   style.setAttribute("type", "text/css");

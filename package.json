@@ -16,13 +16,14 @@
     "watchify": "~0.4.1"
   },
   "scripts": {
-    "scss-build" : "sass --style compressed style.scss release/style.min.css",
-    "scss-watch" : "sass --style expanded --watch style.scss:build/",
-    "js-watch" : "NODE_ENV=development watchify -o build/browser-bundle.js -v -d ./src",
-    "js-build" : "NODE_ENV=production browserify ./src | uglifyjs -cm > release/browser-bundle.min.js",
+    "scss-build" : "sass --style compressed style/style.scss build/fm-style.min.css",
+    "scss-watch" : "sass --style expanded --watch style/style.scss:playground/fm-style.css",
+    "js-watch" : "NODE_ENV=development watchify -o playground/fontmarklet.js -v -d ./src",
+    "js-build" : "NODE_ENV=production browserify ./src | uglifyjs -cm > build/fontmarklet.min.js",
     "watch" : "npm run js-watch & npm run scss-watch",
-    "build" : "npm run js-build && npm run scss-build",
-    "start" : "npm run watch & http-server -s -p 4000",
+    "build" : "mkdir -p build && npm run js-build && npm run scss-build",
+    "server" : "http-server ./playground -s -p 4000",
+    "start" : "npm run server & npm run watch",
     "test": "jest"
   },
   "author": "Johann Hofmann",
