@@ -1,27 +1,32 @@
 {
-  "name": "react-browserify-template",
+  "name": "fontmarklet",
   "version": "0.0.1",
-  "description": "Quick boilerplate for browserify and React modules.",
+  "description": "A bookmarklet that allows you to preview your fonts or Google Webfonts on every webpage",
   "main": "index.js",
   "dependencies": {
-    "react": "~0.8"
+    "react": "~0.11.1"
   },
   "devDependencies": {
     "browserify": "~2.36.0",
     "envify": "~0.2.0",
+    "jest-cli": "^0.1.17",
     "reactify": "~0.4.0",
     "statics": "~0.1.0",
     "uglifyjs": "~2.3.6",
     "watchify": "~0.4.1"
   },
   "scripts": {
-    "start": "STATIC_ROOT=./static watchify -o build/browser-bundle.js -v -d ./src",
-    "build": "STATIC_ROOT=./static NODE_ENV=production browserify ./src | uglifyjs -cm > browser-bundle.min.js",
-    "collect-static": "collect-static . ./static",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "scss-build" : "sass --style compressed style.scss release/style.min.css",
+    "scss-watch" : "sass --style expanded --watch style.scss:build/",
+    "js-watch" : "NODE_ENV=development watchify -o build/browser-bundle.js -v -d ./src",
+    "js-build" : "NODE_ENV=production browserify ./src | uglifyjs -cm > release/browser-bundle.min.js",
+    "watch" : "npm run js-watch & npm run scss-watch",
+    "build" : "npm run js-build && npm run scss-build",
+    "start" : "npm run watch & http-server -s -p 4000",
+    "test": "jest"
   },
-  "author": "Pete Hunt",
-  "license": "Apache 2",
+  "author": "Johann Hofmann",
+  "license": "MIT",
   "browserify": {
     "transform": [
       "reactify",

@@ -1,4 +1,4 @@
-var http = require('./http');
+var util = require('./util');
 
 function mergeLists(google, local, cb) {
   if (google && local) {
@@ -26,7 +26,7 @@ function loadLocal(cb) {
 }
 
 function loadGoogle(cb) {
-  http.get("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o", function(data) {
+  util.get("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o", function(data) {
     var items = JSON.parse(data).items.map(function(item) {
       return {
         provider: "google",
@@ -38,7 +38,26 @@ function loadGoogle(cb) {
   });
 }
 
-exports.loadAll = function(cb) {
+exports.load = function(fonts) {
+  if (!Array.isArray(fonts)) {
+    fonts = [fonts];
+  }
+  fonts = fonts.filter(function(font) {
+    return font.provider === "google";
+  });
+  if (fonts.length < 1) {
+    return;
+  }
+  window.WebFont.load({
+    google: {
+      families: fonts.map(function(val) {
+        return val.family + ":" + (val.variants ? val.variants.join(',') : '');
+      })
+    }
+  });
+};
+
+exports.getNames = function(cb) {
   var google, local;
 
   loadGoogle(function(list) {

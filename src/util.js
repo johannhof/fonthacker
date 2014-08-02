@@ -2,18 +2,13 @@ exports.capitalise = function(string){
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-exports.changeFont = function(selector, family, weight) {
-  try {
-    var nodes;
-    if(selector.nodeName){
-      nodes = [selector];
-    }else{
-      nodes = document.querySelectorAll(selector);
-      nodes = Array.prototype.slice.call(nodes);
-    }
-    nodes.forEach(function (node) {
-      node.style.fontFamily = family;
-      node.style.fontWeight = weight;
-    });
-  } catch (ignore) { }
+exports.get = function(url, cb){
+    var request = new XMLHttpRequest();
+    request.open("GET", url, true);
+    request.send();
+    request.onreadystatechange = function () {
+      if(request.readyState === 4){
+        cb(request.responseText);
+      }
+    };
 };
