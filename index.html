@@ -1,136 +1,33 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>Fontmarklet</title>
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900|Leckerli+One' rel='stylesheet' type='text/css'>
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title></title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
   </head>
   <body>
-  <div class="container">
-    <div class="pure-g-r">
-      <div class="pure-u-1-2">
-        <h1>Fontmarklet</h1>
-      </div>
-      <div class="pure-u-1-2">
-        <h2>
-          A small tool to preview WebFonts like a pro
-        </h2>
-      </div>
-
-      <div class="use-it pure-u-1-2">
-        <h3>
-          Use It!
-        </h3>
-        <p>
-          Just click the big button or drag it to your bookmark bar!
-        </p>
-        <a class="bookmarklet-button" href="javascript:(function(){var headID=document.getElementsByTagName('head')[0]; var newScript = document.createElement('script'); newScript.src = 'https://ssl.kundenserver.de/johann-hofmann.com/fontmarklet/source/script.js?development=' + Math.random(); headID.appendChild(newScript);}())">
-          Fontmarklet
-        </a>
-        <p>
-          <br>
-          <br>
-          To use the bookmarklet, just click the new link in your bookmark bar.
-        </p>
-      </div>
-      <div class="try-it pure-u-1-2">
-        <h3>
-          Try It!
-        </h3>
-        <div id="tryout"></div>
-      </div>
-      <div class="details pure-u-1">
-          <h3>
-            Details
-          </h3>
-          <div class="pure-g-r">
-            <div class="pure-u-1-2">
-              <p>
-                Fontmarklet is currently in <strong>Alpha</strong>. Do not expect anything to work.
-                <br><br>
-                Fontmarklet is a bookmarklet made for designers and
-                web developers who want to try out fonts on websites
-                without having to dive into the source every time.
-                <br><br>
-                If you want to contribute or report bugs, check out the GitHub repository.
-              </p>
-            </div>
-            <div class="pure-u-1-2">
-              <a class="github-link" href="http://github.com/johannhof/fontmarklet">
-               <i class="icon-github-sign icon-2x"></i>
-                Check it out on GitHub
-              </a>
-
-              <a class="github-link" href="http://twitter.com/home?status=The%20easiest%20way%20to%20preview%20Webfonts%20-%20Fontmarklet%20http://www.fontmarklet.com">
-               <i class="icon-twitter-sign icon-2x"></i>
-                Tweet it!
-              </a>
-
-              <a class="github-link" href="https://plus.google.com/share?url=fontmarklet.com">
-               <i class="icon-google-plus-sign icon-2x"></i>
-                Plus One!
-              </a>
-            </div>
-          </div>
-      </div>
-      <div class="features pure-u-1">
-        <h3>
-          Features
-        </h3>
-        <div class="pure-g-r">
-
-          <div class="pure-u-1-2">
-            <div class="features-icon">
-              <i class="icon-gift icon-3x"></i>
-            </div>
-            <div class="features-text">
-              <strong>All the fonts you need</strong><br>
-              Try out all of Google WebFonts or any font on your local machine
-            </div>
-          </div>
-
-          <div class="pure-u-1-2">
-            <div class="features-icon">
-              <i class="icon-bookmark-empty icon-3x"></i>
-            </div>
-            <div class="features-text">
-              <strong>Just a bookmark</strong><br>
-              Small and lightweight, super easy to install and remove.
-              Does not drag your resources.
-              You decide when you want it to be running.
-            </div>
-          </div>
-
-          <div class="pure-u-1-2">
-            <div class="features-icon">
-              <i class="icon-puzzle-piece icon-3x"></i>
-            </div>
-            <div class="features-text">
-              <strong>Works (almost) everywhere</strong><br>
-              Use it with any browser or OS! Mobile support in the works.
-            </div>
-          </div>
-
-          <div class="pure-u-1-2">
-            <div class="features-icon">
-              <i class="icon-download-alt icon-3x"></i>
-            </div>
-            <div class="features-text">
-              <strong>Keeps your ideas</strong><br>
-              Automatically saves your font configurations on every website.
-            </div>
-          </div>
+    <section>
+      <div id="main" class="pure-g">
+        <div class="pure-u-1-2">
+          <h1>Fontmarklet</h1>
+          <h2>WebFonts made easy</h2>
+        </div>
+        <div class="pure-u-1-2">
         </div>
       </div>
-    </div>
-    <footer>
-      <p>&hearts; 2013 Johann Hofmann</p>
-    </footer>
-  </div>
-  <script src="./scripts/fontmarklet.js" type="text/javascript" charset="utf-8"></script>
+      <div class="bookmarklet-container">
+          Install: <a class="bookmarklet" href="">Drag me to your bookmarks</a>
+      </div>
+    </section>
+    <section id="usage">
+      <div class="next-arrow"></div>
+      
+    </section>
+    <section id="about">
+      <div class="next-arrow"></div>
+      
+    </section>
   </body>
 </html>
