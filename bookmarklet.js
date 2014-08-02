@@ -1,0 +1,1 @@
+javascript:(function(){var h=document.getElementsByTagName('head')[0]; var s = document.createElement('script'); s.src = 'https://joo.crater.uberspace.de/fontmarklet/fontmarklet.min.js?development=' + Math.random(); h.appendChild(s); }());
