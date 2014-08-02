@@ -17,7 +17,7 @@ window.loadFontmarklet = function () {
   if(process.env.NODE_ENV === "development"){
     style.href = "fm-style.css";
   }else{
-    style.href = "fm-style.css";
+    style.href = "https://joo.crater.uberspace.de/fontmarklet/fm-style.min.css";
   }
   style.setAttribute("rel", "stylesheet");
   style.setAttribute("type", "text/css");
@@ -44,3 +44,6 @@ window.loadFontmarklet = function () {
 
 }
 
+if(process.env.NODE_ENV !== "development"){
+  loadFontmarklet();
+}
