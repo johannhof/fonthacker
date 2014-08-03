@@ -25,7 +25,7 @@ window.loadFontmarklet = function () {
 
   // create font awesome css file
   var fontawesome = document.createElement("link");
-  fontawesome.href = "//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css";
+  fontawesome.href = "https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css";
   fontawesome.setAttribute("rel", "stylesheet");
   fontawesome.setAttribute("type", "text/css");
   document.getElementsByTagName("head")[0].appendChild(fontawesome);
