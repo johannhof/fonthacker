@@ -1,6 +1,9 @@
 html, body{
+  margin: 0;
+  padding: 0;
   height: 100%;
   width: 100%;
+  font-family: Lato;
 }
 
 section{
@@ -10,6 +13,9 @@ section{
 }
 
 #main{
+}
+
+.main-center{
   transform: translateY(-75%);
   width: 100%;
   max-width: 1400px;
@@ -55,7 +61,7 @@ h2{
 
 .bookmarklet-container{
   position: absolute;
-  bottom: 50px;
+  bottom: 100px;
   left: calc(50% - 225px);
   width: 450px;
   font-size: 24px;
@@ -71,7 +77,7 @@ h2{
   box-sizing: border-box;
   text-align: center;
   text-decoration: none;
-  padding: 25px;
+  padding: 20px;
   background: linear-gradient(to bottom, #49c0f0 0%,#2cafe3 100%);
   border-radius: 5px;
   box-shadow: 0px 0px 1px black;
