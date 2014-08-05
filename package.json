@@ -20,6 +20,7 @@
     "scss-watch" : "sass --style expanded --watch style/style.scss:playground/fm-style.css",
     "js-watch" : "NODE_ENV=development watchify -o playground/fontmarklet.js -v -d ./src",
     "js-build" : "NODE_ENV=production browserify ./src | uglifyjs -cm > build/fontmarklet.min.js",
+    "bookmarklet" : "uglifyjs bookmarklet.js -cem --preamble 'javascript:' -o build/bookmarklet.js",
     "watch" : "npm run js-watch & npm run scss-watch",
     "build" : "mkdir -p build && npm run js-build && npm run scss-build",
     "server" : "http-server ./playground -s -p 4000",
