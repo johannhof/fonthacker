@@ -5,16 +5,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title></title>
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
 </head>
 
 <body>
   <nav class="nav">
-    <div class="logo"><span class="logo-f">F</span></div>
+    <div class="logo"><span class="logo-f">F</span>
+    </div>
     <!--<i class="fa fa-github-square"></i>-->
   </nav>
   <section id="main">
+    <div id="overlay">
+      <h2>Why a bookmarklet?</h2>
+    </div>
     <div class="main-center">
       <h1>Fontmarklet</h1>
       <span class="subtitle">WebFonts made easy</span>
@@ -22,7 +26,11 @@
     <div>
     </div>
     <div class="bookmarklet-container">
-      Install: <a class="bookmarklet" href="">Drag me to your bookmarks</a>
+      Install:
+      <div class="bookmarklet-wrapper">
+        Drag me to your bookmarks
+        <a id="bookmarklet" class="bookmarklet" href="">Fontmarklet</a>
+      </div>
     </div>
     <!--<div class="next-arrow blue"></div>-->
   </section>
@@ -37,6 +45,7 @@
   <section id="about">
 
   </section>
+  <script src="app.js" type="text/javascript" charset="utf-8"></script>
   <!--<script src="https://joo.crater.uberspace.de/fontmarklet/fontmarklet.min.js" type="text/javascript" charset="utf-8"></script>-->
 </body>
 
