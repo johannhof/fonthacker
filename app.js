@@ -8,3 +8,5 @@ bookmarklet.addEventListener('mouseover', function () {
 bookmarklet.addEventListener('mouseout', function () {
   overlay.classList.remove('visible');
 });
+
+//loadFontmarklet(document.getElementById("fm-container-1"));
