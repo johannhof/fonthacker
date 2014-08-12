@@ -10,7 +10,7 @@ var _WebFont = require('../vendor/webfont');
 
 var fonts = [];
 
-window.loadFontmarklet = function (_container) {
+window.loadFontmarklet = function (_container, callback) {
 
   // create css file
   var style = document.createElement("link");
@@ -40,11 +40,11 @@ window.loadFontmarklet = function (_container) {
     React.renderComponent(fm, container);
 
     var cont = _container || document.body;
+
+    if(callback){
+      callback();
+    }
+
     cont.appendChild(container);
   });
-
-}
-
-if(process.env.NODE_ENV !== "development"){
-  loadFontmarklet();
 }

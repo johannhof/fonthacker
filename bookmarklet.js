@@ -52,7 +52,9 @@ loader.classList.add('fm-loader-logo');
 loader.innerHTML = '<span class="fm-loader-logo-f">F</span>';
 
 script.onload = function () {
-  loader.style.display = 'none';
+  loadFontmarklet(undefined, function () {
+    loader.style.display = 'none';
+  });
 }
 
 document.body.appendChild(loader);
