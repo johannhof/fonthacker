@@ -56,6 +56,11 @@ module.exports = React.createClass({
     }, this.applyFont);
   },
 
+  setInput : function (font) {
+    this.refs.family.getDOMNode().value = font.family;
+    this.onChange();
+  },
+
   setInputSuggestion : function (font) {
     this.setState({suggestion : font ? font.family : "" });
   },
@@ -86,6 +91,13 @@ module.exports = React.createClass({
     }.bind(this));
   },
 
+  handleKeyDown: function(e) {
+    this.showSuggestions();
+    if(this.refs.suggest){
+      var stop = this.refs.suggest.handleKeyDown(e);
+    }
+  },
+
   render: function() {
     return (
 
@@ -99,33 +111,33 @@ module.exports = React.createClass({
         : ''}
 
         <div className="fm-font-config-options">
-          <button className="fm-remove-button" onClick={this.remove}>
+          <div className="fm-font-config-button fm-remove-button" onClick={this.remove}>
             <span className="left">
               <i className="fa fa-times"></i>
             </span>
             <span className="right">
               Remove
             </span>
-          </button>
+          </div>
           {!this.props.disabled ?
-            <button onClick={this.disable}>
+            <div className="fm-font-config-button" onClick={this.disable}>
               <span className="left">
                 <i className="fa fa-ban"></i>
               </span>
               <span className="right">
                 Disable
               </span>
-            </button>
+            </div>
           : ''}
           {!this.props.disabled ?
-            <button onClick={this.applyFont}>
+            <div className="fm-font-config-button" onClick={this.applyFont}>
               <span className="left">
                 <i className="fa fa-refresh"></i>
               </span>
               <span className="right">
                 Reapply
               </span>
-            </button>
+            </div>
           : ''}
         </div>
 
@@ -153,7 +165,7 @@ module.exports = React.createClass({
 
             <input onChange={this.onChange}
                    onFocus={this.showSuggestions}
-                   onBlur={this.hideSuggestions}
+                   onKeyDown={this.handleKeyDown}
                    style={{
                      fontFamily : this.props.family + ", sans-serif",
                      fontWeight : this.props.weight
@@ -164,6 +176,8 @@ module.exports = React.createClass({
              {this.state.suggest ?
               <Suggestions
                setInputSuggestion = {this.setInputSuggestion}
+               setInput = {this.setInput}
+               hideSuggestions={this.hideSuggestions}
                fonts={this.props.fonts}
                ref="suggest"
                family={this.props.family} />

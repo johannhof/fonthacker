@@ -97,9 +97,9 @@ module.exports = React.createClass({
                              selector={conf.selector}
                              />;
         }.bind(this))}
-        <button onClick={this.addFont} className="fm-add-button">
+        <div onClick={this.addFont} className="fm-add-button">
           Add Font
-        </button>
+        </div>
       </div>
     );
   }
