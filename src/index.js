@@ -37,14 +37,14 @@ window.loadFontmarklet = function (_container, callback) {
     var container = document.createElement('div');
 
     var fm = <Fontmarklet fonts={fonts} />;
-    React.renderComponent(fm, container);
-
-    var cont = _container || document.body;
+    React.renderComponent(fm, _container || container);
 
     if(callback){
       callback();
     }
 
-    cont.appendChild(container);
+    if(!_container){
+      document.body.appendChild(container);
+    }
   });
 }
