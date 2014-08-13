@@ -48,6 +48,16 @@ body {
     opacity: 1;
   }
 }
+#fm-container-1 #fontmarklet{
+  position: absolute !important;
+  left: 20%;
+  top: 0;
+}
+#fm-container-1{
+  float: right;
+  width: 50%;
+  position: relative;
+}
 section {
   height: 100%;
   width: 100%;
