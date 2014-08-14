@@ -35,7 +35,7 @@ style.innerHTML =
   -webkit-animation-duration: 2s;\
   -webkit-animation-iteration-count: infinite;\
 }\
-.fm-loader-logo-f {\
+.fm-loader-logo span {\
   font-family: Lato;\
   position: absolute;\
   left: 5px;\
@@ -49,7 +49,7 @@ head.appendChild(style);
 
 var loader = document.createElement('div');
 loader.classList.add('fm-loader-logo');
-loader.innerHTML = '<span class="fm-loader-logo-f">F</span>';
+loader.innerHTML = '<span>F</span>';
 
 script.onload = function () {
   loadFontmarklet(undefined, function () {
