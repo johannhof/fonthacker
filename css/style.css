@@ -14,6 +14,9 @@ body {
   50% {
     width: 100%;
   }
+  95% {
+    width: 49%;
+  }
   100% {
     width: 50%;
   }
@@ -50,8 +53,13 @@ body {
 }
 #fm-container-1 #fontmarklet{
   position: absolute !important;
-  left: 20%;
-  top: 0;
+  left: 20% !important;
+  top: 0% !important;
+}
+#fm-container-2 #fontmarklet{
+  position: absolute !important;
+  left: 20% !important;
+  top: -150px !important;
 }
 #fm-container-1{
   float: right;
@@ -101,7 +109,8 @@ section {
   position: relative;
   transition: width 0.5s;
   -webkit-animation-name: half-size;
-  -webkit-animation-duration: 3s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-duration: 1.5s;
   -webkit-animation-fill-mode: forwards;
 }
 #overlay{

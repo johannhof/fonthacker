@@ -12,3 +12,8 @@ bookmarklet.addEventListener('mouseout', function() {
 setTimeout(function() {
   loadFontmarklet(document.getElementById("fm-container-1"));
 }, 3000);
+
+setTimeout(function() {
+  loadFontmarklet(document.getElementById("fm-container-2"));
+}, 5000);
+
