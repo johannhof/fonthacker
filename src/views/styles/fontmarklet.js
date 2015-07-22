@@ -1,0 +1,24 @@
+export const mainStyle = {
+  fontFamily: "Open Sans",
+  color: "#333",
+  position: "fixed",
+  zIndex: 999999,
+  top: 50,
+  left: 50
+};
+
+export const addButtonStyle = {
+  fontWeight: 100,
+  backgroundColor: "yellowgreen",
+  borderRadius: 3,
+  width: 250,
+  height: 30,
+  color: "white",
+  textAlign: "center",
+  padding: 5,
+  boxSizing: "border-box",
+  border: "none",
+  cursor: "pointer",
+  fontSize: 14,
+  margin: 2
+};

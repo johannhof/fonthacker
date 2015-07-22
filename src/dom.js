@@ -27,11 +27,11 @@ function out(e) {
  */
 exports.select = function(cb) {
 
-  var click = function(e) {
+  var click = (e) => {
     e.preventDefault();
     out(e);
 
-    var target = e.target;
+    const target = e.target;
     var name = target.nodeName;
 
     if (target.id) {
@@ -49,7 +49,7 @@ exports.select = function(cb) {
     });
 
     return false;
-  }.bind(this);
+  };
 
   elements.forEach(function(el) {
     el.addEventListener('mouseover', over);
@@ -71,7 +71,9 @@ function apply(font) {
       node.style.fontFamily = font.family;
       node.style.fontWeight = font.weight;
     });
-  } catch (ignore) {}
+  } catch (_) {
+    // TODO
+  }
 }
 
 exports.reset = function(selector) {
@@ -80,14 +82,16 @@ exports.reset = function(selector) {
     family: "",
     weight: ""
   });
-}
+};
 
 exports.applyFont = function(fonts) {
   if (!Array.isArray(fonts)) {
     fonts = [fonts];
   }
   fonts.forEach(function(font) {
-    if (font.disabled) return
+    if (font.disabled) {
+      return;
+    }
     apply(font);
   });
-}
+};
