@@ -1,91 +1,41 @@
 import React from 'react';
+import Radium from 'radium';
 import Suggestions from './suggestions';
 
 import {EmitterMixin} from '../emitter';
 
-import style from "./styles/fontconfig";
+import {fontConfig, disabled, options} from "./styles/fontconfig";
 
-module.exports = React.createClass({
+module.exports = Radium(React.createClass({
   displayName: "FontConfig",
+
+  propTypes: {
+    config: React.PropTypes.shape({
+      disabled: React.PropTypes.bool
+    }).isRequired
+  },
+
   mixins: [EmitterMixin],
 
   getInitialState() {
     return {};
   },
 
-  onChange() {
-    this.reset();
-    if(this.state.suggest){
-      this.updateSuggest();
-    }
-    var selector = this.refs.selector.getDOMNode().value;
-    if(selector !== this.state.selector){
-      this.setState({
-        selectorNode : undefined
-      });
-    }
-    this.props.update({
-      family : this.refs.family.getDOMNode().value,
-      selector : selector,
-      weight : this.refs.weight.getDOMNode().value
-    }, this.applyFont);
-  },
-
-  setInput(font) {
-    this.refs.family.getDOMNode().value = font.family;
-    this.onChange();
-  },
-
-  setInputSuggestion(font) {
-    this.setState({suggestion : font ? font.family : "" });
-  },
-
-  showSuggestions() {
-    this.setState({suggest: true});
-  },
-
-  hideSuggestions() {
-    this.setState({suggest: false});
-  },
-
-  updateSuggest() {
-    var val = util.capitalise(this.refs.family.getDOMNode().value);
-    this.refs.suggest.update(val);
-    this.refs.family.getDOMNode().value = val;
-  },
-
-  selectElement() {
-    dom.select(function (target, name) {
-      this.reset();
-      this.props.update({
-        family : this.props.family,
-        selector : name,
-        weight : this.props.weight
-      });
-      this.setState({ selectorNode: target }, this.applyFont);
-    }.bind(this));
-  },
-
-  handleKeyDown(e) {
-    this.showSuggestions();
-    if(this.refs.suggest){
-      var stop = this.refs.suggest.handleKeyDown(e);
-    }
-  },
-
   render() {
     const config = this.props.config;
     return (
-      <div style={style}>
+      <div style={fontConfig}>
         {config.disabled &&
-          <div className="fm-disabled">
+          <div style={disabled}>
             Disabled
             <br/>
-            <button onClick={this.enable}>Enable</button>
+            <button onClick={this.emit('fontconfig', {action: 'enable', id: config._id})}>
+              Enable
+            </button>
           </div>
         }
 
-        <div className="fm-font-config-options">
+        <div style={options}>
           <div className="fm-font-config-button fm-remove-button" onClick={this.remove}>
             <span className="left">
               <i className="fa fa-times"></i>
@@ -94,8 +44,10 @@ module.exports = React.createClass({
               Remove
             </span>
           </div>
-          {!this.props.disabled &&
-            <div className="fm-font-config-button" onClick={this.disable}>
+          {!config.disabled &&
+            <div
+              className="fm-font-config-button"
+              onClick={this.emit('fontconfig', {action: 'disable', id: config._id})}>
               <span className="left">
                 <i className="fa fa-ban"></i>
               </span>
@@ -160,5 +112,5 @@ module.exports = React.createClass({
       </div>
     );
   }
-});
+}));
 

@@ -1,4 +1,5 @@
 import "babel-core/polyfill";
+import 'webfontloader';
 
 import React from 'react';
 import Kefir from 'kefir';
@@ -8,9 +9,6 @@ import local from './local';
 import dom from './dom';
 import {events} from './emitter';
 import Fontmarklet from './views/fontmarklet';
-
-// just for loading into the window object
-require('webfontloader');
 
 var googleFonts = Kefir
   .fromCallback(util.get.bind(null, "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o"))
@@ -38,24 +36,39 @@ var localFonts = Kefir
   })
   .toProperty(() => []);
 
+let initialConfigs = [];
+if (localStorage.__fm_configs){
+  initialConfigs = JSON.parse(localStorage.__fm_configs).map((config) => [config._id, config]);
+}
+
 var fontConfigs = Kefir
-  .fromEvents(events, 'fontconfig').map((action, id) => ({action, id}))
+  .fromEvents(events, 'fontconfig')
   .scan(function(map, {action, id}){
+    var config;
     switch (action) {
       case 'add':
         const _id = Date.now();
         map.set(_id, {_id: _id, family: "Helvetica" });
         break;
       case 'disable':
-        const config = map.get(id);
+        config = map.get(id);
         config.disabled = true;
+        map.set(id, config);
+        break;
+      case 'enable':
+        config = map.get(id);
+        config.disabled = false;
         map.set(id, config);
         break;
     }
     return map;
-  }, new Map())
+  }, new Map(initialConfigs))
   .map((map) => Array.from(map.values()))
   .toProperty();
+
+fontConfigs.onValue(function (configs) {
+  localStorage.__fm_configs = JSON.stringify(configs);
+});
 
 // create font awesome css file
 const fontawesome = document.createElement("link");

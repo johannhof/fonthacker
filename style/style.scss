@@ -18,43 +18,6 @@ $primary-color: #333;
     outline: none;
   }
 
-  .fm-header{
-    background-color: white;
-    border-radius: 3px;
-    width: 250px;
-    height: 30px;
-    padding: 7px;
-    box-sizing: border-box;
-    margin: 2px;
-    border: 1px solid #eee;
-    text-align: center;
-    cursor: move;
-  }
-
-  .fm-add-button{
-    font-family: $font-stack;
-    font-weight: 100;
-    background-color: yellowgreen;
-    border-radius: 3px;
-    width: 250px;
-    height: 30px;
-    color: white;
-    text-align: center;
-    padding: 5px;
-    box-sizing: border-box;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 2px;
-  }
-
-  .fm-font-config:hover{
-    position: static;
-    .fm-font-config-options{
-      opacity: 1;
-    }
-  }
-
   .fm-font-config{
     height: 110px;
     overflow: hidden;
@@ -64,48 +27,6 @@ $primary-color: #333;
     -webkit-animation-duration: 0.5s;
     -webkit-animation-fill-mode: forwards;
     border: 1px solid #eee;
-
-    .fm-disabled{
-      padding: 20px;
-      box-sizing: border-box;
-      position: absolute;
-      height: 110px;
-      width: 98%;
-      z-index: 5;
-      background: rgba(170,170,170,0.8);
-      text-align: center;
-      font-size: 24px;
-      color: white;
-    }
-
-    .fm-font-config-options{
-      opacity: 0;
-      position: absolute;
-      width: 30px;
-      right: -27px;
-      transition: 0.2s opacity;
-
-      .fm-font-config-button{
-        @include open-right(30px, 75px);
-        font-family: $font-stack;
-        margin: 7px;
-        width: 30px;
-        font-weight: 100;
-        padding: 5px 0;
-        font-size: 16px;
-        border-radius: 30px;
-        border: none;
-        box-shadow: 0px 0px 1px grey;
-        cursor: pointer;
-        background-color: #DDD;
-        text-align: center;
-      }
-
-      .fm-remove-button{
-        color: white;
-        background-color: red;
-      }
-    }
 
     .fm-font-config-header{
       background-color: dodgerblue;

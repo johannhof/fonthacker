@@ -58,13 +58,13 @@ module.exports = React.createClass({
       <div className="fm-suggestions">
         {this.state.suggestions.length > 1 &&
           <ul>
-          {this.state.suggestions.map(function (val, i) {
+          {this.state.suggestions.map((val, i) => {
             if(i === this.state.selected){
               return <li className="fm-suggestion-selected">{val.family}</li>;
             }else{
               return <li>{val.family}</li>;
             }
-          }.bind(this)).splice(0, MAX_ITEMS)}
+          }).splice(0, MAX_ITEMS)}
           </ul>
         }
       </div>

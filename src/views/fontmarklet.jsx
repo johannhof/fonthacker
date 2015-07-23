@@ -10,6 +10,11 @@ import FontConfig from './fontconfig';
 
 export default Radium(React.createClass({
   displayName: "Fontmarklet",
+
+  propTypes: {
+    fontConfigs: React.PropTypes.array.isRequired
+  },
+
   mixins: [EmitterMixin],
 
   getInitialState() {
@@ -41,7 +46,7 @@ export default Radium(React.createClass({
       <div style={[mainStyle, this.state.left && {left: this.state.left, top: this.state.top}]}>
         <Header startDrag={this.startDrag}/>
         {this.props.fontConfigs.map((config) => <FontConfig config={config} />)}
-        <div style={addButtonStyle} onClick={this.emit('fontconfig', 'add')}>
+        <div style={addButtonStyle} onClick={this.emit('fontconfig', {action: 'add'})}>
           Add Font
         </div>
       </div>
