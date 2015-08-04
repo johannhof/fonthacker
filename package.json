@@ -4,9 +4,11 @@
   "description": "A bookmarklet that allows you to preview your fonts or Google Webfonts on every webpage",
   "main": "index.js",
   "dependencies": {
+    "immutable": "^3.7.4",
     "kefir": "^2.7.1",
-    "radium": "^0.13.3",
+    "radium": "^0.13.5",
     "react": "^0.13.3",
+    "react-motion": "^0.2.2",
     "webfontloader": "^1.6.4"
   },
   "devDependencies": {
@@ -22,9 +24,6 @@
     "js-watch": "NODE_ENV=development watchify -o playground/fontmarklet.js -v -d ./src",
     "js-build": "NODE_ENV=production browserify ./src | uglifyjs -cm > build/fontmarklet.min.js",
     "bookmarklet": "uglifyjs bookmarklet.js -cem --preamble 'javascript:' -o build/bookmarklet.js",
-    "build": "mkdir -p build && npm run js-build && npm run scss-build",
-    "server": "http-server ./playground -s -p 4000",
-    "start": "npm run server & npm run watch",
     "test": "jest"
   },
   "author": "Johann Hofmann",

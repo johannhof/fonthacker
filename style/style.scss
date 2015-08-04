@@ -19,51 +19,7 @@ $primary-color: #333;
   }
 
   .fm-font-config{
-    height: 110px;
-    overflow: hidden;
-    position: relative;
-    margin: 3px;
-    -webkit-animation-name: sizeup;
-    -webkit-animation-duration: 0.5s;
-    -webkit-animation-fill-mode: forwards;
-    border: 1px solid #eee;
-
     .fm-font-config-header{
-      background-color: dodgerblue;
-      height: 30px;
-      padding: 1%;
-      box-sizing: border-box;
-
-      .fm-selector-input{
-        height: 98%;
-        width: 84%;
-        border: none;
-        background: none;
-        color: white;
-        font-size: 16px;
-        padding: 5px;
-        box-sizing: border-box;
-        vertical-align: text-bottom;
-      }
-
-      .fm-selector-button{
-        height: 84%;
-        width: 30px;
-        font-size: 16px;
-        border: none;
-        background-color: whitesmoke;
-        border-radius: 3px;
-        box-shadow: 0px 0px 1px #222;
-        background: linear-gradient(to bottom, #7abcff 0%,#60abf8 44%,#4096ee 100%);
-        cursor: pointer;
-        color: white;
-
-        .left{
-          padding-top: 3px;
-          box-sizing: border-box;
-          font-size: 12px;
-        }
-      }
       .fm-selector-button.node{
         color: white;
         box-shadow: 0px 0px 1px #222 inset;
@@ -73,24 +29,7 @@ $primary-color: #333;
     }
 
     .fm-font-config-body{
-      background-color: white;
-      height: 80px;
-      box-sizing: border-box;
       .fm-family-input-container{
-        width: 238px;
-        height: 45px;
-        position: relative;
-        .fm-family-input{
-          font-size: 28px;
-          border: none;
-          width: 238px;
-          padding: 5px;
-          margin: 0;
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          background: none;
-        }
         .fm-family-input-suggestion{
           position: absolute;
           font-size: 28px;

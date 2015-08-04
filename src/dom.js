@@ -3,29 +3,12 @@
  * E.g adding or removing fonts, displaying hover state, etc.
  */
 
-var elements;
-
-/**
- * Initializes before the fm ui is loaded
- */
-exports.init = function() {
-  elements = document.querySelectorAll('body *');
-  elements = Array.prototype.slice.call(elements);
-};
-
-function over(e) {
-  e.target.style.backgroundColor = "lightblue";
-}
-
-function out(e) {
-  e.target.style.backgroundColor = "";
-}
-
 /**
  * Select a target for font changing
  * @param {function} cb callback to be called when the user has chosen a target
  */
-exports.select = function(cb) {
+exports.select = function select(el, cb) {
+  e.target.style.backgroundColor = "lightblue";
 
   var click = (e) => {
     e.preventDefault();
@@ -58,7 +41,7 @@ exports.select = function(cb) {
   });
 };
 
-function apply(font) {
+exports.apply = function apply(font) {
   try {
     var nodes;
     if (font.selector.nodeName) {
@@ -74,24 +57,13 @@ function apply(font) {
   } catch (_) {
     // TODO
   }
-}
+};
 
-exports.reset = function(selector) {
-  apply({
+exports.reset = function reset(selector) {
+  exports.apply({
     selector: selector,
     family: "",
     weight: ""
   });
 };
 
-exports.applyFont = function(fonts) {
-  if (!Array.isArray(fonts)) {
-    fonts = [fonts];
-  }
-  fonts.forEach(function(font) {
-    if (font.disabled) {
-      return;
-    }
-    apply(font);
-  });
-};

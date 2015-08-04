@@ -1,9 +1,12 @@
+import colors from "./colors";
+
 export default {
-  backgroundColor: "white",
+  backgroundColor: colors.blue,
+  color: colors.white,
   borderRadius: "3px",
   width: "250px",
   height: "30px",
-  padding: "7px",
+  padding: "5px",
   boxSizing: "border-box",
   margin: "2px",
   border: "1px solid #eee",

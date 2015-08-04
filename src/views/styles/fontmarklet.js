@@ -1,3 +1,5 @@
+import colors from "./colors";
+
 export const mainStyle = {
   fontFamily: "Open Sans",
   color: "#333",
@@ -8,12 +10,12 @@ export const mainStyle = {
 };
 
 export const addButtonStyle = {
-  fontWeight: 100,
-  backgroundColor: "yellowgreen",
+  fontWeight: "100",
+  backgroundColor: colors.green,
   borderRadius: 3,
   width: 250,
   height: 30,
-  color: "white",
+  color: colors.white,
   textAlign: "center",
   padding: 5,
   boxSizing: "border-box",

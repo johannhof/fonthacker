@@ -3,12 +3,18 @@ import 'webfontloader';
 
 import React from 'react';
 import Kefir from 'kefir';
+import Immutable from 'immutable';
 
 import util from './util';
 import local from './local';
 import dom from './dom';
 import {events} from './emitter';
 import Fontmarklet from './views/fontmarklet';
+
+
+//var selectFont = Kefir
+  //.fromEvents(document.body, 'mouseover')
+  //.slidingWindow()
 
 var googleFonts = Kefir
   .fromCallback(util.get.bind(null, "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o"))
@@ -43,30 +49,50 @@ if (localStorage.__fm_configs){
 
 var fontConfigs = Kefir
   .fromEvents(events, 'fontconfig')
-  .scan(function(map, {action, id}){
+  .scan(function(map, {action, id, obj}){
     var config;
     switch (action) {
       case 'add':
         const _id = Date.now();
-        map.set(_id, {_id: _id, family: "Helvetica" });
-        break;
+        return map.set(_id, {
+          _id: _id,
+          selector: "#example",
+          family: "Helvetica",
+          weight: "normal"
+        });
+      case 'update':
+        console.log(map.get(id), obj);
+        return map.set(id, Object.assign({}, obj));
       case 'disable':
         config = map.get(id);
         config.disabled = true;
-        map.set(id, config);
-        break;
+        return map.set(id, config);
       case 'enable':
         config = map.get(id);
         config.disabled = false;
-        map.set(id, config);
-        break;
+        return map.set(id, config);
     }
-    return map;
-  }, new Map(initialConfigs))
-  .map((map) => Array.from(map.values()))
+  }, Immutable.Map(initialConfigs))
+  .map((map) => map.toArray())
   .toProperty();
 
+// reset all configs
+fontConfigs
+  .slidingWindow(2, 2)
+  .onValue(function ([old, _]) {
+    old.forEach(function(config){
+      if(!config.disabled){
+        dom.reset(config.selector);
+      }
+    });
+  });
+
 fontConfigs.onValue(function (configs) {
+  configs.forEach(function(config){
+    if(!config.disabled){
+      dom.apply(config);
+    }
+  });
   localStorage.__fm_configs = JSON.stringify(configs);
 });
 
@@ -82,8 +108,6 @@ window.loadFontmarklet = function (_container) {
   if(!_container){
     document.body.appendChild(container);
   }
-
-  dom.init();
 
   Kefir
     .combine([googleFonts, localFonts, fontConfigs])

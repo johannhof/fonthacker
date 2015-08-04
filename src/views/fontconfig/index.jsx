@@ -2,15 +2,24 @@ import React from 'react';
 import Radium from 'radium';
 import Suggestions from './suggestions';
 
-import {EmitterMixin} from '../emitter';
+import Selector from './selector';
 
-import {fontConfig, disabled, options} from "./styles/fontconfig";
+import {EmitterMixin} from '../../emitter';
+
+import {
+  fontConfig, body,
+  disabled, options,
+  fontConfigButton as button, removeButton,
+  familyInputContainer, familyInput,
+  familyInputSuggestion
+} from "./styles/fontconfig";
 
 module.exports = Radium(React.createClass({
   displayName: "FontConfig",
 
   propTypes: {
     config: React.PropTypes.shape({
+      _id: React.PropTypes.number,
       disabled: React.PropTypes.bool
     }).isRequired
   },
@@ -19,6 +28,19 @@ module.exports = Radium(React.createClass({
 
   getInitialState() {
     return {};
+  },
+
+  update(prop) {
+    const emitter = this.emit('fontconfig');
+    return e => {
+      emitter({
+        action: 'update',
+        id: this.props.config._id,
+        obj: Object.assign({}, this.props.config, {
+          [prop]: e.target.value
+        })
+      });
+    };
   },
 
   render() {
@@ -36,7 +58,7 @@ module.exports = Radium(React.createClass({
         }
 
         <div style={options}>
-          <div className="fm-font-config-button fm-remove-button" onClick={this.remove}>
+          <div styles={[button, removeButton]} className="fm-font-config-button fm-remove-button" onClick={this.remove}>
             <span className="left">
               <i className="fa fa-times"></i>
             </span>
@@ -58,55 +80,39 @@ module.exports = Radium(React.createClass({
           }
         </div>
 
-        <div className="fm-font-config-header">
-          <input onChange={this.onChange}
-                 ref="selector"
-                 placeholder="selector"
-                 className="fm-selector-input"
-                 value={this.props.selector} />
-          <button onClick={this.selectElement}
-                  className={"fm-selector-button" + (this.state.selectorNode ? " node" : "")}>
-            <i className="fa fa-crosshairs"></i>
-          </button>
-        </div>
+        <Selector selector={config.selector} onChange={this.update('selector')} />
 
-        <div className="fm-font-config-body">
-          <div className="fm-family-input-container">
-            <div className="fm-family-input-suggestion"
-                 style={{
-                   fontFamily: this.props.family + ", sans-serif",
-                   fontWeight: this.props.weight
-                 }} >
+        <div style={body}>
+          <div style={familyInputContainer}>
+            <div style={[familyInputSuggestion, {
+                   fontFamily: config.family + ", sans-serif",
+                   fontWeight: config.weight
+                 }]} >
                 {this.state.suggestion}
             </div>
 
-            <input onChange={this.onChange}
+            <input onChange={this.update('family')}
                    onFocus={this.showSuggestions}
                    onKeyDown={this.handleKeyDown}
-                   style={{
-                     fontFamily: this.props.family + ", sans-serif",
-                     fontWeight: this.props.weight
-                   }}
+                   style={[familyInput, {
+                     fontFamily: config.family + ", sans-serif",
+                     fontWeight: config.weight
+                   }]}
                    ref="family"
-                   className="fm-family-input"
-                   value={this.props.family} />
-             {this.state.suggest &&
-              <Suggestions
-               setInputSuggestion = {this.setInputSuggestion}
-               setInput = {this.setInput}
-               hideSuggestions={this.hideSuggestions}
-               fonts={this.props.fonts}
-               ref="suggest"
-               family={this.props.family} />
+                   value={config.family} />
+             {this.state.showSuggestions &&
+                <Suggestions
+                 fonts={this.props.fonts}
+                 family={config.family} />
              }
 
           </div>
 
-          <input onChange={this.onChange}
+          <input onChange={this.update('weight')}
                  ref="weight"
                  placeholder="weight"
                  className="fm-weight-input"
-                 value={this.props.weight} />
+                 value={config.weight} />
 
         </div>
       </div>
