@@ -45,7 +45,7 @@ export default Radium(React.createClass({
     return (
       <div style={[mainStyle, this.state.left && {left: this.state.left, top: this.state.top}]}>
         <Header startDrag={this.startDrag}/>
-        {this.props.fontConfigs.map((config) => <FontConfig config={config} />)}
+        {this.props.fontConfigs.map((config) => <FontConfig key={config._id} config={config} />)}
         <div style={addButtonStyle} onClick={this.emit('fontconfig', {action: 'add'})}>
           Add Font
         </div>

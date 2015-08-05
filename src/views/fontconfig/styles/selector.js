@@ -3,7 +3,9 @@ import colors from "../../styles/colors";
 export const container = {
   backgroundColor: colors.blue,
   height: 30,
-  display: "flex"
+  display: "flex",
+  position: "relative",
+  zIndex: 2
 };
 
 export const input = {

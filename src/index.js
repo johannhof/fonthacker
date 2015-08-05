@@ -71,7 +71,10 @@ var fontConfigs = Kefir
         config = map.get(id);
         config.disabled = false;
         return map.set(id, config);
+      case 'remove':
+        return map.delete(id);
     }
+    return map;
   }, Immutable.Map(initialConfigs))
   .map((map) => map.toArray())
   .toProperty();
@@ -81,9 +84,7 @@ fontConfigs
   .slidingWindow(2, 2)
   .onValue(function ([old, _]) {
     old.forEach(function(config){
-      if(!config.disabled){
-        dom.reset(config.selector);
-      }
+      dom.reset(config.selector);
     });
   });
 

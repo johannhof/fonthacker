@@ -1,17 +1,18 @@
 import React from 'react';
 import Radium from 'radium';
 import Suggestions from './suggestions';
+import {Spring} from 'react-motion';
 
 import Selector from './selector';
+import ConfigButtons from './buttons';
 
 import {EmitterMixin} from '../../emitter';
 
 import {
   fontConfig, body,
-  disabled, options,
-  fontConfigButton as button, removeButton,
+  disabled,
   familyInputContainer, familyInput,
-  familyInputSuggestion
+  familyInputSuggestion, weightInput
 } from "./styles/fontconfig";
 
 module.exports = Radium(React.createClass({
@@ -46,7 +47,7 @@ module.exports = Radium(React.createClass({
   render() {
     const config = this.props.config;
     return (
-      <div style={fontConfig}>
+      <div style={fontConfig} onMouseEnter={() => this.setState({hover: true})} onMouseLeave={() => this.setState({hover: false})}>
         {config.disabled &&
           <div style={disabled}>
             Disabled
@@ -57,29 +58,11 @@ module.exports = Radium(React.createClass({
           </div>
         }
 
-        <div style={options}>
-          <div styles={[button, removeButton]} className="fm-font-config-button fm-remove-button" onClick={this.remove}>
-            <span className="left">
-              <i className="fa fa-times"></i>
-            </span>
-            <span className="right">
-              Remove
-            </span>
-          </div>
-          {!config.disabled &&
-            <div
-              className="fm-font-config-button"
-              onClick={this.emit('fontconfig', {action: 'disable', id: config._id})}>
-              <span className="left">
-                <i className="fa fa-ban"></i>
-              </span>
-              <span className="right">
-                Disable
-              </span>
-            </div>
+        <Spring defaultValue={{right: {val: 10}, opacity: {val: 0}}} endValue={{right: {val: this.state.hover ? -30 : 10}, opacity: {val: this.state.hover ? 1 : 0}}}>
+          {interpolated =>
+            <ConfigButtons right={interpolated.right.val} opacity={interpolated.opacity.val} _id={config._id} disabled={config.disabled}/>
           }
-        </div>
-
+        </Spring>
         <Selector selector={config.selector} onChange={this.update('selector')} />
 
         <div style={body}>
@@ -98,7 +81,6 @@ module.exports = Radium(React.createClass({
                      fontFamily: config.family + ", sans-serif",
                      fontWeight: config.weight
                    }]}
-                   ref="family"
                    value={config.family} />
              {this.state.showSuggestions &&
                 <Suggestions
@@ -109,9 +91,8 @@ module.exports = Radium(React.createClass({
           </div>
 
           <input onChange={this.update('weight')}
-                 ref="weight"
                  placeholder="weight"
-                 className="fm-weight-input"
+                 style={weightInput}
                  value={config.weight} />
 
         </div>

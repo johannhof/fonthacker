@@ -2,7 +2,6 @@ import colors from "../../styles/colors";
 
 export const fontConfig = {
   height: "110px",
-  overflow: "hidden",
   position: "relative",
   margin: 3,
   border: "1px solid #eee"
@@ -11,7 +10,9 @@ export const fontConfig = {
 export const body = {
   backgroundColor: colors.white,
   height: 80,
-  boxSizing: "border-box"
+  boxSizing: "border-box",
+  position: "relative",
+  zIndex: 2
 };
 
 export const disabled = {
@@ -19,7 +20,7 @@ export const disabled = {
   boxSizing: "border-box",
   position: "absolute",
   height: 110,
-  width: "98%",
+  width: "100%",
   zIndex: 5,
   background: "rgba(170,170,170,0.8)",
   textAlign: "center",
@@ -27,37 +28,11 @@ export const disabled = {
   color: "white"
 };
 
-export const options = {
-  opacity: 0,
-  position: "absolute",
-  width: 30,
-  right: -27,
-  transition: "0.2s opacity"
-};
-
-export const fontConfigButton = {
-  margin: 7,
-  width: 30,
-  fontWeight: "100",
-  padding: "5px 0",
-  fontSize: 16,
-  borderRadius: 30,
-  border: "none",
-  boxShadow: "0px 0px 1px grey",
-  cursor: "pointer",
-  backgroundColor: "#DDD",
-  textAlign: "center"
-};
-
-export const removeButton = {
-  color: colors.white,
-  backgroundColor: colors.red
-};
-
 export const familyInputContainer = {
   width: 238,
   height: 45,
-  position: "relative"
+  position: "relative",
+  zIndex: 2
 };
 
 export const familyInput = {
@@ -85,4 +60,12 @@ export const familyInputSuggestion = {
   zIndex: 0,
   border: "none",
   fontWeight: "normal"
-}
+};
+
+export const weightInput = {
+  outline: "none",
+  fontSize: 18,
+  background: "none",
+  border: "none",
+  padding: 3
+};
