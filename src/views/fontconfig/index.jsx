@@ -1,18 +1,17 @@
 import React from 'react';
 import Radium from 'radium';
-import Suggestions from './suggestions';
 import {Spring} from 'react-motion';
 
 import Selector from './selector';
 import ConfigButtons from './buttons';
 
+import SuggestionInput from './suggestion_input';
+
 import {EmitterMixin} from '../../emitter';
 
 import {
   fontConfig, body,
-  disabled,
-  familyInputContainer, familyInput,
-  familyInputSuggestion, weightInput
+  disabled, familyInput, weightInput
 } from "./styles/fontconfig";
 
 module.exports = Radium(React.createClass({
@@ -35,11 +34,9 @@ module.exports = Radium(React.createClass({
     const emitter = this.emit('fontconfig');
     return e => {
       emitter({
-        action: 'update',
+        action: 'update:' + prop,
         id: this.props.config._id,
-        obj: Object.assign({}, this.props.config, {
-          [prop]: e.target.value
-        })
+        obj: e.target.value
       });
     };
   },
@@ -47,7 +44,7 @@ module.exports = Radium(React.createClass({
   render() {
     const config = this.props.config;
     return (
-      <div style={fontConfig} onMouseEnter={() => this.setState({hover: true})} onMouseLeave={() => this.setState({hover: false})}>
+      <div style={[fontConfig, {zIndex: this.props.index}]} onMouseEnter={() => this.setState({hover: true})} onMouseLeave={() => this.setState({hover: false})}>
         {config.disabled &&
           <div style={disabled}>
             Disabled
@@ -63,38 +60,24 @@ module.exports = Radium(React.createClass({
             <ConfigButtons right={interpolated.right.val} opacity={interpolated.opacity.val} _id={config._id} disabled={config.disabled}/>
           }
         </Spring>
+
         <Selector selector={config.selector} onChange={this.update('selector')} />
 
         <div style={body}>
-          <div style={familyInputContainer}>
-            <div style={[familyInputSuggestion, {
-                   fontFamily: config.family + ", sans-serif",
-                   fontWeight: config.weight
-                 }]} >
-                {this.state.suggestion}
-            </div>
-
-            <input onChange={this.update('family')}
-                   onFocus={this.showSuggestions}
-                   onKeyDown={this.handleKeyDown}
-                   style={[familyInput, {
-                     fontFamily: config.family + ", sans-serif",
-                     fontWeight: config.weight
-                   }]}
-                   value={config.family} />
-             {this.state.showSuggestions &&
-                <Suggestions
-                 fonts={this.props.fonts}
-                 family={config.family} />
-             }
-
-          </div>
+          <SuggestionInput
+            onChange={this.update('family')}
+            height={familyInput.height + familyInput.padding * 2}
+            style={[familyInput, {
+               fontFamily: config.font.family + ", sans-serif",
+               fontWeight: config.weight
+             }]}
+            suggestions={this.props.suggestions}
+            value={config.font.family} />
 
           <input onChange={this.update('weight')}
                  placeholder="weight"
                  style={weightInput}
                  value={config.weight} />
-
         </div>
       </div>
     );

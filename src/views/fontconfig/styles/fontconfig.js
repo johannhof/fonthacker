@@ -28,38 +28,15 @@ export const disabled = {
   color: "white"
 };
 
-export const familyInputContainer = {
-  width: 238,
-  height: 45,
-  position: "relative",
-  zIndex: 2
-};
-
 export const familyInput = {
-  outline: "none",
-  fontSize: 28,
-  border: "none",
   width: 238,
+  height: 40,
+  fontSize: 28,
   padding: 5,
   margin: 0,
-  position: "absolute",
-  top: "50%",
-  transform: "translateY(-50%)",
-  background: "none"
-};
-
-export const familyInputSuggestion = {
-  position: "absolute",
-  fontSize: 28,
-  padding: 5,
-  color: "grey",
-  width: 238,
-  top: "50%",
-  transform: "translateY(-50%)",
-  background: "none",
-  zIndex: 0,
+  outline: "none",
   border: "none",
-  fontWeight: "normal"
+  zIndex: 2
 };
 
 export const weightInput = {

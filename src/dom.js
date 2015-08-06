@@ -41,18 +41,18 @@ exports.select = function select(el, cb) {
   });
 };
 
-exports.apply = function apply(font) {
+exports.apply = function apply(config) {
   try {
     var nodes;
-    if (font.selector.nodeName) {
-      nodes = [font.selector];
+    if (config.selector.nodeName) {
+      nodes = [config.selector];
     } else {
-      nodes = document.querySelectorAll(font.selector);
+      nodes = document.querySelectorAll(config.selector);
       nodes = Array.prototype.slice.call(nodes);
     }
     nodes.forEach(function(node) {
-      node.style.fontFamily = font.family;
-      node.style.fontWeight = font.weight;
+      node.style.fontFamily = config.font.family;
+      node.style.fontWeight = config.weight;
     });
   } catch (_) {
     // TODO
@@ -62,7 +62,7 @@ exports.apply = function apply(font) {
 exports.reset = function reset(selector) {
   exports.apply({
     selector: selector,
-    family: "",
+    font: {family: ""},
     weight: ""
   });
 };
