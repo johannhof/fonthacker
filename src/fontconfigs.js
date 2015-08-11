@@ -13,6 +13,10 @@ if (localStorage.__fm_configs){
   initialConfigs = JSON.parse(localStorage.__fm_configs).map((config) => [config._id, config]);
 }
 
+function copy(old, cur){
+  return Object.assign({}, old, cur);
+}
+
 const fontConfigs = Kefir
   .fromEvents(events, 'fontconfig')
   .combine(fonts)
@@ -29,25 +33,20 @@ const fontConfigs = Kefir
         });
       case 'update:family':
         config = map.get(id);
-        config.font = _fonts.find((font) => font.family === obj);
-        config.font = config.font || {family: obj};
-        return map.set(id, config);
+        let f = _fonts.find((font) => font.family === obj) || {family: obj};
+        return map.set(id, copy(config, { font: f }));
       case 'update:weight':
         config = map.get(id);
-        config.weight = obj;
-        return map.set(id, config);
+        return map.set(id, copy(config, {weight: obj}));
       case 'update:selector':
         config = map.get(id);
-        config.selector = obj;
-        return map.set(id, config);
+        return map.set(id, copy(config, {selector: obj}));
       case 'disable':
         config = map.get(id);
-        config.disabled = true;
-        return map.set(id, config);
+        return map.set(id, copy(config, {disabled: true}));
       case 'enable':
         config = map.get(id);
-        config.disabled = false;
-        return map.set(id, config);
+        return map.set(id, copy(config, {disabled: false}));
       case 'remove':
         return map.delete(id);
     }

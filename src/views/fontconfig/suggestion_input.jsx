@@ -56,6 +56,7 @@ module.exports = Radium(React.createClass({
         <input readOnly value={this.state.visible && sug[0] ? sug[0].family : null} style={[inputSuggestion].concat(this.props.style)} />
 
         <input onChange={this.props.onChange}
+               onBlur={() => this.setState({visible: false})}
                style={[input].concat(this.props.style)}
                onFocus={this.showSuggestions}
                onKeyUp={this.handleKeyDown}
