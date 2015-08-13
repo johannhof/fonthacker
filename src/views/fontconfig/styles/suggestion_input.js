@@ -9,7 +9,8 @@ export const inputSuggestion = {
   position: "absolute",
   color: "grey",
   zIndex: 0,
-  fontWeight: "normal"
+  fontWeight: "normal",
+  background: "none"
 };
 
 export const suggestions = {

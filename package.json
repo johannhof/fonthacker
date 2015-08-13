@@ -21,8 +21,7 @@
     "webpack-dev-server": "^1.8.2"
   },
   "scripts": {
-    "js-watch": "NODE_ENV=development watchify -o playground/fontmarklet.js -v -d ./src",
-    "js-build": "NODE_ENV=production browserify ./src | uglifyjs -cm > build/fontmarklet.min.js",
+    "build": "webpack -p --progress --colors",
     "bookmarklet": "uglifyjs bookmarklet.js -cem --preamble 'javascript:' -o build/bookmarklet.js",
     "test": "jest"
   },
