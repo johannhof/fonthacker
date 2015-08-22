@@ -9,14 +9,14 @@ module.exports = {
       "./src/index"
     ],
     devServer: {
-      contentBase: "./playground/",
+      contentBase: "./build/",
       hot: true,
       colors: true,
       progress: true,
       historyApiFallback: true
     },
     output: {
-      path: path.join(__dirname, "playground"),
+      path: path.join(__dirname, "build"),
       filename: "fontmarklet.js"
     },
     resolve: {
