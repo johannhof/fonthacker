@@ -1,3 +1,5 @@
+import xpath from 'xpath-dom';
+
 /**
  * This module is responsible for manipulating the DOM of the target page.
  * E.g adding or removing fonts, displaying hover state, etc.
@@ -44,8 +46,8 @@ exports.select = function select(el, cb) {
 exports.apply = function apply(config) {
   try {
     var nodes;
-    if (config.selector.nodeName) {
-      nodes = [config.selector];
+    if (config.activeSelector === "xpath") {
+      nodes = xpath.findAll(config.selector);
     } else {
       nodes = document.querySelectorAll(config.selector);
       nodes = Array.prototype.slice.call(nodes);
@@ -54,14 +56,15 @@ exports.apply = function apply(config) {
       node.style.fontFamily = config.font.family;
       node.style.fontWeight = config.weight;
     });
-  } catch (_) {
-    // TODO
+  } catch (e) {
+    console.warn("Error applying font", e);
   }
 };
 
-exports.reset = function reset(selector) {
+exports.reset = function reset(config) {
   exports.apply({
-    selector: selector,
+    activeSelector: config.activeSelector,
+    selector: config.selector,
     font: {family: ""},
     weight: ""
   });

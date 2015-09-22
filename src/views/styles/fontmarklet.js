@@ -1,7 +1,7 @@
 import colors from "./colors";
 
 export const mainStyle = {
-  fontFamily: "Open Sans",
+  fontFamily: "Marvel, Arial, sans-serif",
   color: "#333",
   position: "fixed",
   zIndex: 999999,
@@ -21,6 +21,6 @@ export const addButtonStyle = {
   boxSizing: "border-box",
   border: "none",
   cursor: "pointer",
-  fontSize: 14,
+  fontSize: 17,
   margin: 2
 };

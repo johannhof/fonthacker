@@ -43,7 +43,7 @@ export default Radium(React.createClass({
 
   render() {
     return (
-      <div style={[mainStyle, this.state.left && {left: this.state.left, top: this.state.top}]}>
+      <div id="fontmarklet" style={[mainStyle, this.state.left && {left: this.state.left, top: this.state.top}]}>
         <Header startDrag={this.startDrag}/>
         {this.props.fontConfigs.map((config, i) =>
                                     <FontConfig

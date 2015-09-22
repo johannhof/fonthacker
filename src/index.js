@@ -2,6 +2,7 @@ import "babel-core/polyfill";
 
 import React from 'react';
 import Kefir from 'kefir';
+import webfontloader from 'webfontloader';
 
 import Fontmarklet from './views/fontmarklet';
 
@@ -9,9 +10,12 @@ import suggestions from './suggestions';
 import fontConfigs from './fontconfigs';
 import fonts from './fonts';
 
-//var selectFont = Kefir
-  //.fromEvents(document.body, 'mouseover')
-  //.slidingWindow()
+// load default fm font, Marvel
+webfontloader.load({
+  google: {
+    families: ['Marvel']
+  }
+});
 
 // create font awesome css file
 const fontawesome = document.createElement("link");

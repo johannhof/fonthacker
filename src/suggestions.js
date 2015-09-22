@@ -10,7 +10,6 @@ export default Kefir
         return val.family.indexOf(input) === 0;
     });
   })
-  .log("suggestions!")
   .toProperty(() => []);
 
     //if(filtered.length > 0 && filtered.length < 10){

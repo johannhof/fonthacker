@@ -61,7 +61,7 @@ module.exports = Radium(React.createClass({
           }
         </Spring>
 
-        <Selector selector={config.selector} onChange={this.update('selector')} />
+        <Selector config={config} onChange={this.update('cssSelector')} />
 
         <div style={body}>
           <SuggestionInput

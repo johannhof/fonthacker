@@ -3,7 +3,7 @@ import Radium from 'radium';
 
 import {EmitterMixin} from '../../emitter';
 
-const MAX_ITEMS = 17;
+const MAX_ITEMS = 10;
 
 import {
   input, inputSuggestion, suggestions, ul, selected
