@@ -27,7 +27,7 @@
   },
   "scripts": {
     "dev": "webpack-dev-server",
-    "build": "webpack -p --progress --colors --output-file fontmarklet.min.js",
+    "build": "webpack --config webpack.prod.config.js -p --progress --colors",
     "bookmarklet": "envify bookmarklet.js | uglifyjs - -em -c warnings=false --screw-ie8 | (printf javascript: && cat && printf undefined)",
     "deploy": "rsync -v --progress ./build/fontmarklet.min.js joo@crater.uberspace.de:/home/joo/html/fontmarklet/",
     "test": "jest"
