@@ -1,5 +1,6 @@
 import Kefir from 'kefir';
 import util from './util';
+import fontList from '../google_fonts.json'
 
 function loadLocal(cb) {
   window.populateFontList = cb;
@@ -14,8 +15,7 @@ function loadLocal(cb) {
 }
 
 const googleFonts = Kefir
-  .fromCallback(util.get.bind(null, "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBRh3XwaTyAoCjBuAFQ6syYtRjRRdeJb4o"))
-  .map((data) => JSON.parse(data))
+  .constant(fontList)
   .map(function({items}){
     return items.map(function(item) {
         return {

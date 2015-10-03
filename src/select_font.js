@@ -7,7 +7,7 @@ const style = document.createElement('style');
 
 style.innerHTML = `
   .__fm-selected {
-    background-color: rgba(30, 30, 200, 0.5) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
   }
 `;
 
@@ -41,7 +41,6 @@ selectFont
   .onValue(function([val]){
     if(val){
       let [e] = val;
-      console.log("test", arguments);
       e.target.classList.remove('__fm-selected');
     }
   });
